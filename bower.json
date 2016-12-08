@@ -1,7 +1,7 @@
 {
   "name": "text-metrics",
   "description": "In-memory text measurement using canvas",
-  "main": "dist/text-metrics.js",
+  "main": "dist/text-metrics.bundle.js",
   "authors": [
     "Ben Zörb <ben@sommerlaune.com>"
   ],

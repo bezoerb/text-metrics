@@ -14,17 +14,17 @@
   },
   "scripts": {
     "test": "xo && nyc ava",
-    "compile": "browserify src/index.js -s textMetrics -t babelify --outfile dist/text-metrics.js && uglifyjs dist/text-metrics.js -o dist/text-metrics.min.js",
+    "compile-standalone": "browserify src/index.js -s textMetrics -t babelify --outfile dist/text-metrics.bundle.js && uglifyjs dist/text-metrics.bundle.js -o dist/text-metrics.bundle.min.js",
+    "compile-module": "babel src --out-dir dist",
+    "compile": "npm run compile-standalone && npm run compile-module",
     "prepublish": "nsp check && npm run compile",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "files": [
-    "dist/text-metrics.js",
-    "dist/text-metrics.min.js",
-    "src/index.js"
+    "dist",
+    "src"
   ],
-  "browser": "dist/text-metrics.js",
-  "main": "src/index.js",
+  "browser": "dist/index.js",
   "keywords": [
     "browser",
     "javascript",
@@ -38,6 +38,7 @@
   "dependencies": {},
   "devDependencies": {
     "ava": "^0.17.0",
+    "babel-cli": "^6.18.0",
     "babel-core": "^6.7.4",
     "babel-plugin-object-assign": "^1.2.1",
     "babel-plugin-transform-es2015-modules-umd": "^6.6.5",
