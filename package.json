@@ -14,9 +14,9 @@
   },
   "scripts": {
     "test": "xo && nyc ava",
-    "compile-standalone": "browserify src/index.js -s textMetrics -t babelify --outfile dist/text-metrics.bundle.js && uglifyjs dist/text-metrics.bundle.js -o dist/text-metrics.bundle.min.js",
+    "compile-standalone": "browserify dist/index.js -s textMetrics --outfile dist/text-metrics.bundle.js && uglifyjs dist/text-metrics.bundle.js -o dist/text-metrics.bundle.min.js",
     "compile-module": "babel src --out-dir dist",
-    "compile": "npm run compile-standalone && npm run compile-module",
+    "compile": "npm run compile-module && npm run compile-standalone",
     "prepublish": "nsp check && npm run compile",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
@@ -45,7 +45,6 @@
     "babel-plugin-transform-object-rest-spread": "^6.19.0",
     "babel-preset-es2015": "^6.2.4",
     "babel-preset-stage-3": "^6.17.0",
-    "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "canvas": "^1.3.12",
     "coveralls": "^2.11.9",
