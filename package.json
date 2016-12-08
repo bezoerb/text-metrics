@@ -1,0 +1,74 @@
+{
+  "name": "text-metrics",
+  "version": "0.0.0",
+  "description": "An efficient text measurement set for the browser.",
+  "license": "MIT",
+  "repository": "bezoerb/text-metrics",
+  "author": {
+    "name": "Ben Zörb",
+    "email": "ben@sommerlaune.com",
+    "url": "sommerlaune.com"
+  },
+  "engines": {
+    "node": ">= 4"
+  },
+  "scripts": {
+    "test": "xo && nyc ava",
+    "compile": "browserify src/index.js -s textMetrics -t babelify --outfile dist/text-metrics.js && uglifyjs dist/text-metrics.js -o dist/text-metrics.min.js",
+    "prepublish": "nsp check && npm run compile",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "files": [
+    "dist/text-metrics.js",
+    "dist/text-metrics.min.js",
+    "src/index.js"
+  ],
+  "browser": "dist/text-metrics.js",
+  "main": "src/index.js",
+  "keywords": [
+    "browser",
+    "javascript",
+    "",
+    "text",
+    "fit-text",
+    "width",
+    "font-size",
+    "height"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "babel-core": "^6.7.4",
+    "babel-plugin-object-assign": "^1.2.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6.6.5",
+    "babel-plugin-transform-object-rest-spread": "^6.19.0",
+    "babel-preset-es2015": "^6.2.4",
+    "babel-preset-stage-3": "^6.17.0",
+    "babelify": "^7.2.0",
+    "browserify": "^13.0.0",
+    "canvas": "^1.3.12",
+    "coveralls": "^2.11.9",
+    "cssstyle": "^0.2.37",
+    "jsdom": "^9.8.3",
+    "nsp": "^2.6.2",
+    "nyc": "^10.0.0",
+    "sinon": "^1.17.3",
+    "uglify-js": "^2.6.2",
+    "xo": "^0.17.1"
+  },
+  "xo": {
+    "space": 4,
+    "ignores": [
+      "dist/text-metrics.js",
+      "dist/text-metrics.min.js"
+    ]
+  },
+  "ava": {
+    "files": [
+      "test/*.js"
+    ],
+    "require": [
+      "./test/helpers/setup-browser-env.js"
+    ]
+  }
+}
