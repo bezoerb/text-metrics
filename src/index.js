@@ -172,11 +172,8 @@ class TextMetrics {
     }
 }
 
-
 export default (el, options) => new TextMetrics(el, options);
 
 module.exports = function (el, options) {
     return new TextMetrics(el, options);
 };
-
-
