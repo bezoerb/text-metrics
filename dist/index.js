@@ -115,7 +115,7 @@
                 var ctx = getContext2d(font);
 
                 if (options.multiline) {
-                    return this.lines(styledText, options).reduce(function (res, text) {
+                    return this.lines(styledText, options, overwrites).reduce(function (res, text) {
                         var w = ctx.measureText(text).width + addSpacing(text);
 
                         return Math.max(res, w);

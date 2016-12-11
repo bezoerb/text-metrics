@@ -116,7 +116,7 @@
                 var ctx = getContext2d(font);
 
                 if (options.multiline) {
-                    return this.lines(styledText, options).reduce(function (res, text) {
+                    return this.lines(styledText, options, overwrites).reduce(function (res, text) {
                         var w = ctx.measureText(text).width + addSpacing(text);
 
                         return Math.max(res, w);
@@ -337,12 +337,12 @@
         var blacklist = ['inherit', 'initial', 'unset', 'normal'];
 
         var wordAddon = 0;
-        if (ws && !blacklist.includes(ws)) {
+        if (ws && blacklist.indexOf(ws) === -1) {
             wordAddon = pxValue(ws);
         }
 
         var letterAddon = 0;
-        if (ls && !blacklist.includes(ls)) {
+        if (ls && blacklist.indexOf(ls) === -1) {
             letterAddon = pxValue(ls);
         }
 

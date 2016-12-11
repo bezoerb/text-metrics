@@ -45,7 +45,7 @@ export function addWordAndLetterSpacing(ws, ls) {
     }
 
     let letterAddon = 0;
-    if (ls && blacklist.indexOf(ws) === -1) {
+    if (ls && blacklist.indexOf(ls) === -1) {
         letterAddon = pxValue(ls);
     }
 
