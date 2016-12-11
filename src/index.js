@@ -50,7 +50,7 @@ class TextMetrics {
         const ctx = getContext2d(font);
 
         if (options.multiline) {
-            return this.lines(styledText, options).reduce((res, text) => {
+            return this.lines(styledText, options, overwrites).reduce((res, text) => {
                 const w = ctx.measureText(text).width + addSpacing(text);
 
                 return Math.max(res, w);
