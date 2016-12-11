@@ -94,6 +94,7 @@ textMetrics({
     fontWeight': '400',
     width: 100
 });
+```
 
 ## Methods
 
