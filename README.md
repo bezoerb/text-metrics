@@ -79,7 +79,7 @@ Construct textmetrics object:
 
 You can call textMetrics with either an HTMLElement or with an object with style overwrites or with both.
 e.g.
-```
+```javascript
 // takes styles from h1
 textMetrics(document.querySelector('h1'));
 
