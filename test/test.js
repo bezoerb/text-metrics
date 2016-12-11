@@ -43,7 +43,7 @@ test('Computes maxFontSize', t => {
 });
 
 test('Computes lines', t => {
-    let el = document.querySelector('#height');
+    const el = document.querySelector('#height');
 
     const text = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.';
     const expected = [
@@ -78,4 +78,31 @@ test('Computes height', t => {
     }).height(text);
 
     t.is(val, 160);
+});
+
+test('Consider letter- and word-spacing', t => {
+    const el = document.querySelector('h3');
+    const metrics = textMetrics(el, {'line-height': '26px'});
+
+    const lines = metrics.lines();
+    const width = metrics.width(null, {multiline: true});
+    const height = metrics.height();
+
+    const expected = [
+        'Lorem ipsum dolor',
+        'sit amet, consectetur',
+        'adipisicing elit.',
+        'Aliquam atque cum',
+        'dolor explicabo',
+        'incidunt.'
+    ];
+
+    t.is(lines.length, expected.length);
+
+    for (let i = 0; i < lines.length; i++) {
+        t.is(lines[i], expected[i]);
+    }
+
+    t.is(width, 283);
+    t.is(height, 156);
 });

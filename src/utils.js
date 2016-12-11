@@ -6,6 +6,58 @@ export const DEFAULTS = {
 };
 
 /**
+ * we only support rem/em/pt conversion
+ * @param val
+ * @param options
+ * @return {*}
+ */
+export function pxValue(val, options = {}) {
+    const baseFontSize = parseInt(prop(options, 'base-font-size', 16), 10);
+
+    let value = parseFloat(val);
+    let unit = val.replace(value, '');
+    // eslint-disable-next-line default-case
+    switch (unit) {
+        case 'rem':
+        case 'em':
+            return value * baseFontSize;
+        case 'pt':
+            return value / (96 / 72);
+        case 'px':
+            return value;
+    }
+
+    throw new Error(`The unit ${unit} is not supported`);
+}
+
+/**
+ * Get computed word- and letter spacing for text
+ * @param ws
+ * @param ls
+ * @return {function(*)}
+ */
+export function addWordAndLetterSpacing(ws, ls) {
+    const blacklist = ['inherit', 'initial', 'unset', 'normal'];
+
+    let wordAddon = 0;
+    if (ws && !blacklist.includes(ws)) {
+        wordAddon = pxValue(ws);
+    }
+
+    let letterAddon = 0;
+    if (ls && !blacklist.includes(ls)) {
+        letterAddon = pxValue(ls);
+    }
+
+    return text => {
+        const words = text.trim().replace(/\s+/gi, ' ').split(' ').length - 1;
+        const chars = text.length;
+
+        return (words * wordAddon) + (chars * letterAddon);
+    };
+}
+
+/**
  * Map css styles to canvas font property
  *
  * font: font-style font-variant font-weight font-size/line-height font-family;
@@ -34,20 +86,7 @@ export function getFont(style, options) {
     }
 
     const fontSize = prop(options, 'font-size', style.getPropertyValue('font-size')) || DEFAULTS['font-size'];
-    let fontSizeValue = parseFloat(fontSize);
-    let fontSizeUnit = fontSize.replace(fontSizeValue, '');
-    // eslint-disable-next-line default-case
-    switch (fontSizeUnit) {
-        case 'rem':
-        case 'em':
-            fontSizeValue *= 16;
-            break;
-        case 'pt':
-            fontSizeValue /= 0.75;
-            break;
-
-    }
-
+    let fontSizeValue = pxValue(fontSize);
     font.push(fontSizeValue + 'px');
 
     const fontFamily = prop(options, 'font-family', style.getPropertyValue('font-family')) || DEFAULTS['font-family'];
@@ -85,7 +124,7 @@ export function canGetComputedStyle(el) {
 export function isElement(el) {
     return (
         typeof HTMLElement === 'object' ? el instanceof HTMLElement :
-        Boolean(el && typeof el === 'object' && el !== null && el.nodeType === 1 && typeof el.nodeName === 'string')
+            Boolean(el && typeof el === 'object' && el !== null && el.nodeType === 1 && typeof el.nodeName === 'string')
     );
 }
 

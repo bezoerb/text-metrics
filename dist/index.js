@@ -62,6 +62,7 @@
         getStyledText = _require.getStyledText,
         getContext2d = _require.getContext2d,
         normalizeOptions = _require.normalizeOptions,
+        addWordAndLetterSpacing = _require.addWordAndLetterSpacing,
         prop = _require.prop;
 
     var TextMetrics = function () {
@@ -98,26 +99,40 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+                if (!text && this.el) {
+                    text = this.el.textContent;
+                }
+
                 var styledText = getStyledText(text, this.style);
 
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
                 var font = getFont(this.style, styles);
 
+                var letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
+                var wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+                var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+
                 var ctx = getContext2d(font);
 
                 if (options.multiline) {
                     return this.lines(styledText, options).reduce(function (res, text) {
-                        return Math.max(res, ctx.measureText(text).width);
+                        var w = ctx.measureText(text).width + addSpacing(text);
+
+                        return Math.max(res, w);
                     }, 0);
                 }
 
-                return ctx.measureText(styledText).width;
+                return ctx.measureText(styledText).width + addSpacing(styledText);
             }
         }, {
             key: 'height',
             value: function height(text) {
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+                if (!text && this.el) {
+                    text = this.el.textContent;
+                }
 
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
 
@@ -131,12 +146,20 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+                if (!text && this.el) {
+                    text = this.el.textContent;
+                }
+
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
                 var font = getFont(this.style, styles);
 
                 // get max width
                 var delimiter = prop(options, 'delimiter', ' ');
                 var max = parseInt(prop(options, 'width') || prop(overwrites, 'width') || prop(this.el, 'offsetWidth', 0) || this.style.getPropertyValue('width'), 10);
+
+                var letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
+                var wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+                var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
 
                 var styledText = getStyledText(text, this.style);
                 var words = styledText.split(delimiter);
@@ -145,14 +168,13 @@
                     return 0;
                 }
 
-                var ctx = getContext2d(font);
-
                 var lines = [];
                 var line = words.shift();
 
+                var ctx = getContext2d(font);
+
                 words.forEach(function (word, index) {
-                    var _ctx$measureText = ctx.measureText(line + delimiter + word),
-                        width = _ctx$measureText.width;
+                    var width = ctx.measureText(line + delimiter + word).width + addSpacing(line + delimiter + word);
 
                     if (width <= max) {
                         line += delimiter + word;
@@ -179,6 +201,10 @@
 
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+                if (!text && this.el) {
+                    text = this.el.textContent;
+                }
 
                 // simple compute function which adds the size and computes the with
                 var compute = function compute(size) {

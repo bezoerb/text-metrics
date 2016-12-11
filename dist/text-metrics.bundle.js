@@ -63,6 +63,7 @@
         getStyledText = _require.getStyledText,
         getContext2d = _require.getContext2d,
         normalizeOptions = _require.normalizeOptions,
+        addWordAndLetterSpacing = _require.addWordAndLetterSpacing,
         prop = _require.prop;
 
     var TextMetrics = function () {
@@ -99,26 +100,40 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+                if (!text && this.el) {
+                    text = this.el.textContent;
+                }
+
                 var styledText = getStyledText(text, this.style);
 
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
                 var font = getFont(this.style, styles);
 
+                var letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
+                var wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+                var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+
                 var ctx = getContext2d(font);
 
                 if (options.multiline) {
                     return this.lines(styledText, options).reduce(function (res, text) {
-                        return Math.max(res, ctx.measureText(text).width);
+                        var w = ctx.measureText(text).width + addSpacing(text);
+
+                        return Math.max(res, w);
                     }, 0);
                 }
 
-                return ctx.measureText(styledText).width;
+                return ctx.measureText(styledText).width + addSpacing(styledText);
             }
         }, {
             key: 'height',
             value: function height(text) {
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+                if (!text && this.el) {
+                    text = this.el.textContent;
+                }
 
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
 
@@ -132,12 +147,20 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+                if (!text && this.el) {
+                    text = this.el.textContent;
+                }
+
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
                 var font = getFont(this.style, styles);
 
                 // get max width
                 var delimiter = prop(options, 'delimiter', ' ');
                 var max = parseInt(prop(options, 'width') || prop(overwrites, 'width') || prop(this.el, 'offsetWidth', 0) || this.style.getPropertyValue('width'), 10);
+
+                var letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
+                var wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+                var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
 
                 var styledText = getStyledText(text, this.style);
                 var words = styledText.split(delimiter);
@@ -146,14 +169,13 @@
                     return 0;
                 }
 
-                var ctx = getContext2d(font);
-
                 var lines = [];
                 var line = words.shift();
 
+                var ctx = getContext2d(font);
+
                 words.forEach(function (word, index) {
-                    var _ctx$measureText = ctx.measureText(line + delimiter + word),
-                        width = _ctx$measureText.width;
+                    var width = ctx.measureText(line + delimiter + word).width + addSpacing(line + delimiter + word);
 
                     if (width <= max) {
                         line += delimiter + word;
@@ -180,6 +202,10 @@
 
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+                if (!text && this.el) {
+                    text = this.el.textContent;
+                }
 
                 // simple compute function which adds the size and computes the with
                 var compute = function compute(size) {
@@ -248,6 +274,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
+    exports.pxValue = pxValue;
+    exports.addWordAndLetterSpacing = addWordAndLetterSpacing;
     exports.getFont = getFont;
     exports.isCSSStyleDeclaration = isCSSStyleDeclaration;
     exports.canGetComputedStyle = canGetComputedStyle;
@@ -271,6 +299,60 @@
         'font-weight': '400',
         'font-family': 'Helvetica, Arial, sans-serif'
     };
+
+    /**
+     * we only support rem/em/pt conversion
+     * @param val
+     * @param options
+     * @return {*}
+     */
+    function pxValue(val) {
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        var baseFontSize = parseInt(prop(options, 'base-font-size', 16), 10);
+
+        var value = parseFloat(val);
+        var unit = val.replace(value, '');
+        // eslint-disable-next-line default-case
+        switch (unit) {
+            case 'rem':
+            case 'em':
+                return value * baseFontSize;
+            case 'pt':
+                return value / (96 / 72);
+            case 'px':
+                return value;
+        }
+
+        throw new Error('The unit ' + unit + ' is not supported');
+    }
+
+    /**
+     * Get computed word- and letter spacing for text
+     * @param ws
+     * @param ls
+     * @return {function(*)}
+     */
+    function addWordAndLetterSpacing(ws, ls) {
+        var blacklist = ['inherit', 'initial', 'unset', 'normal'];
+
+        var wordAddon = 0;
+        if (ws && !blacklist.includes(ws)) {
+            wordAddon = pxValue(ws);
+        }
+
+        var letterAddon = 0;
+        if (ls && !blacklist.includes(ls)) {
+            letterAddon = pxValue(ls);
+        }
+
+        return function (text) {
+            var words = text.trim().replace(/\s+/gi, ' ').split(' ').length - 1;
+            var chars = text.length;
+
+            return words * wordAddon + chars * letterAddon;
+        };
+    }
 
     /**
      * Map css styles to canvas font property
@@ -301,20 +383,7 @@
         }
 
         var fontSize = prop(options, 'font-size', style.getPropertyValue('font-size')) || DEFAULTS['font-size'];
-        var fontSizeValue = parseFloat(fontSize);
-        var fontSizeUnit = fontSize.replace(fontSizeValue, '');
-        // eslint-disable-next-line default-case
-        switch (fontSizeUnit) {
-            case 'rem':
-            case 'em':
-                fontSizeValue *= 16;
-                break;
-            case 'pt':
-                fontSizeValue /= 0.75;
-                break;
-
-        }
-
+        var fontSizeValue = pxValue(fontSize);
         font.push(fontSizeValue + 'px');
 
         var fontFamily = prop(options, 'font-family', style.getPropertyValue('font-family')) || DEFAULTS['font-family'];

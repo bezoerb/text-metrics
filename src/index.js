@@ -7,6 +7,7 @@ const {
     getStyledText,
     getContext2d,
     normalizeOptions,
+    addWordAndLetterSpacing,
     prop
 } = require('./utils');
 
@@ -33,20 +34,30 @@ class TextMetrics {
      * @returns {function}
      */
     width(text, options = {}, overwrites = {}) {
+        if (!text && this.el) {
+            text = this.el.textContent;
+        }
+
         let styledText = getStyledText(text, this.style);
 
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
         const font = getFont(this.style, styles);
 
+        const letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
+        const wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+        const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+
         const ctx = getContext2d(font);
 
         if (options.multiline) {
             return this.lines(styledText, options).reduce((res, text) => {
-                return Math.max(res, ctx.measureText(text).width);
+                const w = ctx.measureText(text).width + addSpacing(text);
+
+                return Math.max(res, w);
             }, 0);
         }
 
-        return ctx.measureText(styledText).width;
+        return ctx.measureText(styledText).width + addSpacing(styledText);
     }
 
     /**
@@ -58,6 +69,10 @@ class TextMetrics {
      * @returns {number}
      */
     height(text, options = {}, overwrites = {}) {
+        if (!text && this.el) {
+            text = this.el.textContent;
+        }
+
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
 
         const lineHeight = parseInt(prop(styles, 'line-height') || this.style.getPropertyValue('line-height'), 10);
@@ -75,6 +90,10 @@ class TextMetrics {
      * @returns {*}
      */
     lines(text, options = {}, overwrites = {}) {
+        if (!text && this.el) {
+            text = this.el.textContent;
+        }
+
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
         const font = getFont(this.style, styles);
 
@@ -87,6 +106,10 @@ class TextMetrics {
                 this.style.getPropertyValue('width')
             , 10);
 
+        const letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
+        const wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+        const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+
         const styledText = getStyledText(text, this.style);
         const words = styledText.split(delimiter);
 
@@ -94,13 +117,13 @@ class TextMetrics {
             return 0;
         }
 
-        const ctx = getContext2d(font);
-
         let lines = [];
         let line = words.shift();
 
+        const ctx = getContext2d(font);
+
         words.forEach((word, index) => {
-            const {width} = ctx.measureText(line + delimiter + word);
+            const width = ctx.measureText(line + delimiter + word).width + addSpacing(line + delimiter + word);
 
             if (width <= max) {
                 line += (delimiter + word);
@@ -130,6 +153,10 @@ class TextMetrics {
      * @returns {string} Pixelvalue e.g. 14px
      */
     maxFontSize(text, options = {}, overwrites = {}) {
+        if (!text && this.el) {
+            text = this.el.textContent;
+        }
+
         // simple compute function which adds the size and computes the with
         let compute = size => {
             return this.width(text, options, {...overwrites, 'font-size': `${size}px`});
@@ -172,8 +199,8 @@ class TextMetrics {
     }
 }
 
-export default (el, options) => new TextMetrics(el, options);
+export default (el, overwrites) => new TextMetrics(el, overwrites);
 
-module.exports = function (el, options) {
-    return new TextMetrics(el, options);
+module.exports = function (el, overwrites) {
+    return new TextMetrics(el, overwrites);
 };
