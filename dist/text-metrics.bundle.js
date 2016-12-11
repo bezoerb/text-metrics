@@ -247,12 +247,12 @@
         return TextMetrics;
     }();
 
-    exports.default = function (el, options) {
-        return new TextMetrics(el, options);
+    exports.default = function (el, overwrites) {
+        return new TextMetrics(el, overwrites);
     };
 
-    module.exports = function (el, options) {
-        return new TextMetrics(el, options);
+    module.exports = function (el, overwrites) {
+        return new TextMetrics(el, overwrites);
     };
 });
 },{"./utils":2}],2:[function(require,module,exports){

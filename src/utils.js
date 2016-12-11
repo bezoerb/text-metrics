@@ -40,12 +40,12 @@ export function addWordAndLetterSpacing(ws, ls) {
     const blacklist = ['inherit', 'initial', 'unset', 'normal'];
 
     let wordAddon = 0;
-    if (ws && !blacklist.includes(ws)) {
+    if (ws && blacklist.indexOf(ws) === -1) {
         wordAddon = pxValue(ws);
     }
 
     let letterAddon = 0;
-    if (ls && !blacklist.includes(ls)) {
+    if (ls && blacklist.indexOf(ws) === -1) {
         letterAddon = pxValue(ls);
     }
 
