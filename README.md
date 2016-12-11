@@ -71,10 +71,54 @@ textMetrics(document.querySelector('h1')).width('unicorns');
 </script>
 ```
 
-
 ## API
 
-// Todo
+Construct textmetrics object:
+
+`textMetrics([el, overwrites])`
+
+You can call textMetrics with either an HTMLElement or with an object with style overwrites or with both.
+e.g.
+```
+// takes styles from h1
+textMetrics(document.querySelector('h1'));
+
+// takes styles from h1 and overwrites font-size
+textMetrics(document.querySelector('h1'), { fontSize: '20px'});
+
+// only use given styles
+textMetrics({
+    fontSize': '14px',
+    lineHeight': '20px',
+    fontFamily': 'Helvetica, Arial, sans-serif',
+    fontWeight': '400',
+    width: 100
+});
+
+## Methods
+
+`width([text, [options, [overwrites]]])`<br/>
+`height([text, [options, [overwrites]]])`<br/>
+`lines([text, [options, [overwrites]]])`<br/>
+`maxFontSize([text, [options, [overwrites]]])`<br/>
+
+#### text
+Type: `string`
+Defaults to `el.textContent` if an element is available
+
+#### options
+Type: `object`
+
+| key       | default | description
+| --------- | ------- | -----------
+| delimiter | ' '     | Word delimiter
+| multiline | false   | The width of widest line instead of the width of the complete text
+
+#### overwrites
+Type: `object`
+
+Use to overwrite styles
+
 
 ## License
 Copyright (c) 2016 Ben Zörb
