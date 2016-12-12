@@ -100,7 +100,7 @@
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
                 if (!text && this.el) {
-                    text = this.el.textContent;
+                    text = this.el.textContent.trim();
                 }
 
                 var styledText = getStyledText(text, this.style);
@@ -131,7 +131,7 @@
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
                 if (!text && this.el) {
-                    text = this.el.textContent;
+                    text = this.el.textContent.trim();
                 }
 
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
@@ -147,7 +147,7 @@
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
                 if (!text && this.el) {
-                    text = this.el.textContent;
+                    text = this.el.textContent.trim();
                 }
 
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
@@ -203,7 +203,7 @@
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
                 if (!text && this.el) {
-                    text = this.el.textContent;
+                    text = this.el.textContent.trim();
                 }
 
                 // simple compute function which adds the size and computes the with
