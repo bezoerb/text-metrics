@@ -35,7 +35,7 @@ class TextMetrics {
      */
     width(text, options = {}, overwrites = {}) {
         if (!text && this.el) {
-            text = this.el.textContent;
+            text = this.el.textContent.trim();
         }
 
         let styledText = getStyledText(text, this.style);
@@ -70,7 +70,7 @@ class TextMetrics {
      */
     height(text, options = {}, overwrites = {}) {
         if (!text && this.el) {
-            text = this.el.textContent;
+            text = this.el.textContent.trim();
         }
 
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
@@ -91,7 +91,7 @@ class TextMetrics {
      */
     lines(text, options = {}, overwrites = {}) {
         if (!text && this.el) {
-            text = this.el.textContent;
+            text = this.el.textContent.trim();
         }
 
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
@@ -154,7 +154,7 @@ class TextMetrics {
      */
     maxFontSize(text, options = {}, overwrites = {}) {
         if (!text && this.el) {
-            text = this.el.textContent;
+            text = this.el.textContent.trim();
         }
 
         // simple compute function which adds the size and computes the with
