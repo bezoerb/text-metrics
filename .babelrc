@@ -7,5 +7,5 @@
             }
         }]
     ],
-    "plugins": ["transform-es2015-modules-umd", "transform-object-rest-spread"]
+    "plugins": ["array-includes", "transform-es2015-modules-umd", "transform-object-rest-spread"]
 }
