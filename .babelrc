@@ -1,4 +1,11 @@
 {
-  "presets": ["es2015", "stage-3"],
-  "plugins": ["transform-es2015-modules-umd", "transform-object-rest-spread"]
+    "presets": [
+        ["env", {
+            "targets": {
+                "browsers": ["last 2 versions", "safari >= 7"],
+                "node": "current"
+            }
+        }]
+    ],
+    "plugins": ["transform-es2015-modules-umd", "transform-object-rest-spread"]
 }

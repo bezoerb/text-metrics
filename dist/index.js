@@ -342,7 +342,6 @@
                     lines.push(line);
                 }
 
-                console.log(lines);
                 return lines;
             }
         }, {
