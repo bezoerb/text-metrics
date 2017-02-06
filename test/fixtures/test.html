@@ -133,8 +133,11 @@
         ctx4.fillText(lines[i],0,(i+1)*20);
     }
 
+    var metrics =  textMetrics(document.getElementById('lines-break'));
 
-    console.log( textMetrics(document.getElementById('lines-break')).lines());
+    metrics.lines().forEach(function(line){
+        console.log(metrics.width(line), line);
+    });
 
 </script>
 

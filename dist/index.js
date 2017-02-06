@@ -172,10 +172,8 @@
                 var ctx = getContext2d(font);
                 text = getStyledText(text, this.style);
 
-                console.log(text);
                 // different scenario when break-word is allowed
                 if (wordBreak === 'break-all') {
-                    console.log('BREAK WORD');
                     return computeLinesBreakAll({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
                 }
 

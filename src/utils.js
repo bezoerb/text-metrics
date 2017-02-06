@@ -320,7 +320,7 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
     const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
     const lines = [];
     let line = '';
-
+    let index = 0;
     for (let chr of text) {
         const type = checkBreak(chr);
         // mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
@@ -334,7 +334,8 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
         let width = ctx.measureText(line + chr).width + addSpacing(line + chr);
         // check if we can put char behind the shy
         if (type === 'SHY') {
-            width += ctx.measureText('x').width;
+            const next = text[index + 1] || '';
+            width = ctx.measureText(line + chr + next).width + addSpacing(line + chr + next);
         }
 
         // needs at least one character
@@ -360,6 +361,7 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
         } else if (chr !== '\u00AD') {
             line += chr;
         }
+        index++;
     }
 
     if ([...line].length !== 0) {

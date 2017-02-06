@@ -173,10 +173,8 @@
                 var ctx = getContext2d(font);
                 text = getStyledText(text, this.style);
 
-                console.log(text);
                 // different scenario when break-word is allowed
                 if (wordBreak === 'break-all') {
-                    console.log('BREAK WORD');
                     return computeLinesBreakAll({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
                 }
 
@@ -618,7 +616,7 @@
         var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
         var lines = [];
         var line = '';
-
+        var index = 0;
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
@@ -637,6 +635,10 @@
 
                 // measure width
                 var width = ctx.measureText(line + chr).width + addSpacing(line + chr);
+                // check if we can put char behind the shy
+                if (type === 'SHY') {
+                    width = ctx.measureText(line + chr + text[index + 1]).width + addSpacing(line + chr + text[index + 1]);
+                }
 
                 // needs at least one character
                 if (width > max && [].concat(_toConsumableArray(line)).length !== 0) {
@@ -658,9 +660,10 @@
                             line = chr;
                             break;
                     }
-                } else {
+                } else if (chr !== '\xAD') {
                     line += chr;
                 }
+                index++;
             }
         } catch (err) {
             _didIteratorError = true;
@@ -770,10 +773,10 @@
                             throw new Error('Undefoined break');
                     }
                 } else {
+                    index++;
                     if (chr !== '\xAD') {
                         line += chr;
                     }
-                    index++;
                 }
             }
         } catch (err) {
