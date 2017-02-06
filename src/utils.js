@@ -332,9 +332,9 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
 
         // measure width
         let width = ctx.measureText(line + chr).width + addSpacing(line + chr);
-        // check if we can put some small char behind the shy
+        // check if we can put char behind the shy
         if (type === 'SHY') {
-            width += ctx.measureText('i').width;
+            width += ctx.measureText('x').width;
         }
 
         // needs at least one character
