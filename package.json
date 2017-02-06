@@ -35,7 +35,9 @@
     "font-size",
     "height"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "he": "^1.1.1"
+  },
   "devDependencies": {
     "ava": "^0.17.0",
     "babel-cli": "^6.18.0",

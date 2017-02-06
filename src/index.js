@@ -5,8 +5,10 @@ const {
     getStyle,
     getFont,
     getStyledText,
+    prepareText,
     getContext2d,
     normalizeOptions,
+    checkBreak,
     addWordAndLetterSpacing,
     prop
 } = require('./utils');
@@ -36,6 +38,8 @@ class TextMetrics {
     width(text, options = {}, overwrites = {}) {
         if (!text && this.el) {
             text = this.el.textContent.trim();
+        } else {
+            text = prepareText(text);
         }
 
         let styledText = getStyledText(text, this.style);
@@ -71,6 +75,8 @@ class TextMetrics {
     height(text, options = {}, overwrites = {}) {
         if (!text && this.el) {
             text = this.el.textContent.trim();
+        } else {
+            text = prepareText(text);
         }
 
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
@@ -92,19 +98,23 @@ class TextMetrics {
     lines(text, options = {}, overwrites = {}) {
         if (!text && this.el) {
             text = this.el.textContent.trim();
+        } else {
+            text = prepareText(text);
         }
 
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
         const font = getFont(this.style, styles);
 
         // get max width
-        const delimiter = prop(options, 'delimiter', ' ');
+        const delimiter = prop(options, 'delimiter', /[\u0020,\u1680,\u2000,\u2001,\u2002,\u2003,\u2004,\u2005,\u2006,\u2008,\u2009,\u200A,\u205F,\u3000]/);
         const max = parseInt(
                 prop(options, 'width') ||
                 prop(overwrites, 'width') ||
                 prop(this.el, 'offsetWidth', 0) ||
                 this.style.getPropertyValue('width')
             , 10);
+
+        const breakWord = prop(styles, 'word-break') === 'break-all';
 
         const letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
         const wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
@@ -117,27 +127,113 @@ class TextMetrics {
             return 0;
         }
 
-        let lines = [];
-        let line = words.shift();
-
         const ctx = getContext2d(font);
+        const lines = [];
 
-        words.forEach((word, index) => {
-            const width = ctx.measureText(line + delimiter + word).width + addSpacing(line + delimiter + word);
+        let line = '';
 
-            if (width <= max) {
-                line += (delimiter + word);
-            } else {
-                lines.push(line);
-                line = word;
+        // different scenario when break-word is allowed
+        if (breakWord) {
+            for (let chr of styledText) {
+                // measure width
+                const width = ctx.measureText(line + chr).width + addSpacing(line + chr);
+
+                // needs at least one character
+                if (width > max && [...line].length !== 0) {
+                    switch (checkBreak(chr)) {
+                        case 'SHY':
+                            lines.push(line + '-');
+                            line = '';
+                            break;
+                        case 'BA':
+                            lines.push(line + chr);
+                            line = '';
+                            break;
+                        case 'BK':
+                        case 'BAI':
+                            lines.push(line);
+                            line = '';
+                            break;
+                        default:
+                            lines.push(line);
+                            line = chr;
+                            break;
+                    }
+                } else {
+                    line += chr;
+                }
             }
+        } else {
+            // last possible break
+            let lpb;
+            let index = 0;
 
-            if (index === words.length - 1) {
-                lines.push(line);
+            for (let chr of styledText) {
+                // measure width
+                const width = ctx.measureText(line + chr).width + addSpacing(line + chr);
+                const type = checkBreak(chr);
+
+                // use es2015 array to count code points properly
+                // https://mathiasbynens.be/notes/javascript-unicode
+                const lineArray = [...line];
+
+                if (type && lineArray.length !== 0) {
+                    lpb = {type, index, chr};
+                }
+
+                // needs at least one character
+                if (width > max && lineArray.length !== 0 && lpb) {
+                    let nl = lineArray.slice(0, lpb.index).join('');
+                    // the break character is handled in the switch statement below
+                    if (lpb.index === index) {
+                        line = '';
+                    } else {
+                        line = lineArray.slice(lpb.index + 1).join('') + chr;
+                    }
+                    index = [...line].length;
+                    switch (lpb.type) {
+                        case 'SHY':
+                            lines.push(nl + '-');
+                            lpb = undefined;
+                            break;
+                        case 'BA':
+                            lines.push(nl + lpb.chr);
+                            lpb = undefined;
+                            break;
+                        case 'BK':
+                        case 'BAI':
+                            lines.push(nl);
+                            lpb = undefined;
+                            break;
+                        case 'BB':
+                            lines.push(nl);
+                            line = lpb.chr + line;
+                            lpb = undefined;
+                            break;
+                        case 'B2':
+                            if (ctx.measureText(nl + lpb.chr).width + addSpacing(nl + lpb.chr) <= max) {
+                                lines.push(nl + lpb.chr);
+                                lpb = undefined;
+                            } else {
+                                lines.push(nl);
+                                line = lpb.chr + line;
+                                lpb.index = 0;
+                                index++;
+                            }
+                            break;
+                        default:
+                            throw new Error('Undefoined break');
+                    }
+                } else {
+                    if (chr !== '\u00AD') {
+                        line += chr;
+                    }
+                    index++;
+                }
             }
-        });
+        }
 
-        if (words.length === 0) {
+        if ([...line].length !== 0) {
             lines.push(line);
         }
 
@@ -155,6 +251,8 @@ class TextMetrics {
     maxFontSize(text, options = {}, overwrites = {}) {
         if (!text && this.el) {
             text = this.el.textContent.trim();
+        } else {
+            text = prepareText(text);
         }
 
         // simple compute function which adds the size and computes the with

@@ -66,6 +66,29 @@ test('Computes lines', t => {
     }
 });
 
+test('Computes lines with breaks', t => {
+    const el = document.querySelector('#lines');
+    const text = 'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo incidunt.';
+    const expected = [
+        'Lorem ipsum d-',
+        'olor sit amet, c',
+        '—onsectur a—',
+        'dipisicing elit.',
+        'Aliquam atque',
+        'cum dolor',
+        'explicabo',
+        'incidunt.'
+    ];
+
+    const value = textMetrics(el).lines(text);
+
+    t.is(value.length, expected.length);
+
+    for (let i = 0; i < value.length; i++) {
+        t.is(value[i], expected[i]);
+    }
+});
+
 test('Computes height', t => {
     const text = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.';
 

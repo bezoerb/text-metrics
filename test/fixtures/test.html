@@ -44,6 +44,14 @@
             font-family: Helvetica, Arial, sans-serif;
             font-size: 14px;
         }
+
+        #lines {
+            width: 100px;
+            display: block;
+            background: orange;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -59,6 +67,11 @@
 <div id="fullwidth" class="fit-text"><span>Scales to full width</span></div>
 
 <div id="height">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.</div>
+
+<div id="lines">
+    Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo incidunt.
+</div>
+<canvas id="lines-canvas"></canvas>
 <canvas id="height-canvas"></canvas>
 <canvas id="fullwidth-canvas"></canvas>
 <script>
@@ -94,6 +107,19 @@
     ctx3.font = '14px Helvetica, Arial, sans-serif';
 
     ctx3.fillText('dolor sit amet, ', 0, 32);
+
+    var canvasLines = document.getElementById('lines-canvas');
+    var linesEl = document.getElementById('lines');
+    canvasLines.width  = 200;
+    canvasLines.height = 500;
+    var ctx4 = canvasLines.getContext('2d');
+    ctx4.font = '14px Helvetica, Arial, sans-serif';
+
+    var lines = textMetrics(linesEl).lines();
+    for (var i=0; i<lines.length; i++) {
+        ctx4.fillText(lines[i],0,(i+1)*20);
+    }
+
 
 </script>
 

@@ -1,3 +1,5 @@
+const {decode} = require('he');
+
 /* eslint-env es6, browser */
 export const DEFAULTS = {
     'font-size': '16px',
@@ -174,6 +176,13 @@ export function getStyledText(text, style) {
     }
 }
 
+export function prepareText(text) {
+    // convert to unicode
+    text = text.replace(/<wbr>/, '\u200b');
+
+    return decode(text).trim();
+}
+
 /**
  * Get property from src
  *
@@ -218,4 +227,67 @@ export function getContext2d(font) {
     } catch (err) {
         throw new Error('Canvas support required');
     }
+}
+
+/**
+ * Check breaking character
+ * http://www.unicode.org/reports/tr14/#Table1
+ *
+ * @param char
+ */
+export function checkBreak(chr) {
+    /*
+     B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
+     BA	Break After	Spaces, hyphens	Generally provide a line break opportunity after the character
+     BB	Break Before	Punctuation used in dictionaries	Generally provide a line break opportunity before the character
+     HY	Hyphen	HYPHEN-MINUS	Provide a line break opportunity after the character, except in numeric context
+     CB	Contingent Break Opportunity	Inline objects	Provide a line break opportunity contingent on additional information
+     */
+
+    // B2 Break Opportunity Before and After - http://www.unicode.org/reports/tr14/#B2
+    const B2 = [
+        '\u2014'
+    ];
+
+    const SHY = [
+        // soft hyphen
+        '\u00AD'
+    ];
+
+    // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
+    const BAI = [
+        // spaces
+        '\u0020', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
+        // tab
+        '\u0009',
+        // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
+        '\u200b'
+    ];
+
+    const BA = [
+        // hyphen
+        '\u058A', '\u2010', '\u2012', '\u2013',
+        // Visible Word Dividers
+        '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '\u007C',
+        // Historic Word Separators
+        '\u16EB', '\u16EC', '\u16ED', '\u2056', '\u2058', '\u2059', '\u205A', '\u205B', '\u205D', '\u205E', '\u2E19', '\u2E2A',
+        '\u2E2B', '\u2E2C', '\u2E2D', '\u2E30', '\u10100', '\u10101', '\u10102', '\u1039F', '\u103D0', '\u1091F', '\u12470'
+    ];
+
+    // BB: Break Before - http://www.unicode.org/reports/tr14/#BB
+    const BB = [
+        '\u00B4', '\u1FFD'
+    ];
+
+    // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
+    const BK = [
+        '\u2028', '\u2029'
+    ];
+
+    return (B2.includes(chr) && 'B2') ||
+        (BAI.includes(chr) && 'BAI') ||
+        (SHY.includes(chr) && 'SHY') ||
+        (BA.includes(chr) && 'BA') ||
+        (BB.includes(chr) && 'BB') ||
+        (BK.includes(chr) && 'BK');
 }

@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports'], factory);
+        define(['exports', 'he'], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports);
+        factory(exports, require('he'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports);
+        factory(mod.exports, global.he);
         global.utils = mod.exports;
     }
-})(this, function (exports) {
+})(this, function (exports, _require) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -25,15 +25,20 @@
     exports.isObject = isObject;
     exports.getStyle = getStyle;
     exports.getStyledText = getStyledText;
+    exports.prepareText = prepareText;
     exports.prop = prop;
     exports.normalizeOptions = normalizeOptions;
     exports.getContext2d = getContext2d;
+    exports.checkBreak = checkBreak;
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
         return typeof obj;
     } : function (obj) {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
+
+    var decode = _require.decode;
+
 
     /* eslint-env es6, browser */
     var DEFAULTS = exports.DEFAULTS = {
@@ -214,6 +219,13 @@
         }
     }
 
+    function prepareText(text) {
+        // convert to unicode
+        text = text.replace(/<wbr>/, '\u200B');
+
+        return decode(text).trim();
+    }
+
     /**
      * Get property from src
      *
@@ -262,5 +274,53 @@
         } catch (err) {
             throw new Error('Canvas support required');
         }
+    }
+
+    /**
+     * Check breaking character
+     * http://www.unicode.org/reports/tr14/#Table1
+     *
+     * @param char
+     */
+    function checkBreak(chr) {
+        /*
+         B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
+         BA	Break After	Spaces, hyphens	Generally provide a line break opportunity after the character
+         BB	Break Before	Punctuation used in dictionaries	Generally provide a line break opportunity before the character
+         HY	Hyphen	HYPHEN-MINUS	Provide a line break opportunity after the character, except in numeric context
+         CB	Contingent Break Opportunity	Inline objects	Provide a line break opportunity contingent on additional information
+         */
+
+        // B2 Break Opportunity Before and After - http://www.unicode.org/reports/tr14/#B2
+        var B2 = ['\u2014'];
+
+        var SHY = [
+        // soft hyphen
+        '\xAD'];
+
+        // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
+        var BAI = [
+        // spaces
+        ' ', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
+        // tab
+        '\t',
+        // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
+        '\u200B'];
+
+        var BA = [
+        // hyphen
+        '\u058A', '\u2010', '\u2012', '\u2013',
+        // Visible Word Dividers
+        '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '|',
+        // Historic Word Separators
+        '\u16EB', '\u16EC', '\u16ED', '\u2056', '\u2058', '\u2059', '\u205A', '\u205B', '\u205D', '\u205E', '\u2E19', '\u2E2A', '\u2E2B', '\u2E2C', '\u2E2D', '\u2E30', '\u10100', '\u10101', '\u10102', '\u1039F', '\u103D0', '\u1091F', '\u12470'];
+
+        // BB: Break Before - http://www.unicode.org/reports/tr14/#BB
+        var BB = ['\xB4', '\u1FFD'];
+
+        // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
+        var BK = ['\u2028', '\u2029'];
+
+        return B2.includes(chr) && 'B2' || BAI.includes(chr) && 'BAI' || SHY.includes(chr) && 'SHY' || BA.includes(chr) && 'BA' || BB.includes(chr) && 'BB' || BK.includes(chr) && 'BK';
     }
 });
