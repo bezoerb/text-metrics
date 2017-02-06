@@ -105,15 +105,14 @@ textMetrics({
 
 #### text
 Type: `string`
-Defaults to `el.textContent` if an element is available
+Defaults to `el.innerText` if an element is available
 
 #### options
 Type: `object`
 
 | key       | default | description
 | --------- | ------- | -----------
-| delimiter | ' '     | Word delimiter
-| multiline | false   | The width of widest line instead of the width of the complete text
+| multiline | `false`   | The width of widest line instead of the width of the complete text
 
 #### overwrites
 Type: `object`

@@ -52,6 +52,15 @@
             font-family: Helvetica, Arial, sans-serif;
             font-size: 14px;
         }
+
+        #lines-break {
+            width: 100px;
+            display: block;
+            background: green;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -70,6 +79,10 @@
 
 <div id="lines">
     Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo incidunt.
+</div>
+
+<div id="lines-break">
+    Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali<br/>quam a&#x2028;tque cum dolor explicabo incidunt.
 </div>
 <canvas id="lines-canvas"></canvas>
 <canvas id="height-canvas"></canvas>
@@ -120,6 +133,8 @@
         ctx4.fillText(lines[i],0,(i+1)*20);
     }
 
+
+    console.log( textMetrics(document.getElementById('lines-break')).lines());
 
 </script>
 

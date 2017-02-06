@@ -89,6 +89,30 @@ test('Computes lines with breaks', t => {
     }
 });
 
+test('Computes lines with break-all', t => {
+    const el = document.querySelector('#lines-break');
+    // need to pass text as the jsdom implementation of innerText differs from browsers
+    // https://github.com/tmpvar/jsdom/issues/1245
+    const text = 'Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali<br/>quam atque cum dolor explicabo incidunt.';
+    const expected = [
+        'Lorem ipsum d-',
+        'olor sit amet, c',
+        '—onsectur a—',
+        'dipisicing elit. Al',
+        'i',
+        'quam atque cu',
+        'm dolor explica',
+        'bo incidunt.'
+    ];
+
+    const value = textMetrics(el).lines(text);
+    t.is(value.length, expected.length);
+
+    for (let i = 0; i < value.length; i++) {
+        t.is(value[i], expected[i]);
+    }
+});
+
 test('Computes height', t => {
     const text = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.';
 

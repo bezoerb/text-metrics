@@ -26,10 +26,25 @@
     exports.getStyle = getStyle;
     exports.getStyledText = getStyledText;
     exports.prepareText = prepareText;
+    exports.getText = getText;
     exports.prop = prop;
     exports.normalizeOptions = normalizeOptions;
     exports.getContext2d = getContext2d;
     exports.checkBreak = checkBreak;
+    exports.computeLinesBreakAll = computeLinesBreakAll;
+    exports.computeLinesDefault = computeLinesDefault;
+
+    function _toConsumableArray(arr) {
+        if (Array.isArray(arr)) {
+            for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+                arr2[i] = arr[i];
+            }
+
+            return arr2;
+        } else {
+            return Array.from(arr);
+        }
+    }
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
         return typeof obj;
@@ -219,11 +234,31 @@
         }
     }
 
+    /**
+     * Get cleaned text
+     * @param text
+     * @returns {string}
+     */
     function prepareText(text) {
         // convert to unicode
-        text = text.replace(/<wbr>/, '\u200B');
+        text = text.replace(/<wbr>/, '\u200B').replace(/<br\s*\/?>/, '\n');
 
         return decode(text).trim();
+    }
+
+    /**
+     * Get textcontent from element
+     * Try innerText first
+     * @param el
+     */
+    function getText(el) {
+        if (!el) {
+            return '';
+        }
+
+        var text = el.innerText || el.textContent || '';
+
+        return text.trim();
     }
 
     /**
@@ -280,7 +315,7 @@
      * Check breaking character
      * http://www.unicode.org/reports/tr14/#Table1
      *
-     * @param char
+     * @param chr
      */
     function checkBreak(chr) {
         /*
@@ -305,7 +340,9 @@
         // tab
         '\t',
         // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
-        '\u200B'];
+        '\u200B',
+        // Mandatory breaks not interpreted by html
+        '\u2028', '\u2029'];
 
         var BA = [
         // hyphen
@@ -319,8 +356,198 @@
         var BB = ['\xB4', '\u1FFD'];
 
         // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
-        var BK = ['\u2028', '\u2029'];
+        var BK = ['\n'];
 
-        return B2.includes(chr) && 'B2' || BAI.includes(chr) && 'BAI' || SHY.includes(chr) && 'SHY' || BA.includes(chr) && 'BA' || BB.includes(chr) && 'BB' || BK.includes(chr) && 'BK';
+        return B2.indexOf(chr) !== -1 && 'B2' || BAI.indexOf(chr) !== -1 && 'BAI' || SHY.indexOf(chr) !== -1 && 'SHY' || BA.indexOf(chr) !== -1 && 'BA' || BB.indexOf(chr) !== -1 && 'BB' || BK.indexOf(chr) !== -1 && 'BK';
+    }
+
+    function computeLinesBreakAll(_ref) {
+        var ctx = _ref.ctx,
+            text = _ref.text,
+            max = _ref.max,
+            wordSpacing = _ref.wordSpacing,
+            letterSpacing = _ref.letterSpacing;
+
+        var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+        var lines = [];
+        var line = '';
+
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = text[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var chr = _step.value;
+
+                var type = checkBreak(chr);
+                // mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
+                if (type === 'BK') {
+                    lines.push(line);
+                    line = '';
+                    continue;
+                }
+
+                // measure width
+                var width = ctx.measureText(line + chr).width + addSpacing(line + chr);
+
+                // needs at least one character
+                if (width > max && [].concat(_toConsumableArray(line)).length !== 0) {
+                    switch (type) {
+                        case 'SHY':
+                            lines.push(line + '-');
+                            line = '';
+                            break;
+                        case 'BA':
+                            lines.push(line + chr);
+                            line = '';
+                            break;
+                        case 'BAI':
+                            lines.push(line);
+                            line = '';
+                            break;
+                        default:
+                            lines.push(line);
+                            line = chr;
+                            break;
+                    }
+                } else {
+                    line += chr;
+                }
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+
+        if ([].concat(_toConsumableArray(line)).length !== 0) {
+            lines.push(line);
+        }
+
+        return lines;
+    }
+
+    function computeLinesDefault(_ref2) {
+        var ctx = _ref2.ctx,
+            text = _ref2.text,
+            max = _ref2.max,
+            wordSpacing = _ref2.wordSpacing,
+            letterSpacing = _ref2.letterSpacing;
+
+        var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+        var lines = [];
+        var line = '';
+        var lpb = void 0;
+        var index = 0;
+
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+            for (var _iterator2 = text[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var chr = _step2.value;
+
+                var type = checkBreak(chr);
+
+                // mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
+                if (type === 'BK') {
+                    lines.push(line);
+                    line = '';
+                    index = 0;
+                    continue;
+                }
+
+                // use es2015 array to count code points properly
+                // https://mathiasbynens.be/notes/javascript-unicode
+                var lineArray = [].concat(_toConsumableArray(line));
+
+                if (type && lineArray.length !== 0) {
+                    lpb = { type: type, index: index, chr: chr };
+                }
+
+                // measure width
+                var width = ctx.measureText(line + chr).width + addSpacing(line + chr);
+
+                // needs at least one character
+                if (width > max && lineArray.length !== 0 && lpb) {
+                    var nl = lineArray.slice(0, lpb.index).join('');
+                    // the break character is handled in the switch statement below
+                    if (lpb.index === index) {
+                        line = '';
+                    } else {
+                        line = lineArray.slice(lpb.index + 1).join('') + chr;
+                    }
+                    index = [].concat(_toConsumableArray(line)).length;
+                    switch (lpb.type) {
+                        case 'SHY':
+                            lines.push(nl + '-');
+                            lpb = undefined;
+                            break;
+                        case 'BA':
+                            lines.push(nl + lpb.chr);
+                            lpb = undefined;
+                            break;
+                        case 'BK':
+                        case 'BAI':
+                            lines.push(nl);
+                            lpb = undefined;
+                            break;
+                        case 'BB':
+                            lines.push(nl);
+                            line = lpb.chr + line;
+                            lpb = undefined;
+                            break;
+                        case 'B2':
+                            if (ctx.measureText(nl + lpb.chr).width + addSpacing(nl + lpb.chr) <= max) {
+                                lines.push(nl + lpb.chr);
+                                lpb = undefined;
+                            } else {
+                                lines.push(nl);
+                                line = lpb.chr + line;
+                                lpb.index = 0;
+                                index++;
+                            }
+                            break;
+                        default:
+                            throw new Error('Undefoined break');
+                    }
+                } else {
+                    if (chr !== '\xAD') {
+                        line += chr;
+                    }
+                    index++;
+                }
+            }
+        } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                    _iterator2.return();
+                }
+            } finally {
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
+                }
+            }
+        }
+
+        if ([].concat(_toConsumableArray(line)).length !== 0) {
+            lines.push(line);
+        }
+
+        return lines;
     }
 });
