@@ -38,6 +38,12 @@ class TextMetrics {
      * @returns {function}
      */
     width(text, options = {}, overwrites = {}) {
+        if (typeof text === 'object' && text) {
+            overwrites = options;
+            options = text || {};
+            text = undefined;
+        }
+
         if (!text && this.el) {
             text = this.el.textContent.trim();
         } else {
@@ -75,6 +81,12 @@ class TextMetrics {
      * @returns {number}
      */
     height(text, options = {}, overwrites = {}) {
+        if (typeof text === 'object' && text) {
+            overwrites = options;
+            options = text || {};
+            text = undefined;
+        }
+
         if (!text && this.el) {
             text = getText(this.el);
         } else {
@@ -98,6 +110,12 @@ class TextMetrics {
      * @returns {*}
      */
     lines(text, options = {}, overwrites = {}) {
+        if (typeof text === 'object' && text) {
+            overwrites = options;
+            options = text;
+            text = undefined;
+        }
+
         if (!text && this.el) {
             text = getText(this.el);
         } else {
@@ -138,6 +156,12 @@ class TextMetrics {
      * @returns {string} Pixelvalue e.g. 14px
      */
     maxFontSize(text, options = {}, overwrites = {}) {
+        if (typeof text === 'object' && text) {
+            overwrites = options;
+            options = text;
+            text = undefined;
+        }
+
         if (!text && this.el) {
             text = getText(this.el);
         } else {

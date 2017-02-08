@@ -31,6 +31,12 @@
         return target;
     };
 
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+    } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -103,6 +109,12 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
+                    overwrites = options;
+                    options = text || {};
+                    text = undefined;
+                }
+
                 if (!text && this.el) {
                     text = this.el.textContent.trim();
                 } else {
@@ -136,6 +148,12 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
+                    overwrites = options;
+                    options = text || {};
+                    text = undefined;
+                }
+
                 if (!text && this.el) {
                     text = getText(this.el);
                 } else {
@@ -153,6 +171,12 @@
             value: function lines(text) {
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
+                    overwrites = options;
+                    options = text;
+                    text = undefined;
+                }
 
                 if (!text && this.el) {
                     text = getText(this.el);
@@ -186,6 +210,12 @@
 
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
+                    overwrites = options;
+                    options = text;
+                    text = undefined;
+                }
 
                 if (!text && this.el) {
                     text = getText(this.el);

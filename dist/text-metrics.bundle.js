@@ -32,6 +32,12 @@
         return target;
     };
 
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+    } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -104,6 +110,12 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
+                    overwrites = options;
+                    options = text || {};
+                    text = undefined;
+                }
+
                 if (!text && this.el) {
                     text = this.el.textContent.trim();
                 } else {
@@ -137,6 +149,12 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
+                    overwrites = options;
+                    options = text || {};
+                    text = undefined;
+                }
+
                 if (!text && this.el) {
                     text = getText(this.el);
                 } else {
@@ -154,6 +172,12 @@
             value: function lines(text) {
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
+                    overwrites = options;
+                    options = text;
+                    text = undefined;
+                }
 
                 if (!text && this.el) {
                     text = getText(this.el);
@@ -187,6 +211,12 @@
 
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
+                    overwrites = options;
+                    options = text;
+                    text = undefined;
+                }
 
                 if (!text && this.el) {
                     text = getText(this.el);
@@ -276,8 +306,8 @@
     exports.normalizeOptions = normalizeOptions;
     exports.getContext2d = getContext2d;
     exports.checkBreak = checkBreak;
-    exports.computeLinesBreakAll = computeLinesBreakAll;
     exports.computeLinesDefault = computeLinesDefault;
+    exports.computeLinesBreakAll = computeLinesBreakAll;
 
     function _toConsumableArray(arr) {
         if (Array.isArray(arr)) {
@@ -299,6 +329,49 @@
 
     var decode = _require.decode;
 
+
+    /*
+     B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
+     BA	Break After	Spaces, hyphens	Generally provide a line break opportunity after the character
+     BB	Break Before	Punctuation used in dictionaries	Generally provide a line break opportunity before the character
+     HY	Hyphen	HYPHEN-MINUS	Provide a line break opportunity after the character, except in numeric context
+     CB	Contingent Break Opportunity	Inline objects	Provide a line break opportunity contingent on additional information
+     */
+
+    // B2 Break Opportunity Before and After - http://www.unicode.org/reports/tr14/#B2
+    var B2 = ['\u2014'];
+
+    var SHY = [
+    // soft hyphen
+    '\xAD'];
+
+    // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
+    var BAI = [
+    // spaces
+    ' ', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
+    // tab
+    '\t',
+    // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
+    '\u200B',
+    // Mandatory breaks not interpreted by html
+    '\u2028', '\u2029'];
+
+    var BA = [
+    // hyphen
+    '\u058A', '\u2010', '\u2012', '\u2013',
+    // Visible Word Dividers
+    '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '|',
+    // Historic Word Separators
+    '\u16EB', '\u16EC', '\u16ED', '\u2056', '\u2058', '\u2059', '\u205A', '\u205B', '\u205D', '\u205E', '\u2E19', '\u2E2A', '\u2E2B', '\u2E2C', '\u2E2D', '\u2E30', '\u10100', '\u10101', '\u10102', '\u1039F', '\u103D0', '\u1091F', '\u12470'];
+
+    // BB: Break Before - http://www.unicode.org/reports/tr14/#BB
+    var BB = ['\xB4', '\u1FFD'];
+
+    // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
+    var BK = ['\n'];
+
+    // Regexp with all breaks
+    var BREAK_REGEXP = /[\u2014\xAD\x20\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2008\u2009\u200A\u205F\u3000\t\u200B\u2028\u2029\u058A\u2010\u2012\u2013\u05BE\u0F0B\u1361\u17D8\u17DA\u2027\x7C\u16EB\u16EC\u16ED\u2056\u2058\u2059\u205A\u205B\u205D\u205E\u2E19\u2E2A\u2E2B\u2E2C\u2E2D\u2E30\u1010\x30\u1010\x31\u1010\x32\u1039\x46\u103D\x30\u1091\x46\u1247\x30\xB4\u1FFD\n]/;
 
     /* eslint-env es6, browser */
     var DEFAULTS = exports.DEFAULTS = {
@@ -563,50 +636,10 @@
      * @param chr
      */
     function checkBreak(chr) {
-        /*
-         B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
-         BA	Break After	Spaces, hyphens	Generally provide a line break opportunity after the character
-         BB	Break Before	Punctuation used in dictionaries	Generally provide a line break opportunity before the character
-         HY	Hyphen	HYPHEN-MINUS	Provide a line break opportunity after the character, except in numeric context
-         CB	Contingent Break Opportunity	Inline objects	Provide a line break opportunity contingent on additional information
-         */
-
-        // B2 Break Opportunity Before and After - http://www.unicode.org/reports/tr14/#B2
-        var B2 = ['\u2014'];
-
-        var SHY = [
-        // soft hyphen
-        '\xAD'];
-
-        // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
-        var BAI = [
-        // spaces
-        ' ', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
-        // tab
-        '\t',
-        // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
-        '\u200B',
-        // Mandatory breaks not interpreted by html
-        '\u2028', '\u2029'];
-
-        var BA = [
-        // hyphen
-        '\u058A', '\u2010', '\u2012', '\u2013',
-        // Visible Word Dividers
-        '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '|',
-        // Historic Word Separators
-        '\u16EB', '\u16EC', '\u16ED', '\u2056', '\u2058', '\u2059', '\u205A', '\u205B', '\u205D', '\u205E', '\u2E19', '\u2E2A', '\u2E2B', '\u2E2C', '\u2E2D', '\u2E30', '\u10100', '\u10101', '\u10102', '\u1039F', '\u103D0', '\u1091F', '\u12470'];
-
-        // BB: Break Before - http://www.unicode.org/reports/tr14/#BB
-        var BB = ['\xB4', '\u1FFD'];
-
-        // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
-        var BK = ['\n'];
-
         return B2.indexOf(chr) !== -1 && 'B2' || BAI.indexOf(chr) !== -1 && 'BAI' || SHY.indexOf(chr) !== -1 && 'SHY' || BA.indexOf(chr) !== -1 && 'BA' || BB.indexOf(chr) !== -1 && 'BB' || BK.indexOf(chr) !== -1 && 'BK';
     }
 
-    function computeLinesBreakAll(_ref) {
+    function computeLinesDefault(_ref) {
         var ctx = _ref.ctx,
             text = _ref.text,
             max = _ref.max,
@@ -615,8 +648,10 @@
 
         var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
         var lines = [];
+        var breakpoints = [];
         var line = '';
-        var index = 0;
+
+        // compute array of breakpoints
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
@@ -624,6 +659,117 @@
         try {
             for (var _iterator = text[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                 var chr = _step.value;
+
+                var type = checkBreak(chr);
+                if (type) {
+                    breakpoints.push({ chr: chr, type: type });
+                }
+            }
+            // split text by breakpoints
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+
+        var parts = text.split(BREAK_REGEXP);
+
+        // loop over text parts and compute the lines
+        for (var i = 0; i < parts.length; i++) {
+            if (i === 0) {
+                line = parts[i];
+                continue;
+            }
+
+            var part = parts[i];
+            var breakpoint = breakpoints[i - 1];
+            // special treatment as we only render the soft hyphen if we need to split
+            var _chr = breakpoint.type === 'SHY' ? '' : breakpoint.chr;
+
+            if (breakpoint.type === 'BK') {
+                lines.push(line);
+                line = part;
+                continue;
+            }
+
+            // measure width
+            var width = ctx.measureText(line + _chr + part).width + addSpacing(line + _chr + part);
+            // still fits in line
+            if (width <= max) {
+                line += _chr + part;
+                continue;
+            }
+
+            // line is to long, we split at the breakpoint
+            switch (breakpoint.type) {
+                case 'SHY':
+                    lines.push(line + '-');
+                    line = part;
+                    break;
+                case 'BA':
+                    lines.push(line + _chr);
+                    line = part;
+                    break;
+                case 'BAI':
+                    lines.push(line);
+                    line = part;
+                    break;
+                case 'BB':
+                    lines.push(line);
+                    line = _chr + part;
+                    break;
+                case 'B2':
+                    if (ctx.measureText(line + _chr).width + addSpacing(line + _chr) <= max) {
+                        lines.push(line + _chr);
+                        line = part;
+                    } else if (ctx.measureText(_chr + part).width + addSpacing(_chr + part) <= max) {
+                        lines.push(line);
+                        line = _chr + part;
+                    } else {
+                        lines.push(line);
+                        lines.push(_chr);
+                        line = part;
+                    }
+                    break;
+                default:
+                    throw new Error('Undefoined break');
+            }
+        }
+
+        if ([].concat(_toConsumableArray(line)).length !== 0) {
+            lines.push(line);
+        }
+
+        return lines;
+    }
+
+    function computeLinesBreakAll(_ref2) {
+        var ctx = _ref2.ctx,
+            text = _ref2.text,
+            max = _ref2.max,
+            wordSpacing = _ref2.wordSpacing,
+            letterSpacing = _ref2.letterSpacing;
+
+        var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+        var lines = [];
+        var line = '';
+        var index = 0;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+            for (var _iterator2 = text[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var chr = _step2.value;
 
                 var type = checkBreak(chr);
                 // mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
@@ -637,7 +783,8 @@
                 var width = ctx.measureText(line + chr).width + addSpacing(line + chr);
                 // check if we can put char behind the shy
                 if (type === 'SHY') {
-                    width = ctx.measureText(line + chr + text[index + 1]).width + addSpacing(line + chr + text[index + 1]);
+                    var next = text[index + 1] || '';
+                    width = ctx.measureText(line + chr + next).width + addSpacing(line + chr + next);
                 }
 
                 // needs at least one character
@@ -664,120 +811,6 @@
                     line += chr;
                 }
                 index++;
-            }
-        } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion && _iterator.return) {
-                    _iterator.return();
-                }
-            } finally {
-                if (_didIteratorError) {
-                    throw _iteratorError;
-                }
-            }
-        }
-
-        if ([].concat(_toConsumableArray(line)).length !== 0) {
-            lines.push(line);
-        }
-
-        return lines;
-    }
-
-    function computeLinesDefault(_ref2) {
-        var ctx = _ref2.ctx,
-            text = _ref2.text,
-            max = _ref2.max,
-            wordSpacing = _ref2.wordSpacing,
-            letterSpacing = _ref2.letterSpacing;
-
-        var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
-        var lines = [];
-        var line = '';
-        var lpb = void 0;
-        var index = 0;
-
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
-
-        try {
-            for (var _iterator2 = text[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                var chr = _step2.value;
-
-                var type = checkBreak(chr);
-
-                // mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
-                if (type === 'BK') {
-                    lines.push(line);
-                    line = '';
-                    index = 0;
-                    continue;
-                }
-
-                // use es2015 array to count code points properly
-                // https://mathiasbynens.be/notes/javascript-unicode
-                var lineArray = [].concat(_toConsumableArray(line));
-
-                if (type && lineArray.length !== 0) {
-                    lpb = { type: type, index: index, chr: chr };
-                }
-
-                // measure width
-                var width = ctx.measureText(line + chr).width + addSpacing(line + chr);
-
-                // needs at least one character
-                if (width > max && lineArray.length !== 0 && lpb) {
-                    var nl = lineArray.slice(0, lpb.index).join('');
-                    // the break character is handled in the switch statement below
-                    if (lpb.index === index) {
-                        line = '';
-                    } else {
-                        line = lineArray.slice(lpb.index + 1).join('') + chr;
-                    }
-                    index = [].concat(_toConsumableArray(line)).length;
-                    switch (lpb.type) {
-                        case 'SHY':
-                            lines.push(nl + '-');
-                            lpb = undefined;
-                            break;
-                        case 'BA':
-                            lines.push(nl + lpb.chr);
-                            lpb = undefined;
-                            break;
-                        case 'BK':
-                        case 'BAI':
-                            lines.push(nl);
-                            lpb = undefined;
-                            break;
-                        case 'BB':
-                            lines.push(nl);
-                            line = lpb.chr + line;
-                            lpb = undefined;
-                            break;
-                        case 'B2':
-                            if (ctx.measureText(nl + lpb.chr).width + addSpacing(nl + lpb.chr) <= max) {
-                                lines.push(nl + lpb.chr);
-                                lpb = undefined;
-                            } else {
-                                lines.push(nl);
-                                line = lpb.chr + line;
-                                lpb.index = 0;
-                                index++;
-                            }
-                            break;
-                        default:
-                            throw new Error('Undefoined break');
-                    }
-                } else {
-                    index++;
-                    if (chr !== '\xAD') {
-                        line += chr;
-                    }
-                }
             }
         } catch (err) {
             _didIteratorError2 = true;

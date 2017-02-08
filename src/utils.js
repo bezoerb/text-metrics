@@ -1,5 +1,58 @@
 const {decode} = require('he');
 
+/*
+ B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
+ BA	Break After	Spaces, hyphens	Generally provide a line break opportunity after the character
+ BB	Break Before	Punctuation used in dictionaries	Generally provide a line break opportunity before the character
+ HY	Hyphen	HYPHEN-MINUS	Provide a line break opportunity after the character, except in numeric context
+ CB	Contingent Break Opportunity	Inline objects	Provide a line break opportunity contingent on additional information
+ */
+
+// B2 Break Opportunity Before and After - http://www.unicode.org/reports/tr14/#B2
+const B2 = [
+    '\u2014'
+];
+
+const SHY = [
+    // soft hyphen
+    '\u00AD'
+];
+
+// BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
+const BAI = [
+    // spaces
+    '\u0020', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
+    // tab
+    '\u0009',
+    // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
+    '\u200b',
+    // Mandatory breaks not interpreted by html
+    '\u2028', '\u2029'
+];
+
+const BA = [
+    // hyphen
+    '\u058A', '\u2010', '\u2012', '\u2013',
+    // Visible Word Dividers
+    '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '\u007C',
+    // Historic Word Separators
+    '\u16EB', '\u16EC', '\u16ED', '\u2056', '\u2058', '\u2059', '\u205A', '\u205B', '\u205D', '\u205E', '\u2E19', '\u2E2A',
+    '\u2E2B', '\u2E2C', '\u2E2D', '\u2E30', '\u10100', '\u10101', '\u10102', '\u1039F', '\u103D0', '\u1091F', '\u12470'
+];
+
+// BB: Break Before - http://www.unicode.org/reports/tr14/#BB
+const BB = [
+    '\u00B4', '\u1FFD'
+];
+
+// BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
+const BK = [
+    '\u000A'
+];
+
+// Regexp with all breaks
+const BREAK_REGEXP = /[\u2014\xAD\x20\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2008\u2009\u200A\u205F\u3000\t\u200B\u2028\u2029\u058A\u2010\u2012\u2013\u05BE\u0F0B\u1361\u17D8\u17DA\u2027\x7C\u16EB\u16EC\u16ED\u2056\u2058\u2059\u205A\u205B\u205D\u205E\u2E19\u2E2A\u2E2B\u2E2C\u2E2D\u2E30\u1010\x30\u1010\x31\u1010\x32\u1039\x46\u103D\x30\u1091\x46\u1247\x30\xB4\u1FFD\n]/;
+
 /* eslint-env es6, browser */
 export const DEFAULTS = {
     'font-size': '16px',
@@ -258,62 +311,97 @@ export function getContext2d(font) {
  * @param chr
  */
 export function checkBreak(chr) {
-    /*
-     B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
-     BA	Break After	Spaces, hyphens	Generally provide a line break opportunity after the character
-     BB	Break Before	Punctuation used in dictionaries	Generally provide a line break opportunity before the character
-     HY	Hyphen	HYPHEN-MINUS	Provide a line break opportunity after the character, except in numeric context
-     CB	Contingent Break Opportunity	Inline objects	Provide a line break opportunity contingent on additional information
-     */
-
-    // B2 Break Opportunity Before and After - http://www.unicode.org/reports/tr14/#B2
-    const B2 = [
-        '\u2014'
-    ];
-
-    const SHY = [
-        // soft hyphen
-        '\u00AD'
-    ];
-
-    // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
-    const BAI = [
-        // spaces
-        '\u0020', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
-        // tab
-        '\u0009',
-        // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
-        '\u200b',
-        // Mandatory breaks not interpreted by html
-        '\u2028', '\u2029'
-    ];
-
-    const BA = [
-        // hyphen
-        '\u058A', '\u2010', '\u2012', '\u2013',
-        // Visible Word Dividers
-        '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '\u007C',
-        // Historic Word Separators
-        '\u16EB', '\u16EC', '\u16ED', '\u2056', '\u2058', '\u2059', '\u205A', '\u205B', '\u205D', '\u205E', '\u2E19', '\u2E2A',
-        '\u2E2B', '\u2E2C', '\u2E2D', '\u2E30', '\u10100', '\u10101', '\u10102', '\u1039F', '\u103D0', '\u1091F', '\u12470'
-    ];
-
-    // BB: Break Before - http://www.unicode.org/reports/tr14/#BB
-    const BB = [
-        '\u00B4', '\u1FFD'
-    ];
-
-    // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
-    const BK = [
-        '\u000A'
-    ];
-
     return (B2.includes(chr) && 'B2') ||
         (BAI.includes(chr) && 'BAI') ||
         (SHY.includes(chr) && 'SHY') ||
         (BA.includes(chr) && 'BA') ||
         (BB.includes(chr) && 'BB') ||
         (BK.includes(chr) && 'BK');
+}
+
+export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}) {
+    const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+    const lines = [];
+    const breakpoints = [];
+    let line = '';
+
+    // compute array of breakpoints
+    for (let chr of text) {
+        const type = checkBreak(chr);
+        if (type) {
+            breakpoints.push({chr, type});
+        }
+    }
+    // split text by breakpoints
+    const parts = text.split(BREAK_REGEXP);
+
+    // loop over text parts and compute the lines
+    for (let i = 0; i < parts.length; i++) {
+        if (i === 0) {
+            line = parts[i];
+            continue;
+        }
+
+        const part = parts[i];
+        const breakpoint = breakpoints[i - 1];
+        // special treatment as we only render the soft hyphen if we need to split
+        const chr = breakpoint.type === 'SHY' ? '' : breakpoint.chr;
+
+        if (breakpoint.type === 'BK') {
+            lines.push(line);
+            line = part;
+            continue;
+        }
+
+        // measure width
+        const width = ctx.measureText(line + chr + part).width + addSpacing(line + chr + part);
+        // still fits in line
+        if (width <= max) {
+            line += chr + part;
+            continue;
+        }
+
+        // line is to long, we split at the breakpoint
+        switch (breakpoint.type) {
+            case 'SHY':
+                lines.push(line + '-');
+                line = part;
+                break;
+            case 'BA':
+                lines.push(line + chr);
+                line = part;
+                break;
+            case 'BAI':
+                lines.push(line);
+                line = part;
+                break;
+            case 'BB':
+                lines.push(line);
+                line = chr + part;
+                break;
+            case 'B2':
+                if (ctx.measureText(line + chr).width + addSpacing(line + chr) <= max) {
+                    lines.push(line + chr);
+                    line = part;
+                } else if (ctx.measureText(chr + part).width + addSpacing(chr + part) <= max) {
+                    lines.push(line);
+                    line = chr + part;
+                } else {
+                    lines.push(line);
+                    lines.push(chr);
+                    line = part;
+                }
+                break;
+            default:
+                throw new Error('Undefoined break');
+        }
+    }
+
+    if ([...line].length !== 0) {
+        lines.push(line);
+    }
+
+    return lines;
 }
 
 export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing}) {
@@ -362,93 +450,6 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
             line += chr;
         }
         index++;
-    }
-
-    if ([...line].length !== 0) {
-        lines.push(line);
-    }
-
-    return lines;
-}
-
-export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}) {
-    const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
-    const lines = [];
-    let line = '';
-    let lpb;
-    let index = 0;
-
-    for (let chr of text) {
-        const type = checkBreak(chr);
-
-        // mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
-        if (type === 'BK') {
-            lines.push(line);
-            line = '';
-            index = 0;
-            continue;
-        }
-
-        // use es2015 array to count code points properly
-        // https://mathiasbynens.be/notes/javascript-unicode
-        const lineArray = [...line];
-
-        if (type && lineArray.length !== 0) {
-            lpb = {type, index, chr};
-        }
-
-        // measure width
-        const width = ctx.measureText(line + chr).width + addSpacing(line + chr);
-
-        // needs at least one character
-        if (width > max && lineArray.length !== 0 && lpb) {
-            let nl = lineArray.slice(0, lpb.index).join('');
-            // the break character is handled in the switch statement below
-            if (lpb.index === index) {
-                line = '';
-            } else {
-                line = lineArray.slice(lpb.index + 1).join('') + chr;
-            }
-            index = [...line].length;
-            switch (lpb.type) {
-                case 'SHY':
-                    lines.push(nl + '-');
-                    lpb = undefined;
-                    break;
-                case 'BA':
-                    lines.push(nl + lpb.chr);
-                    lpb = undefined;
-                    break;
-                case 'BK':
-                case 'BAI':
-                    lines.push(nl);
-                    lpb = undefined;
-                    break;
-                case 'BB':
-                    lines.push(nl);
-                    line = lpb.chr + line;
-                    lpb = undefined;
-                    break;
-                case 'B2':
-                    if (ctx.measureText(nl + lpb.chr).width + addSpacing(nl + lpb.chr) <= max) {
-                        lines.push(nl + lpb.chr);
-                        lpb = undefined;
-                    } else {
-                        lines.push(nl);
-                        line = lpb.chr + line;
-                        lpb.index = 0;
-                        index++;
-                    }
-                    break;
-                default:
-                    throw new Error('Undefoined break');
-            }
-        } else {
-            index++;
-            if (chr !== '\u00AD') {
-                line += chr;
-            }
-        }
     }
 
     if ([...line].length !== 0) {
