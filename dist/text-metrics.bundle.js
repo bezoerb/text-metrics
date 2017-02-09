@@ -550,7 +550,8 @@
     }
 
     /**
-     * Trim text and repace some breaking htmlentities
+     * Trim text and repace some breaking htmlentities for convenience
+     * Point user to https://mths.be/he for real htmlentity decode
      * @param text
      * @returns {string}
      */
