@@ -1,4 +1,9 @@
 
+v0.4.0 / 2017-02-09
+===================
+
+  * dropped full htmlentity decode in favor of filesize
+
 v0.3.1 / 2017-02-09
 ==================
 
