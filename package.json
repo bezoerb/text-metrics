@@ -1,6 +1,6 @@
 {
   "name": "text-metrics",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "An efficient text measurement set for the browser.",
   "license": "MIT",
   "repository": "bezoerb/text-metrics",
@@ -35,8 +35,7 @@
     "font-size",
     "height"
   ],
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "ava": "^0.18.1",
     "babel-cli": "^6.18.0",
