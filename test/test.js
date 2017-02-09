@@ -68,7 +68,7 @@ test('Computes lines', t => {
 
 test('Computes lines with breaks', t => {
     const el = document.querySelector('#lines');
-    const text = 'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo incidunt.';
+    const text = 'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
     const expected = [
         'Lorem ipsum d-',
         'olor sit amet, c',
@@ -77,7 +77,7 @@ test('Computes lines with breaks', t => {
         'Aliquam atque',
         'cum dolor',
         'explicabo',
-        'incidunt.'
+        '&bigstar;.'
     ];
 
     const value = textMetrics(el).lines(text);

@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'he'], factory);
+        define(['exports'], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('he'));
+        factory(exports);
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.he);
+        factory(mod.exports);
         global.utils = mod.exports;
     }
-})(this, function (exports, _require) {
+})(this, function (exports) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -51,9 +51,6 @@
     } : function (obj) {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
-
-    var decode = _require.decode;
-
 
     /*
      B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
@@ -278,15 +275,19 @@
     }
 
     /**
-     * Get cleaned text
+     * Trim text and repace some breaking htmlentities
      * @param text
      * @returns {string}
      */
     function prepareText(text) {
         // convert to unicode
-        text = text.replace(/<wbr>/, '\u200B').replace(/<br\s*\/?>/, '\n');
+        text = text.replace(/<wbr>/ig, '\u200B').replace(/<br\s*\/?>/ig, '\n').replace(/&shy;/ig, '\xAD').replace(/&mdash;/ig, '\u2014');
 
-        return decode(text).trim();
+        if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
+            console.error('text-metrics: Found encoded htmlenties. \nYou may want to use https://mths.be/he to decode your text first.');
+        }
+
+        return text.trim();
     }
 
     /**

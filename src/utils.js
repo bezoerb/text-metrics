@@ -1,5 +1,3 @@
-const {decode} = require('he');
-
 /*
  B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
  BA	Break After	Spaces, hyphens	Generally provide a line break opportunity after the character
@@ -230,17 +228,24 @@ export function getStyledText(text, style) {
 }
 
 /**
- * Get cleaned text
+ * Trim text and repace some breaking htmlentities
  * @param text
  * @returns {string}
  */
 export function prepareText(text) {
     // convert to unicode
     text = text
-        .replace(/<wbr>/, '\u200b')
-        .replace(/<br\s*\/?>/, '\u000A');
+        .replace(/<wbr>/ig, '\u200b')
+        .replace(/<br\s*\/?>/ig, '\u000A')
+        .replace(/&shy;/ig, '\u00AD')
+        .replace(/&mdash;/ig, '\u2014');
 
-    return decode(text).trim();
+    if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
+        console.error(`text-metrics: Found encoded htmlenties. 
+You may want to use https://mths.be/he to decode your text first.`);
+    }
+
+    return text.trim();
 }
 
 /**
