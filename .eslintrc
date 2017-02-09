@@ -1,0 +1,12 @@
+{
+    "extends": "xo",
+    "env": {
+        "node": true,
+        "browser": true,
+        "es6": true
+    },
+    "rules": {
+        "indent": [2, 4, {"SwitchCase": 1}],
+        "no-invalid-this": 2
+    }
+}
