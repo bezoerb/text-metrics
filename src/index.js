@@ -94,7 +94,6 @@ class TextMetrics {
         }
 
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
-
         const lineHeight = parseInt(prop(styles, 'line-height') || this.style.getPropertyValue('line-height'), 10);
 
         return this.lines(text, options, styles).length * lineHeight;

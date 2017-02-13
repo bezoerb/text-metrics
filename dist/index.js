@@ -161,7 +161,6 @@
                 }
 
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
-
                 var lineHeight = parseInt(prop(styles, 'line-height') || this.style.getPropertyValue('line-height'), 10);
 
                 return this.lines(text, options, styles).length * lineHeight;

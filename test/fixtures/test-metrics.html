@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testpage</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="test.css">
+    <script src="../../dist/text-metrics.bundle.js"></script>
+
+</head>
+<body>
+<div class="wrap">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque beatae cum dolores doloribus eligendi
+        eos excepturi, incidunt laboriosam laborum, placeat praesentium quam quibusdam quisquam repudiandae sit tempora
+        veniam voluptates.</p>
+</div>
+<script>
+    var el = document.querySelector('.wrap p');
+    var metrics = textMetrics(el);
+    var max = document.querySelector('.wrap').offsetHeight;
+
+    function addClass(el, className) {
+        if (el.className.split(' ').indexOf(className) === -1) {
+            el.className += ' ' + className;
+        }
+    }
+
+    function removeClass(el, className) {
+        var classes =  el.className.split(' ');
+        var index = classes.indexOf(className);
+        if (index !== -1) {
+            classes = classes.splice(index, 1);
+            el.className = classes.join(' ');
+        }
+    }
+
+    window.requestAnimationFrame(function check(){
+        if (metrics.height() > max) {
+            addClass(el, 'is-stripped');
+        } else{
+            removeClass(el, 'is-stripped');
+        }
+
+        window.requestAnimationFrame(check);
+    });
+</script>
+
+
+</body>
+</html>

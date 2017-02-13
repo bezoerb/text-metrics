@@ -162,7 +162,6 @@
                 }
 
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
-
                 var lineHeight = parseInt(prop(styles, 'line-height') || this.style.getPropertyValue('line-height'), 10);
 
                 return this.lines(text, options, styles).length * lineHeight;
@@ -624,7 +623,10 @@
     function getContext2d(font) {
         try {
             var ctx = document.createElement('canvas').getContext('2d');
+            var dpr = window.devicePixelRatio || 1;
+            var bsr = ctx.webkitBackingStorePixelRatio || ctx.mozBackingStorePixelRatio || ctx.msBackingStorePixelRatio || ctx.oBackingStorePixelRatio || ctx.backingStorePixelRatio || 1;
             ctx.font = font;
+            ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
             return ctx;
         } catch (err) {
             throw new Error('Canvas support required');

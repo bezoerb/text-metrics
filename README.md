@@ -1,7 +1,7 @@
 # text-metrics
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url] [![Download][dlcounter-image]][dlcounter-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
-> An efficient text measurement set for the browser using canvas to prevent layout reflows.
+> An lightweight & efficient text measurement set for the browser using canvas to prevent layout reflows.
 
 Features
 --------
@@ -118,6 +118,14 @@ Type: `object`
 Type: `object`
 
 Use to overwrite styles
+
+## Performance
+I've compared this module with a very naive jQuery implementation as well as
+the . See https://jsperf.com/bezoerb-text-metrics
+Even if `Range.getBoundingClientRect` should be considered as a performance bottleneck according to
+[what-forces-layout](https://gist.github.com/paulirish/5d52fb081b3570c81e3a) by Paul Irish,
+i couldn't detect any sort of recalculate style and it massively outperforms `textMetrics.height()`.
+
 
 
 ## License

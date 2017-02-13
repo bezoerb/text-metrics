@@ -1,0 +1,33 @@
+.wrap {
+    width: 50%;
+    height: 80px;
+    overflow: hidden;
+    transform: translate3d(-50%, -50%, 0);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+        backface-visibility: hidden;
+}
+
+p {
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.is-stripped {
+    position: relative;
+    max-height: 80px;
+    overflow: hidden;
+}
+
+.is-stripped:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 20px;
+    width: 50%;
+    background-image: linear-gradient(to right, rgba(255,255,255,0) 0%,  rgba(255,255,255,255) 80%);
+}

@@ -303,7 +303,14 @@ export function normalizeOptions(options = {}) {
 export function getContext2d(font) {
     try {
         const ctx = document.createElement('canvas').getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const bsr = ctx.webkitBackingStorePixelRatio ||
+                ctx.mozBackingStorePixelRatio ||
+                ctx.msBackingStorePixelRatio ||
+                ctx.oBackingStorePixelRatio ||
+                ctx.backingStorePixelRatio || 1;
         ctx.font = font;
+        ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
         return ctx;
     } catch (err) {
         throw new Error('Canvas support required');

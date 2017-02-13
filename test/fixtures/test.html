@@ -10,7 +10,7 @@
 
         /* used for the tests as jsdom's getComputedStyle does not compute inherited values */
         /* so we can check values in the browser ;) */
-        div,h1,h2,h3 {
+        div, h1, h2, h3 {
             display: inline;
             font-family: Helvetica, Arial, sans-serif;
         }
@@ -34,7 +34,6 @@
             width: 600px;
         }
 
-
         #fullwidth {
             width: 100%;
         }
@@ -47,11 +46,24 @@
         }
 
         #lines {
+            position: relative;
             width: 100px;
             display: block;
             background: orange;
             font-family: Helvetica, Arial, sans-serif;
             font-size: 14px;
+            margin-bottom: 300px;
+            padding: 10px;
+            height: 100px;
+        }
+
+        #lines-canvas {
+            position: absolute;
+            top: -5px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.3;
         }
 
         #lines-break {
@@ -61,7 +73,11 @@
             font-family: Helvetica, Arial, sans-serif;
             font-size: 14px;
             word-break: break-all;
+
+
         }
+
+
     </style>
 </head>
 <body>
@@ -76,26 +92,31 @@
 
 <div id="fullwidth" class="fit-text"><span>Scales to full width</span></div>
 
-<div id="height">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.</div>
+<div id="height">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.
+</div>
+
 
 <div id="lines">
-    Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo incidunt.
+    Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo
+    incidunt.
+    <canvas id="lines-canvas"></canvas>
 </div>
 
+
 <div id="lines-break">
-    Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali<br/>quam a&#x2028;tque cum dolor explicabo incidunt.
+    Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali<br/>quam a&#x2028;tque cum dolor
+    explicabo incidunt.
 </div>
-<canvas id="lines-canvas"></canvas>
+
 <canvas id="height-canvas"></canvas>
 <canvas id="fullwidth-canvas"></canvas>
 <script>
     var elements = document.querySelectorAll('.fit-text');
-    Array.prototype.slice.call(elements).forEach(function(el) {
+    Array.prototype.slice.call(elements).forEach(function (el) {
         el.style['font-size'] = textMetrics(el).maxFontSize(el.innerText, {
             width: document.documentElement.offsetWidth - 5
         });
     });
-
 
 
 </script>
@@ -113,10 +134,15 @@
         return dpr / bsr;
     })();
 
-
-    function createHiDPICanvas(w, h, id) {
+    function createHiDPICanvas(id, w, h) {
         var ratio = PIXEL_RATIO;
         var can = id && document.getElementById(id) || document.createElement("canvas");
+        if (!w) {
+            w = 300;
+        }
+        if (!h) {
+            h = 150;
+        }
         can.width = w * ratio;
         can.height = h * ratio;
         can.style.width = w + "px";
@@ -125,54 +151,72 @@
         return can;
     }
 
-
-    var canvas = document.getElementById('h1');
+    var canvas = createHiDPICanvas('h1');
     var ctx = canvas.getContext('2d');
-
-
     ctx.font = 'italic 100  small-caps 24px Helvetica,Arial,sans-serif';
-
     ctx.fillText('test unicorns', 0, 32);
 
-    var canvas2 = document.getElementById('fullwidth-canvas');
-    canvas2.width  = 1280;
-    canvas2.height = 200;
-    canvasSize(canvas2);
+    var canvas2 = createHiDPICanvas('fullwidth-canvas', 1280, 200);
     var ctx2 = canvas2.getContext('2d');
     ctx2.font = '108px Arial,sans-serif';
     ctx2.fillText('Scales to full width', 0, 134);
 
-    var canvas3 = document.getElementById('height-canvas');
-    canvas3.width  = 200;
-    canvas3.height = 200;
-    canvasSize(canvas3);
+    var canvas3 = createHiDPICanvas('height-canvas', 200, 200);
     var ctx3 = canvas3.getContext('2d');
     ctx3.font = '14px Helvetica, Arial, sans-serif';
-
     ctx3.fillText('dolor sit amet, ', 0, 32);
 
-    var canvasLines = document.getElementById('lines-canvas');
+    var canvasLines = createHiDPICanvas('lines-canvas', 100, 200);
     var linesEl = document.getElementById('lines');
-    canvasLines.width  = 200;
-    canvasLines.height = 500;
     var ctx4 = canvasLines.getContext('2d');
     ctx4.font = '14px Helvetica, Arial, sans-serif';
 
-
     var lines = textMetrics(linesEl).lines();
-    for (var i=0; i<lines.length; i++) {
-        ctx4.fillText(lines[i],0,(i+1)*20);
+    for (var i = 0; i < lines.length; i++) {
+        ctx4.fillText(lines[i], 0, (i + 1) * 20);
     }
 
-    canvasSize(canvasLines);
+    var testEl = document.getElementById('lines');
+    var metrics = textMetrics(testEl);
 
-    var testEl = document.getElementById('lines-break');
-    var metrics =  textMetrics(testEl);
-
-    metrics.lines().forEach(function(line){
+    metrics.lines().forEach(function (line) {
         console.log(metrics.width(line), line);
     });
 
+    //
+    //    function getJqueryHeight(input) {
+    //        var $input = $(input);
+    //        var $wrapper = $('<div>').css({
+    //            width: $input.width(),
+    //            height: '99999999px',
+    //            display: 'block',
+    //            position: 'absolute'
+    //        });
+    //        $input.css({
+    //            display: 'inline'
+    //        }).wrap($wrapper);
+    //        var result = $input.height();
+    //        $input.css({
+    //            display: ''
+    //        });
+    //        $input.unwrap();
+    //        return result;
+    //    }
+
+    function getRangeHeight(input) {
+        if (document.createRange) {
+            var range = document.createRange();
+            range.selectNodeContents(input);
+            if (range.getBoundingClientRect) {
+                var rect = range.getBoundingClientRect();
+                if (rect) {
+                    return rect.bottom - rect.top;
+                }
+            }
+        }
+
+        return NaN;
+    }
 
     function getJqueryHeight(input) {
         var $input = $(input);
@@ -191,8 +235,8 @@
         });
         $input.unwrap();
         return result;
-    }
 
+    }
 
     function getJqueryWidth(input) {
         var $input = $(input);
@@ -220,14 +264,19 @@
         return textMetrics(input).height();
     }
 
-
     function getTmWidth(input) {
         return textMetrics(input).width();
     }
 
+    function getTmRangeHeight(input) {
+        return textMetrics(input).height({preferRange: true});
+    }
+
     console.log('Jquery width', getJqueryWidth(testEl));
     console.log('Jquery height', getJqueryHeight(testEl));
-    console.log('Text-metrics width', getTmWidth(testEl));
+    console.log('Range height', getRangeHeight(testEl));
+    console.log('Text-metrics Range height', getRangeHeight(testEl));
+    console.log('Text-metrics width', getTmRangeHeight(testEl));
     console.log('Text-metrics height', getTmHeight(testEl));
 
 
