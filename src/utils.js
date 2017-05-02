@@ -367,7 +367,7 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
         }
 
         // measure width
-        const width = ctx.measureText(line + chr + part).width + addSpacing(line + chr + part);
+        const width = parseInt(ctx.measureText(line + chr + part).width + addSpacing(line + chr + part), 10);
         // still fits in line
         if (width <= max) {
             line += chr + part;
@@ -393,10 +393,10 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
                 line = chr + part;
                 break;
             case 'B2':
-                if (ctx.measureText(line + chr).width + addSpacing(line + chr) <= max) {
+                if (parseInt(ctx.measureText(line + chr).width + addSpacing(line + chr), 10) <= max) {
                     lines.push(line + chr);
                     line = part;
-                } else if (ctx.measureText(chr + part).width + addSpacing(chr + part) <= max) {
+                } else if (parseInt(ctx.measureText(chr + part).width + addSpacing(chr + part), 10) <= max) {
                     lines.push(line);
                     line = chr + part;
                 } else {
