@@ -366,9 +366,6 @@
     // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
     var BK = ['\n'];
 
-    // Regexp with all breaks
-    var BREAK_REGEXP = /[\u2014\xAD\x20\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2008\u2009\u200A\u205F\u3000\t\u200B\u2028\u2029\u058A\u2010\u2012\u2013\u05BE\u0F0B\u1361\u17D8\u17DA\u2027\x7C\u16EB\u16EC\u16ED\u2056\u2058\u2059\u205A\u205B\u205D\u205E\u2E19\u2E2A\u2E2B\u2E2C\u2E2D\u2E30\u1010\x30\u1010\x31\u1010\x32\u1039\x46\u103D\x30\u1091\x46\u1247\x30\xB4\u1FFD\n]/;
-
     /* eslint-env es6, browser */
     var DEFAULTS = exports.DEFAULTS = {
         'font-size': '16px',
@@ -652,8 +649,10 @@
 
         var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
         var lines = [];
+        var parts = [];
         var breakpoints = [];
         var line = '';
+        var part = '';
 
         // Compute array of breakpoints
         var _iteratorNormalCompletion = true;
@@ -667,9 +666,15 @@
                 var type = checkBreak(chr);
                 if (type) {
                     breakpoints.push({ chr: chr, type: type });
+
+                    parts.push(part);
+                    part = '';
+                } else {
+                    part += chr;
                 }
             }
-            // Split text by breakpoints
+
+            // Loop over text parts and compute the lines
         } catch (err) {
             _didIteratorError = true;
             _iteratorError = err;
@@ -685,31 +690,28 @@
             }
         }
 
-        var parts = text.split(BREAK_REGEXP);
-
-        // Loop over text parts and compute the lines
         for (var i = 0; i < parts.length; i++) {
             if (i === 0) {
                 line = parts[i];
                 continue;
             }
 
-            var part = parts[i];
+            var _part = parts[i];
             var breakpoint = breakpoints[i - 1];
             // Special treatment as we only render the soft hyphen if we need to split
             var _chr = breakpoint.type === 'SHY' ? '' : breakpoint.chr;
 
             if (breakpoint.type === 'BK') {
                 lines.push(line);
-                line = part;
+                line = _part;
                 continue;
             }
 
             // Measure width
-            var width = parseInt(ctx.measureText(line + _chr + part).width + addSpacing(line + _chr + part), 10);
+            var width = parseInt(ctx.measureText(line + _chr + _part).width + addSpacing(line + _chr + _part), 10);
             // Still fits in line
             if (width <= max) {
-                line += _chr + part;
+                line += _chr + _part;
                 continue;
             }
 
@@ -717,31 +719,31 @@
             switch (breakpoint.type) {
                 case 'SHY':
                     lines.push(line + '-');
-                    line = part;
+                    line = _part;
                     break;
                 case 'BA':
                     lines.push(line + _chr);
-                    line = part;
+                    line = _part;
                     break;
                 case 'BAI':
                     lines.push(line);
-                    line = part;
+                    line = _part;
                     break;
                 case 'BB':
                     lines.push(line);
-                    line = _chr + part;
+                    line = _chr + _part;
                     break;
                 case 'B2':
                     if (parseInt(ctx.measureText(line + _chr).width + addSpacing(line + _chr), 10) <= max) {
                         lines.push(line + _chr);
-                        line = part;
-                    } else if (parseInt(ctx.measureText(_chr + part).width + addSpacing(_chr + part), 10) <= max) {
+                        line = _part;
+                    } else if (parseInt(ctx.measureText(_chr + _part).width + addSpacing(_chr + _part), 10) <= max) {
                         lines.push(line);
-                        line = _chr + part;
+                        line = _chr + _part;
                     } else {
                         lines.push(line);
                         lines.push(_chr);
-                        line = part;
+                        line = _part;
                     }
                     break;
                 default:

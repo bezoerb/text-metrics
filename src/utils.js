@@ -48,9 +48,6 @@ const BK = [
     '\u000A'
 ];
 
-// Regexp with all breaks
-const BREAK_REGEXP = /[\u2014\xAD\x20\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2008\u2009\u200A\u205F\u3000\t\u200B\u2028\u2029\u058A\u2010\u2012\u2013\u05BE\u0F0B\u1361\u17D8\u17DA\u2027\x7C\u16EB\u16EC\u16ED\u2056\u2058\u2059\u205A\u205B\u205D\u205E\u2E19\u2E2A\u2E2B\u2E2C\u2E2D\u2E30\u1010\x30\u1010\x31\u1010\x32\u1039\x46\u103D\x30\u1091\x46\u1247\x30\xB4\u1FFD\n]/;
-
 /* eslint-env es6, browser */
 export const DEFAULTS = {
     'font-size': '16px',
@@ -335,18 +332,28 @@ export function checkBreak(chr) {
 export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}) {
     const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
     const lines = [];
+    let parts = [];
     const breakpoints = [];
     let line = '';
+    let part = '';
 
     // Compute array of breakpoints
     for (const chr of text) {
         const type = checkBreak(chr);
         if (type) {
             breakpoints.push({chr, type});
+
+                parts.push(part);
+                part = '';
+
+        } else {
+            part += chr;
         }
     }
-    // Split text by breakpoints
-    const parts = text.split(BREAK_REGEXP);
+
+    if (part) {
+        parts.push(part);
+    }
 
     // Loop over text parts and compute the lines
     for (let i = 0; i < parts.length; i++) {

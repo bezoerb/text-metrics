@@ -153,3 +153,24 @@ test('Consider letter- and word-spacing', t => {
     t.is(width, 283);
     t.is(height, 156);
 });
+
+test('Consider multiple line breaking characters', t => {
+    const text = 'Von Kabeljau über Lachs und Thunfisch bis hin zu Zander – unsere Fisch-Vielfalt wird Sie begeistern. Bestimmt!'
+    const lines = textMetrics({
+        'font-size': '14px',
+        'line-height': '20px',
+        'font-family': 'Helvetica, Arial, sans-serif',
+        'font-weight': '400',
+        width: 400
+    }).lines(text);
+
+    const expected = [
+        'Von Kabeljau über Lachs und Thunfisch bis hin zu Zander –',
+        'unsere Fisch-Vielfalt wird Sie begeistern. Bestimmt!'
+    ];
+
+    t.is(lines.length, expected.length);
+    for (let i = 0; i < lines.length; i++) {
+        t.is(lines[i], expected[i]);
+    }
+});
