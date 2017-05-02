@@ -332,7 +332,7 @@ export function checkBreak(chr) {
 export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}) {
     const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
     const lines = [];
-    let parts = [];
+    const parts = [];
     const breakpoints = [];
     let line = '';
     let part = '';
@@ -343,9 +343,8 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
         if (type) {
             breakpoints.push({chr, type});
 
-                parts.push(part);
-                part = '';
-
+            parts.push(part);
+            part = '';
         } else {
             part += chr;
         }
