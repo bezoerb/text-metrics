@@ -187,7 +187,7 @@
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
                 var font = getFont(this.style, styles);
 
-                // get max width
+                // Get max width
                 var max = parseInt(prop(options, 'width') || prop(overwrites, 'width') || prop(this.el, 'offsetWidth', 0) || this.style.getPropertyValue('width'), 10);
 
                 var wordBreak = prop(styles, 'word-break') || this.style.getPropertyValue('word-break');
@@ -196,7 +196,7 @@
                 var ctx = getContext2d(font);
                 text = getStyledText(text, this.style);
 
-                // different scenario when break-word is allowed
+                // Different scenario when break-word is allowed
                 if (wordBreak === 'break-all') {
                     return computeLinesBreakAll({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
                 }
@@ -223,28 +223,28 @@
                     text = prepareText(text);
                 }
 
-                // simple compute function which adds the size and computes the with
+                // Simple compute function which adds the size and computes the with
                 var compute = function compute(size) {
                     return _this.width(text, options, _extends({}, overwrites, { 'font-size': size + 'px' }));
                 };
 
-                // get max width
+                // Get max width
                 var max = parseInt(prop(options, 'width') || prop(overwrites, 'width') || prop(this.el, 'offsetWidth', 0) || this.style.getPropertyValue('width'), 10);
 
-                // start with half the max size
+                // Start with half the max size
                 var size = Math.floor(max / 2);
                 var cur = compute(size);
 
-                // compute next result based on first result
+                // Compute next result based on first result
                 size = Math.floor(size / cur * max);
                 cur = compute(size);
 
-                // happy cause we got it already
+                // Happy cause we got it already
                 if (Math.ceil(cur) === max) {
                     return size + 'px';
                 }
 
-                // go on by increase/decrease pixels
+                // Go on by increase/decrease pixels
                 if (cur > max && size > 0) {
                     while (cur > max && size > 0) {
                         cur = compute(size--);
@@ -338,14 +338,14 @@
     var B2 = ['\u2014'];
 
     var SHY = [
-    // soft hyphen
+    // Soft hyphen
     '\xAD'];
 
     // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
     var BAI = [
-    // spaces
+    // Spaces
     ' ', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
-    // tab
+    // Tab
     '\t',
     // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
     '\u200B',
@@ -353,7 +353,7 @@
     '\u2028', '\u2029'];
 
     var BA = [
-    // hyphen
+    // Hyphen
     '\u058A', '\u2010', '\u2012', '\u2013',
     // Visible Word Dividers
     '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '|',
@@ -377,7 +377,7 @@
     };
 
     /**
-     * we only support rem/em/pt conversion
+     * We only support rem/em/pt conversion
      * @param val
      * @param options
      * @return {*}
@@ -469,7 +469,7 @@
     }
 
     /**
-     * check for CSSStyleDeclaration
+     * Check for CSSStyleDeclaration
      *
      * @param val
      * @returns {bool}
@@ -479,7 +479,7 @@
     }
 
     /**
-     * check wether we can get computed style
+     * Check wether we can get computed style
      *
      * @param el
      * @returns {bool}
@@ -489,7 +489,7 @@
     }
 
     /**
-     * check for DOM element
+     * Check for DOM element
      *
      * @param el
      * @retutns {bool}
@@ -499,12 +499,12 @@
     }
 
     /**
-     * check if argument is object
+     * Check if argument is object
      * @param obj
      * @returns {boolean}
      */
     function isObject(obj) {
-        return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && !(obj instanceof Array);
+        return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && !Array.isArray(obj);
     }
 
     /**
@@ -531,7 +531,7 @@
     }
 
     /**
-     * get styled text
+     * Get styled text
      *
      * @param {string} text
      * @param {CSSStyleDeclaration} style
@@ -555,7 +555,7 @@
      * @returns {string}
      */
     function prepareText(text) {
-        // convert to unicode
+        // Convert to unicode
         text = text.replace(/<wbr>/ig, '\u200B').replace(/<br\s*\/?>/ig, '\n').replace(/&shy;/ig, '\xAD').replace(/&mdash;/ig, '\u2014');
 
         if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
@@ -603,7 +603,7 @@
 
         var opts = {};
 
-        // normalize keys (fontSize => font-size)
+        // Normalize keys (fontSize => font-size)
         Object.keys(options).forEach(function (key) {
             var dashedKey = key.replace(/([A-Z])/g, function ($1) {
                 return '-' + $1.toLowerCase();
@@ -655,7 +655,7 @@
         var breakpoints = [];
         var line = '';
 
-        // compute array of breakpoints
+        // Compute array of breakpoints
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
@@ -669,7 +669,7 @@
                     breakpoints.push({ chr: chr, type: type });
                 }
             }
-            // split text by breakpoints
+            // Split text by breakpoints
         } catch (err) {
             _didIteratorError = true;
             _iteratorError = err;
@@ -687,7 +687,7 @@
 
         var parts = text.split(BREAK_REGEXP);
 
-        // loop over text parts and compute the lines
+        // Loop over text parts and compute the lines
         for (var i = 0; i < parts.length; i++) {
             if (i === 0) {
                 line = parts[i];
@@ -696,7 +696,7 @@
 
             var part = parts[i];
             var breakpoint = breakpoints[i - 1];
-            // special treatment as we only render the soft hyphen if we need to split
+            // Special treatment as we only render the soft hyphen if we need to split
             var _chr = breakpoint.type === 'SHY' ? '' : breakpoint.chr;
 
             if (breakpoint.type === 'BK') {
@@ -705,15 +705,15 @@
                 continue;
             }
 
-            // measure width
-            var width = ctx.measureText(line + _chr + part).width + addSpacing(line + _chr + part);
-            // still fits in line
+            // Measure width
+            var width = parseInt(ctx.measureText(line + _chr + part).width + addSpacing(line + _chr + part), 10);
+            // Still fits in line
             if (width <= max) {
                 line += _chr + part;
                 continue;
             }
 
-            // line is to long, we split at the breakpoint
+            // Line is to long, we split at the breakpoint
             switch (breakpoint.type) {
                 case 'SHY':
                     lines.push(line + '-');
@@ -732,10 +732,10 @@
                     line = _chr + part;
                     break;
                 case 'B2':
-                    if (ctx.measureText(line + _chr).width + addSpacing(line + _chr) <= max) {
+                    if (parseInt(ctx.measureText(line + _chr).width + addSpacing(line + _chr), 10) <= max) {
                         lines.push(line + _chr);
                         line = part;
-                    } else if (ctx.measureText(_chr + part).width + addSpacing(_chr + part) <= max) {
+                    } else if (parseInt(ctx.measureText(_chr + part).width + addSpacing(_chr + part), 10) <= max) {
                         lines.push(line);
                         line = _chr + part;
                     } else {
@@ -776,22 +776,22 @@
                 var chr = _step2.value;
 
                 var type = checkBreak(chr);
-                // mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
+                // Mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
                 if (type === 'BK') {
                     lines.push(line);
                     line = '';
                     continue;
                 }
 
-                // measure width
+                // Measure width
                 var width = ctx.measureText(line + chr).width + addSpacing(line + chr);
-                // check if we can put char behind the shy
+                // Check if we can put char behind the shy
                 if (type === 'SHY') {
                     var next = text[index + 1] || '';
                     width = ctx.measureText(line + chr + next).width + addSpacing(line + chr + next);
                 }
 
-                // needs at least one character
+                // Needs at least one character
                 if (width > max && [].concat(_toConsumableArray(line)).length !== 0) {
                     switch (type) {
                         case 'SHY':

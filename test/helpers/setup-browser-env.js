@@ -4,15 +4,17 @@
  */
 const fs = require('fs');
 const path = require('path');
+const jsdom = require('jsdom');
 
+const {JSDOM} = jsdom;
 const css = fs.readFileSync(path.join(__dirname, '../fixtures/bootstrap.css'), 'utf8');
 const html = fs.readFileSync(path.join(__dirname, '../fixtures/test.html'), 'utf8');
+const dom = new JSDOM(html);
 
-global.document = require('jsdom').jsdom(html);
+global.window = dom.window;
+global.document = dom.window.document;
 
-global.window = document.defaultView;
-
-// append css
+// Append css
 const head = global.document.getElementsByTagName('head')[0];
 const style = global.document.createElement('style');
 style.type = 'text/css';

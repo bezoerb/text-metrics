@@ -91,7 +91,7 @@ test('Computes lines with breaks', t => {
 
 test('Computes lines with break-all', t => {
     const el = document.querySelector('#lines-break');
-    // need to pass text as the jsdom implementation of innerText differs from browsers
+    // Need to pass text as the jsdom implementation of innerText differs from browsers
     // https://github.com/tmpvar/jsdom/issues/1245
     const text = 'Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali<br/>quam atque cum dolor explicabo incidunt.';
     const expected = [

@@ -186,7 +186,7 @@
                 var styles = _extends({}, this.overwrites, normalizeOptions(overwrites));
                 var font = getFont(this.style, styles);
 
-                // get max width
+                // Get max width
                 var max = parseInt(prop(options, 'width') || prop(overwrites, 'width') || prop(this.el, 'offsetWidth', 0) || this.style.getPropertyValue('width'), 10);
 
                 var wordBreak = prop(styles, 'word-break') || this.style.getPropertyValue('word-break');
@@ -195,7 +195,7 @@
                 var ctx = getContext2d(font);
                 text = getStyledText(text, this.style);
 
-                // different scenario when break-word is allowed
+                // Different scenario when break-word is allowed
                 if (wordBreak === 'break-all') {
                     return computeLinesBreakAll({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
                 }
@@ -222,28 +222,28 @@
                     text = prepareText(text);
                 }
 
-                // simple compute function which adds the size and computes the with
+                // Simple compute function which adds the size and computes the with
                 var compute = function compute(size) {
                     return _this.width(text, options, _extends({}, overwrites, { 'font-size': size + 'px' }));
                 };
 
-                // get max width
+                // Get max width
                 var max = parseInt(prop(options, 'width') || prop(overwrites, 'width') || prop(this.el, 'offsetWidth', 0) || this.style.getPropertyValue('width'), 10);
 
-                // start with half the max size
+                // Start with half the max size
                 var size = Math.floor(max / 2);
                 var cur = compute(size);
 
-                // compute next result based on first result
+                // Compute next result based on first result
                 size = Math.floor(size / cur * max);
                 cur = compute(size);
 
-                // happy cause we got it already
+                // Happy cause we got it already
                 if (Math.ceil(cur) === max) {
                     return size + 'px';
                 }
 
-                // go on by increase/decrease pixels
+                // Go on by increase/decrease pixels
                 if (cur > max && size > 0) {
                     while (cur > max && size > 0) {
                         cur = compute(size--);

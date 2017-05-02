@@ -50,7 +50,7 @@ class TextMetrics {
             text = prepareText(text);
         }
 
-        let styledText = getStyledText(text, this.style);
+        const styledText = getStyledText(text, this.style);
 
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
         const font = getFont(this.style, styles);
@@ -100,7 +100,7 @@ class TextMetrics {
     }
 
     /**
-     * compute lines of text with automatic word wraparound
+     * Compute lines of text with automatic word wraparound
      * element styles
      *
      * @param {string} text
@@ -124,7 +124,7 @@ class TextMetrics {
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
         const font = getFont(this.style, styles);
 
-        // get max width
+        // Get max width
         const max = parseInt(
             prop(options, 'width') ||
             prop(overwrites, 'width') ||
@@ -138,7 +138,7 @@ class TextMetrics {
         const ctx = getContext2d(font);
         text = getStyledText(text, this.style);
 
-        // different scenario when break-word is allowed
+        // Different scenario when break-word is allowed
         if (wordBreak === 'break-all') {
             return computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing});
         }
@@ -167,12 +167,12 @@ class TextMetrics {
             text = prepareText(text);
         }
 
-        // simple compute function which adds the size and computes the with
-        let compute = size => {
+        // Simple compute function which adds the size and computes the with
+        const compute = size => {
             return this.width(text, options, {...overwrites, 'font-size': `${size}px`});
         };
 
-        // get max width
+        // Get max width
         const max = parseInt(
             prop(options, 'width') ||
             prop(overwrites, 'width') ||
@@ -180,20 +180,20 @@ class TextMetrics {
             this.style.getPropertyValue('width')
             , 10);
 
-        // start with half the max size
+        // Start with half the max size
         let size = Math.floor(max / 2);
         let cur = compute(size);
 
-        // compute next result based on first result
+        // Compute next result based on first result
         size = Math.floor(size / cur * max);
         cur = compute(size);
 
-        // happy cause we got it already
+        // Happy cause we got it already
         if (Math.ceil(cur) === max) {
             return size + 'px';
         }
 
-        // go on by increase/decrease pixels
+        // Go on by increase/decrease pixels
         if (cur > max && size > 0) {
             while (cur > max && size > 0) {
                 cur = compute(size--);

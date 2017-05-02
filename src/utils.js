@@ -12,15 +12,15 @@ const B2 = [
 ];
 
 const SHY = [
-    // soft hyphen
+    // Soft hyphen
     '\u00AD'
 ];
 
 // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
 const BAI = [
-    // spaces
+    // Spaces
     '\u0020', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
-    // tab
+    // Tab
     '\u0009',
     // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
     '\u200b',
@@ -29,7 +29,7 @@ const BAI = [
 ];
 
 const BA = [
-    // hyphen
+    // Hyphen
     '\u058A', '\u2010', '\u2012', '\u2013',
     // Visible Word Dividers
     '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '\u007C',
@@ -59,7 +59,7 @@ export const DEFAULTS = {
 };
 
 /**
- * we only support rem/em/pt conversion
+ * We only support rem/em/pt conversion
  * @param val
  * @param options
  * @return {*}
@@ -67,8 +67,8 @@ export const DEFAULTS = {
 export function pxValue(val, options = {}) {
     const baseFontSize = parseInt(prop(options, 'base-font-size', 16), 10);
 
-    let value = parseFloat(val);
-    let unit = val.replace(value, '');
+    const value = parseFloat(val);
+    const unit = val.replace(value, '');
     // eslint-disable-next-line default-case
     switch (unit) {
         case 'rem':
@@ -121,7 +121,7 @@ export function addWordAndLetterSpacing(ws, ls) {
  * @returns {string}
  */
 export function getFont(style, options) {
-    let font = [];
+    const font = [];
 
     const fontWeight = prop(options, 'font-weight', style.getPropertyValue('font-weight')) || DEFAULTS['font-weight'];
     if (['normal', 'bold', 'bolder', 'lighter', '100', '200', '300', '400', '500', '600', '700', '800', '900'].indexOf(fontWeight.toString()) !== -1) {
@@ -139,7 +139,7 @@ export function getFont(style, options) {
     }
 
     const fontSize = prop(options, 'font-size', style.getPropertyValue('font-size')) || DEFAULTS['font-size'];
-    let fontSizeValue = pxValue(fontSize);
+    const fontSizeValue = pxValue(fontSize);
     font.push(fontSizeValue + 'px');
 
     const fontFamily = prop(options, 'font-family', style.getPropertyValue('font-family')) || DEFAULTS['font-family'];
@@ -149,7 +149,7 @@ export function getFont(style, options) {
 }
 
 /**
- * check for CSSStyleDeclaration
+ * Check for CSSStyleDeclaration
  *
  * @param val
  * @returns {bool}
@@ -159,7 +159,7 @@ export function isCSSStyleDeclaration(val) {
 }
 
 /**
- * check wether we can get computed style
+ * Check wether we can get computed style
  *
  * @param el
  * @returns {bool}
@@ -169,7 +169,7 @@ export function canGetComputedStyle(el) {
 }
 
 /**
- * check for DOM element
+ * Check for DOM element
  *
  * @param el
  * @retutns {bool}
@@ -182,12 +182,12 @@ export function isElement(el) {
 }
 
 /**
- * check if argument is object
+ * Check if argument is object
  * @param obj
  * @returns {boolean}
  */
 export function isObject(obj) {
-    return typeof obj === 'object' && obj !== null && !(obj instanceof Array);
+    return typeof obj === 'object' && obj !== null && !(Array.isArray(obj));
 }
 
 /**
@@ -210,7 +210,7 @@ export function getStyle(el, options = {}) {
 }
 
 /**
- * get styled text
+ * Get styled text
  *
  * @param {string} text
  * @param {CSSStyleDeclaration} style
@@ -234,7 +234,7 @@ export function getStyledText(text, style) {
  * @returns {string}
  */
 export function prepareText(text) {
-    // convert to unicode
+    // Convert to unicode
     text = text
         .replace(/<wbr>/ig, '\u200b')
         .replace(/<br\s*\/?>/ig, '\u000A')
@@ -285,7 +285,7 @@ export function prop(src, attr, defaultValue) {
 export function normalizeOptions(options = {}) {
     const opts = {};
 
-    // normalize keys (fontSize => font-size)
+    // Normalize keys (fontSize => font-size)
     Object.keys(options).forEach(key => {
         const dashedKey = key.replace(/([A-Z])/g, $1 => `-${$1.toLowerCase()}`);
         opts[dashedKey] = options[key];
@@ -338,17 +338,17 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     const breakpoints = [];
     let line = '';
 
-    // compute array of breakpoints
-    for (let chr of text) {
+    // Compute array of breakpoints
+    for (const chr of text) {
         const type = checkBreak(chr);
         if (type) {
             breakpoints.push({chr, type});
         }
     }
-    // split text by breakpoints
+    // Split text by breakpoints
     const parts = text.split(BREAK_REGEXP);
 
-    // loop over text parts and compute the lines
+    // Loop over text parts and compute the lines
     for (let i = 0; i < parts.length; i++) {
         if (i === 0) {
             line = parts[i];
@@ -357,7 +357,7 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
 
         const part = parts[i];
         const breakpoint = breakpoints[i - 1];
-        // special treatment as we only render the soft hyphen if we need to split
+        // Special treatment as we only render the soft hyphen if we need to split
         const chr = breakpoint.type === 'SHY' ? '' : breakpoint.chr;
 
         if (breakpoint.type === 'BK') {
@@ -366,15 +366,15 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
             continue;
         }
 
-        // measure width
+        // Measure width
         const width = parseInt(ctx.measureText(line + chr + part).width + addSpacing(line + chr + part), 10);
-        // still fits in line
+        // Still fits in line
         if (width <= max) {
             line += chr + part;
             continue;
         }
 
-        // line is to long, we split at the breakpoint
+        // Line is to long, we split at the breakpoint
         switch (breakpoint.type) {
             case 'SHY':
                 lines.push(line + '-');
@@ -422,24 +422,24 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
     const lines = [];
     let line = '';
     let index = 0;
-    for (let chr of text) {
+    for (const chr of text) {
         const type = checkBreak(chr);
-        // mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
+        // Mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
         if (type === 'BK') {
             lines.push(line);
             line = '';
             continue;
         }
 
-        // measure width
+        // Measure width
         let width = ctx.measureText(line + chr).width + addSpacing(line + chr);
-        // check if we can put char behind the shy
+        // Check if we can put char behind the shy
         if (type === 'SHY') {
             const next = text[index + 1] || '';
             width = ctx.measureText(line + chr + next).width + addSpacing(line + chr + next);
         }
 
-        // needs at least one character
+        // Needs at least one character
         if (width > max && [...line].length !== 0) {
             switch (type) {
                 case 'SHY':
