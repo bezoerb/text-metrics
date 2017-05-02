@@ -1,8 +1,20 @@
 
+v0.4.2 / 2017-05-02
+===================
+
+  * Bump dependencies
+  * Fixed some rounding issues
+
+v0.4.1 / 2017-02-13
+===================
+
+  * Minor tweaks & readme
+  * Add .eslintrc for codacy
+
 v0.4.0 / 2017-02-09
 ===================
 
-  * dropped full htmlentity decode in favor of filesize
+  * Dropped full htmlentity decode in favor of filesize
 
 v0.3.1 / 2017-02-09
 ==================
