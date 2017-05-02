@@ -399,8 +399,6 @@
                     part += chr;
                 }
             }
-
-            // Loop over text parts and compute the lines
         } catch (err) {
             _didIteratorError = true;
             _iteratorError = err;
@@ -416,6 +414,11 @@
             }
         }
 
+        if (part) {
+            parts.push(part);
+        }
+
+        // Loop over text parts and compute the lines
         for (var i = 0; i < parts.length; i++) {
             if (i === 0) {
                 line = parts[i];
