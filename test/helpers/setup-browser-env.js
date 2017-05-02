@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const jsdom = require('jsdom');
 
-const {JSDOM} = jsdom;
+const JSDOM = jsdom.JSDOM;
 const css = fs.readFileSync(path.join(__dirname, '../fixtures/bootstrap.css'), 'utf8');
 const html = fs.readFileSync(path.join(__dirname, '../fixtures/test.html'), 'utf8');
 const dom = new JSDOM(html);
