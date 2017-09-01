@@ -39,7 +39,7 @@ test('Computes width', t => {
 test('Computes maxFontSize', t => {
     const el = document.querySelector('#max-font-size');
     const val = textMetrics(el).maxFontSize('unicorn');
-    t.is(val, '183px');
+    t.is(val, '181.99999999999994px');
 });
 
 test('Computes lines', t => {
@@ -70,9 +70,9 @@ test('Computes lines with breaks', t => {
     const el = document.querySelector('#lines');
     const text = 'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
     const expected = [
-        'Lorem ipsum d-',
-        'olor sit amet, c',
-        '—onsectur a—',
+        'Lorem ipsum do-',
+        'lor sit amet, c—',
+        'onsectur a—',
         'dipisicing elit.',
         'Aliquam atque',
         'cum dolor',
@@ -150,7 +150,7 @@ test('Consider letter- and word-spacing', t => {
         t.is(lines[i], expected[i]);
     }
 
-    t.is(width, 283);
+    t.is(width, 283.42578125);
     t.is(height, 156);
 });
 
