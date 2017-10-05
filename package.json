@@ -14,8 +14,8 @@
   },
   "scripts": {
     "test": "xo && nyc ava",
-    "compile-standalone": "browserify dist/index.js -t [ babelify --presets [ env ] ] -s textMetrics --outfile dist/text-metrics.bundle.js && uglifyjs dist/text-metrics.bundle.js -o dist/text-metrics.bundle.min.js",
-    "compile-module": "babel src --out-dir dist",
+    "compile-standalone": "browserify dist/index.js -s textMetrics --outfile dist/text-metrics.bundle.js && uglifyjs dist/text-metrics.bundle.js -o dist/text-metrics.bundle.min.js",
+    "compile-module": "babel src --out-dir dist --presets=env",
     "compile": "npm run compile-module && npm run compile-standalone",
     "prepublish": "nsp check && npm run compile",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
@@ -76,5 +76,6 @@
       "./test/helpers/setup-browser-env.js"
     ],
     "babel": "inherit"
-  }
+  },
+  "browserslist": "last 2 versions, ie >= 10, ie_mob >= 10, ff >= 30, chrome >= 34, safari >= 8, opera >= 23, ios >= 7, android >= 4, bb >= 10"
 }

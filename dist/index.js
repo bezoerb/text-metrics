@@ -31,6 +31,12 @@
         return target;
     };
 
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+    } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -103,7 +109,7 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-                if (typeof text === 'object' && text) {
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
                     overwrites = options;
                     options = text || {};
                     text = undefined;
@@ -142,7 +148,7 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-                if (typeof text === 'object' && text) {
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
                     overwrites = options;
                     options = text || {};
                     text = undefined;
@@ -165,7 +171,7 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-                if (typeof text === 'object' && text) {
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
                     overwrites = options;
                     options = text;
                     text = undefined;
@@ -191,10 +197,10 @@
 
                 // Different scenario when break-word is allowed
                 if (wordBreak === 'break-all') {
-                    return computeLinesBreakAll({ ctx, text, max, wordSpacing, letterSpacing });
+                    return computeLinesBreakAll({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
                 }
 
-                return computeLinesDefault({ ctx, text, max, wordSpacing, letterSpacing });
+                return computeLinesDefault({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
             }
         }, {
             key: 'maxFontSize',
@@ -204,7 +210,7 @@
                 var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var overwrites = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-                if (typeof text === 'object' && text) {
+                if ((typeof text === 'undefined' ? 'undefined' : _typeof(text)) === 'object' && text) {
                     overwrites = options;
                     options = text;
                     text = undefined;
@@ -218,7 +224,7 @@
 
                 // Simple compute function which adds the size and computes the with
                 var compute = function compute(size) {
-                    return _this.width(text, options, _extends({}, overwrites, { 'font-size': `${size}px` }));
+                    return _this.width(text, options, _extends({}, overwrites, { 'font-size': size + 'px' }));
                 };
 
                 // Get max width
