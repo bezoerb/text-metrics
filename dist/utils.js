@@ -46,12 +46,6 @@
         }
     }
 
-    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-        return typeof obj;
-    } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-
     /*
      B2	Break Opportunity Before and After	Em dash	Provide a line break opportunity before and after the character
      BA	Break After	Spaces, hyphens	Generally provide a line break opportunity after the character
@@ -65,16 +59,16 @@
 
     var SHY = [
     // Soft hyphen
-    '\xAD'];
+    '\u00AD'];
 
     // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
     var BAI = [
     // Spaces
-    ' ', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
+    '\u0020', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
     // Tab
-    '\t',
+    '\u0009',
     // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
-    '\u200B',
+    '\u200b',
     // Mandatory breaks not interpreted by html
     '\u2028', '\u2029'];
 
@@ -82,15 +76,15 @@
     // Hyphen
     '\u058A', '\u2010', '\u2012', '\u2013',
     // Visible Word Dividers
-    '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '|',
+    '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '\u007C',
     // Historic Word Separators
     '\u16EB', '\u16EC', '\u16ED', '\u2056', '\u2058', '\u2059', '\u205A', '\u205B', '\u205D', '\u205E', '\u2E19', '\u2E2A', '\u2E2B', '\u2E2C', '\u2E2D', '\u2E30', '\u10100', '\u10101', '\u10102', '\u1039F', '\u103D0', '\u1091F', '\u12470'];
 
     // BB: Break Before - http://www.unicode.org/reports/tr14/#BB
-    var BB = ['\xB4', '\u1FFD'];
+    var BB = ['\u00B4', '\u1FFD'];
 
     // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
-    var BK = ['\n'];
+    var BK = ['\u000A'];
 
     /* eslint-env es6, browser */
     var DEFAULTS = exports.DEFAULTS = {
@@ -123,7 +117,7 @@
                 return value;
         }
 
-        throw new Error('The unit ' + unit + ' is not supported');
+        throw new Error(`The unit ${unit} is not supported`);
     }
 
     /**
@@ -218,7 +212,7 @@
      * @retutns {bool}
      */
     function isElement(el) {
-        return (typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? el instanceof HTMLElement : Boolean(el && (typeof el === 'undefined' ? 'undefined' : _typeof(el)) === 'object' && el !== null && el.nodeType === 1 && typeof el.nodeName === 'string');
+        return typeof HTMLElement === 'object' ? el instanceof HTMLElement : Boolean(el && typeof el === 'object' && el !== null && el.nodeType === 1 && typeof el.nodeName === 'string');
     }
 
     /**
@@ -227,7 +221,7 @@
      * @returns {boolean}
      */
     function isObject(obj) {
-        return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && !Array.isArray(obj);
+        return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
     }
 
     /**
@@ -279,10 +273,11 @@
      */
     function prepareText(text) {
         // Convert to unicode
-        text = text.replace(/<wbr>/ig, '\u200B').replace(/<br\s*\/?>/ig, '\n').replace(/&shy;/ig, '\xAD').replace(/&mdash;/ig, '\u2014');
+        text = text.replace(/<wbr>/ig, '\u200b').replace(/<br\s*\/?>/ig, '\u000A').replace(/&shy;/ig, '\u00AD').replace(/&mdash;/ig, '\u2014');
 
         if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
-            console.error('text-metrics: Found encoded htmlenties. \nYou may want to use https://mths.be/he to decode your text first.');
+            console.error(`text-metrics: Found encoded htmlenties. 
+You may want to use https://mths.be/he to decode your text first.`);
         }
 
         return text.trim();
@@ -329,7 +324,7 @@
         // Normalize keys (fontSize => font-size)
         Object.keys(options).forEach(function (key) {
             var dashedKey = key.replace(/([A-Z])/g, function ($1) {
-                return '-' + $1.toLowerCase();
+                return `-${$1.toLowerCase()}`;
             });
             opts[dashedKey] = options[key];
         });
@@ -391,7 +386,7 @@
 
                 var type = checkBreak(chr);
                 if (type) {
-                    breakpoints.push({ chr: chr, type: type });
+                    breakpoints.push({ chr, type });
 
                     parts.push(part);
                     part = '';
@@ -542,7 +537,7 @@
                             line = chr;
                             break;
                     }
-                } else if (chr !== '\xAD') {
+                } else if (chr !== '\u00AD') {
                     line += chr;
                 }
                 index++;
