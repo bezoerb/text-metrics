@@ -42,6 +42,34 @@ test('Computes maxFontSize', t => {
     t.is(val, '183px');
 });
 
+test('Computes lines with one very long word', t => {
+    const el = document.querySelector('#height');
+
+    const text = 'Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.';
+    const expected = [
+        'Craspharetrapha-',
+        'retragravida.Viva-',
+        'musconsequatla-',
+        'cusvelposuereco-',
+        'ngue.Duisalorem-',
+        'vitaeexauctorsce-',
+        'lerisquenoneutu-',
+        'rpis.Utimperdietm-',
+        'agnasitametjusto-',
+        'bibendumvehicu-',
+        'la.'
+    ];
+
+    const value = textMetrics(el).lines(text, {multiline: true, wordwrap: true});
+
+    t.is(value.length, expected.length);
+
+    for (let i = 0; i < value.length; i++) {
+        console.log(value[i]);
+        t.is(value[i], expected[i]);
+    }
+});
+
 test('Computes lines', t => {
     const el = document.querySelector('#height');
 

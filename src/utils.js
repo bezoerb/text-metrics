@@ -239,7 +239,7 @@ export function prepareText(text) {
         .replace(/&mdash;/ig, '\u2014');
 
     if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
-        console.error(`text-metrics: Found encoded htmlenties. 
+        console.error(`text-metrics: Found encoded htmlenties.
 You may want to use https://mths.be/he to decode your text first.`);
     }
 
@@ -329,7 +329,7 @@ export function checkBreak(chr) {
         (BK.includes(chr) && 'BK');
 }
 
-export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}) {
+export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing, options}) {
     const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
     const lines = [];
     const parts = [];
@@ -417,7 +417,30 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     }
 
     if ([...line].length !== 0) {
-        lines.push(line);
+        if (options.wordwrap) {
+            line
+                .split('')
+                .reduce((prev, next) => {
+                    const lastItemPosition = (prev.length && (prev.length - 1)) || 0;
+                    const lastItemValue = prev[lastItemPosition];
+                    const width = parseInt(ctx.measureText(lastItemValue).width + addSpacing(lastItemValue + part), 10);
+                    prev[lastItemPosition] = prev[lastItemPosition] ? prev[lastItemPosition] : '';
+
+                    if (width > max) {
+                        prev[lastItemPosition] += '-';
+                        prev.push(next);
+
+                        return prev;
+                    }
+
+                    prev[lastItemPosition] += next;
+
+                    return prev;
+                }, [])
+                .map(itemLine => lines.push(itemLine));
+        } else {
+            lines.push(line);
+        }
     }
 
     return lines;
