@@ -112,7 +112,8 @@ Type: `object`
 
 | key       | default | description
 | --------- | ------- | -----------
-| multiline | `false`   | The width of widest line instead of the width of the complete text
+| multiline | `false` | The width of widest line instead of the width of the complete text
+| wordwrap  | `false` | Allows unbreakable words to be broken with `-` as separator
 
 #### overwrites
 Type: `object`
