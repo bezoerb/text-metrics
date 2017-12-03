@@ -112,7 +112,8 @@ Type: `object`
 
 | key       | default | description
 | --------- | ------- | -----------
-| multiline | `false`   | The width of widest line instead of the width of the complete text
+| multiline | `false` | The width of widest line instead of the width of the complete text
+| precision | 1.0     | Precision in px for the maxFontSize detection
 
 #### overwrites
 Type: `object`
