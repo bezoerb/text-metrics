@@ -47,16 +47,16 @@ test('Computes lines with one very long word', t => {
 
     const text = 'Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.';
     const expected = [
-        'Craspharetrapha-',
-        'retragravida.Viva-',
-        'musconsequatla-',
-        'cusvelposuereco-',
-        'ngue.Duisalorem-',
-        'vitaeexauctorsce-',
-        'lerisquenoneutu-',
-        'rpis.Utimperdietm-',
-        'agnasitametjusto-',
-        'bibendumvehicu-',
+        'Craspharetraphar-',
+        'retragravida.Vivam-',
+        'musconsequatlac-',
+        'cusvelposuerecon-',
+        'ngue.Duisaloremv-',
+        'vitaeexauctorscel-',
+        'lerisquenoneutur-',
+        'rpis.Utimperdietma-',
+        'agnasitametjustob-',
+        'bibendumvehicul-',
         'la.'
     ];
 
@@ -65,7 +65,6 @@ test('Computes lines with one very long word', t => {
     t.is(value.length, expected.length);
 
     for (let i = 0; i < value.length; i++) {
-        console.log(value[i]);
         t.is(value[i], expected[i]);
     }
 });

@@ -351,7 +351,30 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing,
     }
 
     if (part) {
-        parts.push(part);
+        const width = parseInt(ctx.measureText(part).width, 10);
+
+        if ((width > max) && options.wordwrap) {
+            part
+                .split('')
+                .reduce((prev, next) => {
+                    const lastPartPosition = (prev.length && (prev.length - 1)) || 0;
+
+                    prev[lastPartPosition] = prev[lastPartPosition] ? prev[lastPartPosition] : '';
+
+                    if (parseInt(ctx.measureText(prev[lastPartPosition]).width, 10) > max) {
+                        prev.push(next);
+                    }
+
+                    prev[lastPartPosition] += next;
+
+                    return prev;
+                }, [])
+                .map(item => (
+                    parts.push(item) && breakpoints.push({type: 'SHY'})
+                ));
+        } else {
+            parts.push(part);
+        }
     }
 
     // Loop over text parts and compute the lines
@@ -417,30 +440,7 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing,
     }
 
     if ([...line].length !== 0) {
-        if (options.wordwrap) {
-            line
-                .split('')
-                .reduce((prev, next) => {
-                    const lastItemPosition = (prev.length && (prev.length - 1)) || 0;
-                    const lastItemValue = prev[lastItemPosition];
-                    const width = parseInt(ctx.measureText(lastItemValue).width + addSpacing(lastItemValue + part), 10);
-                    prev[lastItemPosition] = prev[lastItemPosition] ? prev[lastItemPosition] : '';
-
-                    if (width > max) {
-                        prev[lastItemPosition] += '-';
-                        prev.push(next);
-
-                        return prev;
-                    }
-
-                    prev[lastItemPosition] += next;
-
-                    return prev;
-                }, [])
-                .map(itemLine => lines.push(itemLine));
-        } else {
-            lines.push(line);
-        }
+        lines.push(line);
     }
 
     return lines;
