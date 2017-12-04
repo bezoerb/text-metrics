@@ -282,7 +282,7 @@
         text = text.replace(/<wbr>/ig, '\u200B').replace(/<br\s*\/?>/ig, '\n').replace(/&shy;/ig, '\xAD').replace(/&mdash;/ig, '\u2014');
 
         if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
-            console.error('text-metrics: Found encoded htmlenties. \nYou may want to use https://mths.be/he to decode your text first.');
+            console.error('text-metrics: Found encoded htmlenties.\nYou may want to use https://mths.be/he to decode your text first.');
         }
 
         return text.trim();
@@ -371,7 +371,8 @@
             text = _ref.text,
             max = _ref.max,
             wordSpacing = _ref.wordSpacing,
-            letterSpacing = _ref.letterSpacing;
+            letterSpacing = _ref.letterSpacing,
+            options = _ref.options;
 
         var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
         var lines = [];
@@ -415,7 +416,27 @@
         }
 
         if (part) {
-            parts.push(part);
+            var width = parseInt(ctx.measureText(part).width, 10);
+
+            if (width > max && options.wordwrap) {
+                part.split('').reduce(function (prev, next) {
+                    var lastPartPosition = prev.length && prev.length - 1 || 0;
+
+                    prev[lastPartPosition] = prev[lastPartPosition] ? prev[lastPartPosition] : '';
+
+                    if (parseInt(ctx.measureText(prev[lastPartPosition]).width, 10) > max) {
+                        prev.push(next);
+                    }
+
+                    prev[lastPartPosition] += next;
+
+                    return prev;
+                }, []).map(function (item) {
+                    return parts.push(item) && breakpoints.push({ type: 'SHY' });
+                });
+            } else {
+                parts.push(part);
+            }
         }
 
         // Loop over text parts and compute the lines
@@ -437,9 +458,9 @@
             }
 
             // Measure width
-            var width = parseInt(ctx.measureText(line + _chr + _part).width + addSpacing(line + _chr + _part), 10);
+            var _width = parseInt(ctx.measureText(line + _chr + _part).width + addSpacing(line + _chr + _part), 10);
             // Still fits in line
-            if (width <= max) {
+            if (_width <= max) {
                 line += _chr + _part;
                 continue;
             }
