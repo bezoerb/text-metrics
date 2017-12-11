@@ -352,8 +352,15 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing,
 
     if (part) {
         const width = parseInt(ctx.measureText(part).width, 10);
+        let breakPointType = null;
 
-        if ((width > max) && options.wordwrap) {
+        if (options.wordBreak === 'break-all') {
+            breakPointType = 'BAI';
+        } else if (options.hyphens === 'auto') {
+            breakPointType = 'SHY';
+        }
+
+        if ((width > max) && breakPointType) {
             part
                 .split('')
                 .reduce((prev, next) => {
@@ -370,7 +377,7 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing,
                     return prev;
                 }, [])
                 .map(item => (
-                    parts.push(item) && breakpoints.push({type: 'SHY'})
+                    parts.push(item) && breakpoints.push({type: breakPointType})
                 ));
         } else {
             parts.push(part);

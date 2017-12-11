@@ -42,7 +42,34 @@ test('Computes maxFontSize', t => {
     t.is(val, '183px');
 });
 
-test('Computes lines with one very long word', t => {
+test('Computes lines with one very long word with break all option', t => {
+    const el = document.querySelector('#height');
+
+    const text = 'Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.';
+    const expected = [
+        'Craspharetraphar',
+        'retragravida.Vivam',
+        'musconsequatlac',
+        'cusvelposuerecon',
+        'ngue.Duisaloremv',
+        'vitaeexauctorscel',
+        'lerisquenoneutur',
+        'rpis.Utimperdietma',
+        'agnasitametjustob',
+        'bibendumvehicul',
+        'la.'
+    ];
+
+    const value = textMetrics(el).lines(text, {multiline: true, wordBreak: 'break-all'});
+
+    t.is(value.length, expected.length);
+
+    for (let i = 0; i < value.length; i++) {
+        t.is(value[i], expected[i]);
+    }
+});
+
+test('Computes lines with one very long word with hyphen option', t => {
     const el = document.querySelector('#height');
 
     const text = 'Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.';
@@ -60,7 +87,7 @@ test('Computes lines with one very long word', t => {
         'la.'
     ];
 
-    const value = textMetrics(el).lines(text, {multiline: true, wordwrap: true});
+    const value = textMetrics(el).lines(text, {multiline: true, hyphens: 'auto'});
 
     t.is(value.length, expected.length);
 

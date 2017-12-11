@@ -110,10 +110,11 @@ Defaults to `el.innerText` if an element is available
 #### options
 Type: `object`
 
-| key       | default | description
-| --------- | ------- | -----------
-| multiline | `false` | The width of widest line instead of the width of the complete text
-| wordwrap  | `false` | Allows unbreakable words to be broken with `-` as separator
+| key       | default     | options      | description                                                                          |
+|-----------|-------------|--------------|--------------------------------------------------------------------------------------|
+| multiline | `false`     | [true|false] | The width of widest line instead of the width of the complete text                   |
+| wordBreak | `undefined` | [break-all]  | Should insert line breaks wherever the text would otherwise overflow its content box |
+| hypens    | `undefined` | [auto]       | AllowsAllows unbreakable words to be broken with `-` as separator                    |
 
 #### overwrites
 Type: `object`
