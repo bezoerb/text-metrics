@@ -239,7 +239,7 @@ export function prepareText(text) {
         .replace(/&mdash;/ig, '\u2014');
 
     if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
-        console.error(`text-metrics: Found encoded htmlenties. 
+        console.error(`text-metrics: Found encoded htmlenties.
 You may want to use https://mths.be/he to decode your text first.`);
     }
 
@@ -329,7 +329,7 @@ export function checkBreak(chr) {
         (BK.includes(chr) && 'BK');
 }
 
-export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}) {
+export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing, options}) {
     const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
     const lines = [];
     const parts = [];
@@ -351,7 +351,37 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     }
 
     if (part) {
-        parts.push(part);
+        const width = parseInt(ctx.measureText(part).width, 10);
+        let breakPointType = null;
+
+        if (options.wordBreak === 'break-all') {
+            breakPointType = 'BAI';
+        } else if (options.hyphens === 'auto') {
+            breakPointType = 'SHY';
+        }
+
+        if ((width > max) && breakPointType) {
+            part
+                .split('')
+                .reduce((prev, next) => {
+                    const lastPartPosition = (prev.length && (prev.length - 1)) || 0;
+
+                    prev[lastPartPosition] = prev[lastPartPosition] ? prev[lastPartPosition] : '';
+
+                    if (parseInt(ctx.measureText(prev[lastPartPosition]).width, 10) > max) {
+                        prev.push(next);
+                    }
+
+                    prev[lastPartPosition] += next;
+
+                    return prev;
+                }, [])
+                .map(item => (
+                    parts.push(item) && breakpoints.push({type: breakPointType})
+                ));
+        } else {
+            parts.push(part);
+        }
     }
 
     // Loop over text parts and compute the lines

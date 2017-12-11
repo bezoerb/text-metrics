@@ -143,7 +143,7 @@ class TextMetrics {
             return computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing});
         }
 
-        return computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing});
+        return computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing, options});
     }
 
     /**
