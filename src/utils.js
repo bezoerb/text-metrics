@@ -7,9 +7,7 @@
  */
 
 // B2 Break Opportunity Before and After - http://www.unicode.org/reports/tr14/#B2
-const B2 = [
-    '\u2014'
-];
+const B2 = ['\u2014'];
 
 const SHY = [
     // Soft hyphen
@@ -19,34 +17,74 @@ const SHY = [
 // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
 const BAI = [
     // Spaces
-    '\u0020', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2008', '\u2009', '\u200A', '\u205F', '\u3000',
+    '\u0020',
+    '\u1680',
+    '\u2000',
+    '\u2001',
+    '\u2002',
+    '\u2003',
+    '\u2004',
+    '\u2005',
+    '\u2006',
+    '\u2008',
+    '\u2009',
+    '\u200A',
+    '\u205F',
+    '\u3000',
     // Tab
     '\u0009',
     // ZW Zero Width Space - http://www.unicode.org/reports/tr14/#ZW
-    '\u200b',
+    '\u200B',
     // Mandatory breaks not interpreted by html
-    '\u2028', '\u2029'
+    '\u2028',
+    '\u2029'
 ];
 
 const BA = [
     // Hyphen
-    '\u058A', '\u2010', '\u2012', '\u2013',
+    '\u058A',
+    '\u2010',
+    '\u2012',
+    '\u2013',
     // Visible Word Dividers
-    '\u05BE', '\u0F0B', '\u1361', '\u17D8', '\u17DA', '\u2027', '\u007C',
+    '\u05BE',
+    '\u0F0B',
+    '\u1361',
+    '\u17D8',
+    '\u17DA',
+    '\u2027',
+    '\u007C',
     // Historic Word Separators
-    '\u16EB', '\u16EC', '\u16ED', '\u2056', '\u2058', '\u2059', '\u205A', '\u205B', '\u205D', '\u205E', '\u2E19', '\u2E2A',
-    '\u2E2B', '\u2E2C', '\u2E2D', '\u2E30', '\u10100', '\u10101', '\u10102', '\u1039F', '\u103D0', '\u1091F', '\u12470'
+    '\u16EB',
+    '\u16EC',
+    '\u16ED',
+    '\u2056',
+    '\u2058',
+    '\u2059',
+    '\u205A',
+    '\u205B',
+    '\u205D',
+    '\u205E',
+    '\u2E19',
+    '\u2E2A',
+    '\u2E2B',
+    '\u2E2C',
+    '\u2E2D',
+    '\u2E30',
+    '\u10100',
+    '\u10101',
+    '\u10102',
+    '\u1039F',
+    '\u103D0',
+    '\u1091F',
+    '\u12470'
 ];
 
 // BB: Break Before - http://www.unicode.org/reports/tr14/#BB
-const BB = [
-    '\u00B4', '\u1FFD'
-];
+const BB = ['\u00B4', '\u1FFD'];
 
 // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
-const BK = [
-    '\u000A'
-];
+const BK = ['\u000A'];
 
 /* eslint-env es6, browser */
 export const DEFAULTS = {
@@ -100,10 +138,15 @@ export function addWordAndLetterSpacing(ws, ls) {
     }
 
     return text => {
-        const words = text.trim().replace(/\s+/gi, ' ').split(' ').length - 1;
+        const words =
+            text
+                .trim()
+                .replace(/\s+/gi, ' ')
+                .split(' ').length - 1;
         const chars = text.length;
 
-        return (words * wordAddon) + (chars * letterAddon);
+        // eslint-disable-next-line  no-mixed-operators
+        return words * wordAddon + chars * letterAddon;
     };
 }
 
@@ -120,26 +163,56 @@ export function addWordAndLetterSpacing(ws, ls) {
 export function getFont(style, options) {
     const font = [];
 
-    const fontWeight = prop(options, 'font-weight', style.getPropertyValue('font-weight')) || DEFAULTS['font-weight'];
-    if (['normal', 'bold', 'bolder', 'lighter', '100', '200', '300', '400', '500', '600', '700', '800', '900'].indexOf(fontWeight.toString()) !== -1) {
+    const fontWeight =
+        prop(options, 'font-weight', style.getPropertyValue('font-weight')) ||
+        DEFAULTS['font-weight'];
+    if (
+        [
+            'normal',
+            'bold',
+            'bolder',
+            'lighter',
+            '100',
+            '200',
+            '300',
+            '400',
+            '500',
+            '600',
+            '700',
+            '800',
+            '900'
+        ].indexOf(fontWeight.toString()) !== -1
+    ) {
         font.push(fontWeight);
     }
 
-    const fontStyle = prop(options, 'font-style', style.getPropertyValue('font-style'));
+    const fontStyle = prop(
+        options,
+        'font-style',
+        style.getPropertyValue('font-style')
+    );
     if (['normal', 'italic', 'oblique'].indexOf(fontStyle) !== -1) {
         font.push(fontStyle);
     }
 
-    const fontVariant = prop(options, 'font-variant', style.getPropertyValue('font-variant'));
+    const fontVariant = prop(
+        options,
+        'font-variant',
+        style.getPropertyValue('font-variant')
+    );
     if (['normal', 'small-caps'].indexOf(fontVariant) !== -1) {
         font.push(fontVariant);
     }
 
-    const fontSize = prop(options, 'font-size', style.getPropertyValue('font-size')) || DEFAULTS['font-size'];
+    const fontSize =
+        prop(options, 'font-size', style.getPropertyValue('font-size')) ||
+        DEFAULTS['font-size'];
     const fontSizeValue = pxValue(fontSize);
     font.push(fontSizeValue + 'px');
 
-    const fontFamily = prop(options, 'font-family', style.getPropertyValue('font-family')) || DEFAULTS['font-family'];
+    const fontFamily =
+        prop(options, 'font-family', style.getPropertyValue('font-family')) ||
+        DEFAULTS['font-family'];
     font.push(fontFamily);
 
     return font.join(' ');
@@ -162,7 +235,12 @@ export function isCSSStyleDeclaration(val) {
  * @returns {bool}
  */
 export function canGetComputedStyle(el) {
-    return isElement(el) && el.style && typeof window !== 'undefined' && typeof window.getComputedStyle === 'function';
+    return (
+        isElement(el) &&
+        el.style &&
+        typeof window !== 'undefined' &&
+        typeof window.getComputedStyle === 'function'
+    );
 }
 
 /**
@@ -172,10 +250,15 @@ export function canGetComputedStyle(el) {
  * @retutns {bool}
  */
 export function isElement(el) {
-    return (
-        typeof HTMLElement === 'object' ? el instanceof HTMLElement :
-            Boolean(el && typeof el === 'object' && el !== null && el.nodeType === 1 && typeof el.nodeName === 'string')
-    );
+    return typeof HTMLElement === 'object' ?
+        el instanceof HTMLElement :
+        Boolean(
+            el &&
+                  typeof el === 'object' &&
+                  el !== null &&
+                  el.nodeType === 1 &&
+                  typeof el.nodeName === 'string'
+        );
 }
 
 /**
@@ -184,7 +267,7 @@ export function isElement(el) {
  * @returns {boolean}
  */
 export function isObject(obj) {
-    return typeof obj === 'object' && obj !== null && !(Array.isArray(obj));
+    return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
 }
 
 /**
@@ -233,13 +316,16 @@ export function getStyledText(text, style) {
 export function prepareText(text) {
     // Convert to unicode
     text = text
-        .replace(/<wbr>/ig, '\u200b')
-        .replace(/<br\s*\/?>/ig, '\u000A')
-        .replace(/&shy;/ig, '\u00AD')
-        .replace(/&mdash;/ig, '\u2014');
+        .replace(/<wbr>/gi, '\u200B')
+        .replace(/<br\s*\/?>/gi, '\u000A')
+        .replace(/&shy;/gi, '\u00AD')
+        .replace(/&mdash;/gi, '\u2014');
 
-    if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
-        console.error(`text-metrics: Found encoded htmlenties. 
+    if (
+        /&#(\d+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) &&
+        console
+    ) {
+        console.error(`text-metrics: Found encoded htmlenties.
 You may want to use https://mths.be/he to decode your text first.`);
     }
 
@@ -270,7 +356,9 @@ export function getText(el) {
  * @returns {*}
  */
 export function prop(src, attr, defaultValue) {
-    return (src && typeof src[attr] !== 'undefined' && src[attr]) || defaultValue;
+    return (
+        (src && typeof src[attr] !== 'undefined' && src[attr]) || defaultValue
+    );
 }
 
 /**
@@ -301,11 +389,13 @@ export function getContext2d(font) {
     try {
         const ctx = document.createElement('canvas').getContext('2d');
         const dpr = window.devicePixelRatio || 1;
-        const bsr = ctx.webkitBackingStorePixelRatio ||
-                ctx.mozBackingStorePixelRatio ||
-                ctx.msBackingStorePixelRatio ||
-                ctx.oBackingStorePixelRatio ||
-                ctx.backingStorePixelRatio || 1;
+        const bsr =
+            ctx.webkitBackingStorePixelRatio ||
+            ctx.mozBackingStorePixelRatio ||
+            ctx.msBackingStorePixelRatio ||
+            ctx.oBackingStorePixelRatio ||
+            ctx.backingStorePixelRatio ||
+            1;
         ctx.font = font;
         ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
         return ctx;
@@ -321,15 +411,23 @@ export function getContext2d(font) {
  * @param chr
  */
 export function checkBreak(chr) {
-    return (B2.includes(chr) && 'B2') ||
+    return (
+        (B2.includes(chr) && 'B2') ||
         (BAI.includes(chr) && 'BAI') ||
         (SHY.includes(chr) && 'SHY') ||
         (BA.includes(chr) && 'BA') ||
         (BB.includes(chr) && 'BB') ||
-        (BK.includes(chr) && 'BK');
+        (BK.includes(chr) && 'BK')
+    );
 }
 
-export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}) {
+export function computeLinesDefault({
+    ctx,
+    text,
+    max,
+    wordSpacing,
+    letterSpacing
+}) {
     const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
     const lines = [];
     const parts = [];
@@ -373,7 +471,11 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
         }
 
         // Measure width
-        const width = parseInt(ctx.measureText(line + chr + part).width + addSpacing(line + chr + part), 10);
+        const width = parseInt(
+            ctx.measureText(line + chr + part).width +
+                addSpacing(line + chr + part),
+            10
+        );
         // Still fits in line
         if (width <= max) {
             line += chr + part;
@@ -399,10 +501,22 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
                 line = chr + part;
                 break;
             case 'B2':
-                if (parseInt(ctx.measureText(line + chr).width + addSpacing(line + chr), 10) <= max) {
+                if (
+                    parseInt(
+                        ctx.measureText(line + chr).width +
+                            addSpacing(line + chr),
+                        10
+                    ) <= max
+                ) {
                     lines.push(line + chr);
                     line = part;
-                } else if (parseInt(ctx.measureText(chr + part).width + addSpacing(chr + part), 10) <= max) {
+                } else if (
+                    parseInt(
+                        ctx.measureText(chr + part).width +
+                            addSpacing(chr + part),
+                        10
+                    ) <= max
+                ) {
                     lines.push(line);
                     line = chr + part;
                 } else {
@@ -423,7 +537,13 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     return lines;
 }
 
-export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing}) {
+export function computeLinesBreakAll({
+    ctx,
+    text,
+    max,
+    wordSpacing,
+    letterSpacing
+}) {
     const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
     const lines = [];
     let line = '';
@@ -442,7 +562,9 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
         // Check if we can put char behind the shy
         if (type === 'SHY') {
             const next = text[index + 1] || '';
-            width = ctx.measureText(line + chr + next).width + addSpacing(line + chr + next);
+            width =
+                ctx.measureText(line + chr + next).width +
+                addSpacing(line + chr + next);
         }
 
         // Needs at least one character

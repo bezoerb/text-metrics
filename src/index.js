@@ -26,7 +26,9 @@ class TextMetrics {
         }
 
         this.style = getStyle(this.el, this.overwrites);
-        this.font = prop(overwrites, 'font', null) || getFont(this.style, this.overwrites);
+        this.font =
+            prop(overwrites, 'font', null) ||
+            getFont(this.style, this.overwrites);
     }
 
     /**
@@ -55,18 +57,25 @@ class TextMetrics {
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
         const font = getFont(this.style, styles);
 
-        const letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
-        const wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+        const letterSpacing =
+            prop(styles, 'letter-spacing') ||
+            this.style.getPropertyValue('letter-spacing');
+        const wordSpacing =
+            prop(styles, 'word-spacing') ||
+            this.style.getPropertyValue('word-spacing');
         const addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
 
         const ctx = getContext2d(font);
 
         if (options.multiline) {
-            return this.lines(styledText, options, overwrites).reduce((res, text) => {
-                const w = ctx.measureText(text).width + addSpacing(text);
+            return this.lines(styledText, options, overwrites).reduce(
+                (res, text) => {
+                    const w = ctx.measureText(text).width + addSpacing(text);
 
-                return Math.max(res, w);
-            }, 0);
+                    return Math.max(res, w);
+                },
+                0
+            );
         }
 
         return ctx.measureText(styledText).width + addSpacing(styledText);
@@ -94,7 +103,11 @@ class TextMetrics {
         }
 
         const styles = {...this.overwrites, ...normalizeOptions(overwrites)};
-        const lineHeight = parseInt(prop(styles, 'line-height') || this.style.getPropertyValue('line-height'), 10);
+        const lineHeight = parseInt(
+            prop(styles, 'line-height') ||
+                this.style.getPropertyValue('line-height'),
+            10
+        );
 
         return this.lines(text, options, styles).length * lineHeight;
     }
@@ -127,23 +140,42 @@ class TextMetrics {
         // Get max width
         const max = parseInt(
             prop(options, 'width') ||
-            prop(overwrites, 'width') ||
-            prop(this.el, 'offsetWidth', 0) ||
-            this.style.getPropertyValue('width')
-            , 10);
+                prop(overwrites, 'width') ||
+                prop(this.el, 'offsetWidth', 0) ||
+                this.style.getPropertyValue('width'),
+            10
+        );
 
-        const wordBreak = prop(styles, 'word-break') || this.style.getPropertyValue('word-break');
-        const letterSpacing = prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
-        const wordSpacing = prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+        const wordBreak =
+            prop(styles, 'word-break') ||
+            this.style.getPropertyValue('word-break');
+        const letterSpacing =
+            prop(styles, 'letter-spacing') ||
+            this.style.getPropertyValue('letter-spacing');
+        const wordSpacing =
+            prop(styles, 'word-spacing') ||
+            this.style.getPropertyValue('word-spacing');
         const ctx = getContext2d(font);
         text = getStyledText(text, this.style);
 
         // Different scenario when break-word is allowed
         if (wordBreak === 'break-all') {
-            return computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing});
+            return computeLinesBreakAll({
+                ctx,
+                text,
+                max,
+                wordSpacing,
+                letterSpacing
+            });
         }
 
-        return computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing});
+        return computeLinesDefault({
+            ctx,
+            text,
+            max,
+            wordSpacing,
+            letterSpacing
+        });
     }
 
     /**
@@ -169,23 +201,27 @@ class TextMetrics {
 
         // Simple compute function which adds the size and computes the with
         const compute = size => {
-            return this.width(text, options, {...overwrites, 'font-size': `${size}px`});
+            return this.width(text, options, {
+                ...overwrites,
+                'font-size': `${size}px`
+            });
         };
 
         // Get max width
         const max = parseInt(
             prop(options, 'width') ||
-            prop(overwrites, 'width') ||
-            prop(this.el, 'offsetWidth', 0) ||
-            this.style.getPropertyValue('width')
-            , 10);
+                prop(overwrites, 'width') ||
+                prop(this.el, 'offsetWidth', 0) ||
+                this.style.getPropertyValue('width'),
+            10
+        );
 
         // Start with half the max size
         let size = Math.floor(max / 2);
         let cur = compute(size);
 
         // Compute next result based on first result
-        size = Math.floor(size / cur * max);
+        size = Math.floor((size / cur) * max);
         cur = compute(size);
 
         // Happy cause we got it already
