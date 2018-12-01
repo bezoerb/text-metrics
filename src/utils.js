@@ -399,7 +399,7 @@ export function getContext2d(font) {
         ctx.font = font;
         ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
         return ctx;
-    } catch (err) {
+    } catch (error) {
         throw new Error('Canvas support required');
     }
 }

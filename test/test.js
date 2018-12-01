@@ -85,9 +85,9 @@ test('Computes lines with breaks', t => {
     const text =
         'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
     const expected = [
-        'Lorem ipsum d-',
-        'olor sit amet, c',
-        '—onsectur a—',
+        'Lorem ipsum do-',
+        'lor sit amet, c—',
+        'onsectur a—',
         'dipisicing elit.',
         'Aliquam atque',
         'cum dolor',

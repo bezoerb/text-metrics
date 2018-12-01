@@ -64,7 +64,10 @@
     "ignores": [
       "dist/text-metrics.js",
       "dist/text-metrics.min.js"
-    ]
+    ],
+    "rules": {
+      "valid-jsdoc": 0
+    }
   },
   "ava": {
     "files": [
