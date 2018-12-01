@@ -193,6 +193,8 @@ class TextMetrics {
             text = undefined;
         }
 
+        const precision = options.precision || 1.0;
+
         if (!text && this.el) {
             text = getText(this.el);
         } else {
@@ -232,13 +234,13 @@ class TextMetrics {
         // Go on by increase/decrease pixels
         if (cur > max && size > 0) {
             while (cur > max && size > 0) {
-                cur = compute(size--);
+                cur = compute(size -= precision);
             }
             return size + 'px';
         }
 
         while (cur < max) {
-            cur = compute(size++);
+            cur = compute(size += precision);
         }
         size--;
         return size + 'px';
