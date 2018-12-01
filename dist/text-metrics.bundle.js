@@ -198,10 +198,22 @@
 
                 // Different scenario when break-word is allowed
                 if (wordBreak === 'break-all') {
-                    return computeLinesBreakAll({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
+                    return computeLinesBreakAll({
+                        ctx: ctx,
+                        text: text,
+                        max: max,
+                        wordSpacing: wordSpacing,
+                        letterSpacing: letterSpacing
+                    });
                 }
 
-                return computeLinesDefault({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
+                return computeLinesDefault({
+                    ctx: ctx,
+                    text: text,
+                    max: max,
+                    wordSpacing: wordSpacing,
+                    letterSpacing: letterSpacing
+                });
             }
         }, {
             key: 'maxFontSize',
@@ -225,7 +237,9 @@
 
                 // Simple compute function which adds the size and computes the with
                 var compute = function compute(size) {
-                    return _this.width(text, options, _extends({}, overwrites, { 'font-size': size + 'px' }));
+                    return _this.width(text, options, _extends({}, overwrites, {
+                        'font-size': size + 'px'
+                    }));
                 };
 
                 // Get max width
@@ -423,6 +437,7 @@
             var words = text.trim().replace(/\s+/gi, ' ').split(' ').length - 1;
             var chars = text.length;
 
+            // eslint-disable-next-line  no-mixed-operators
             return words * wordAddon + chars * letterAddon;
         };
     }
@@ -553,10 +568,10 @@
      */
     function prepareText(text) {
         // Convert to unicode
-        text = text.replace(/<wbr>/ig, '\u200B').replace(/<br\s*\/?>/ig, '\n').replace(/&shy;/ig, '\xAD').replace(/&mdash;/ig, '\u2014');
+        text = text.replace(/<wbr>/gi, '\u200B').replace(/<br\s*\/?>/gi, '\n').replace(/&shy;/gi, '\xAD').replace(/&mdash;/gi, '\u2014');
 
-        if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
-            console.error('text-metrics: Found encoded htmlenties. \nYou may want to use https://mths.be/he to decode your text first.');
+        if (/&#(\d+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
+            console.error('text-metrics: Found encoded htmlenties.\nYou may want to use https://mths.be/he to decode your text first.');
         }
 
         return text.trim();

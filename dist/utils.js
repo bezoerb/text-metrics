@@ -149,6 +149,7 @@
             var words = text.trim().replace(/\s+/gi, ' ').split(' ').length - 1;
             var chars = text.length;
 
+            // eslint-disable-next-line  no-mixed-operators
             return words * wordAddon + chars * letterAddon;
         };
     }
@@ -279,10 +280,10 @@
      */
     function prepareText(text) {
         // Convert to unicode
-        text = text.replace(/<wbr>/ig, '\u200B').replace(/<br\s*\/?>/ig, '\n').replace(/&shy;/ig, '\xAD').replace(/&mdash;/ig, '\u2014');
+        text = text.replace(/<wbr>/gi, '\u200B').replace(/<br\s*\/?>/gi, '\n').replace(/&shy;/gi, '\xAD').replace(/&mdash;/gi, '\u2014');
 
-        if (/&#([0-9]+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
-            console.error('text-metrics: Found encoded htmlenties. \nYou may want to use https://mths.be/he to decode your text first.');
+        if (/&#(\d+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
+            console.error('text-metrics: Found encoded htmlenties.\nYou may want to use https://mths.be/he to decode your text first.');
         }
 
         return text.trim();

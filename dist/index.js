@@ -197,10 +197,22 @@
 
                 // Different scenario when break-word is allowed
                 if (wordBreak === 'break-all') {
-                    return computeLinesBreakAll({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
+                    return computeLinesBreakAll({
+                        ctx: ctx,
+                        text: text,
+                        max: max,
+                        wordSpacing: wordSpacing,
+                        letterSpacing: letterSpacing
+                    });
                 }
 
-                return computeLinesDefault({ ctx: ctx, text: text, max: max, wordSpacing: wordSpacing, letterSpacing: letterSpacing });
+                return computeLinesDefault({
+                    ctx: ctx,
+                    text: text,
+                    max: max,
+                    wordSpacing: wordSpacing,
+                    letterSpacing: letterSpacing
+                });
             }
         }, {
             key: 'maxFontSize',
@@ -224,7 +236,9 @@
 
                 // Simple compute function which adds the size and computes the with
                 var compute = function compute(size) {
-                    return _this.width(text, options, _extends({}, overwrites, { 'font-size': size + 'px' }));
+                    return _this.width(text, options, _extends({}, overwrites, {
+                        'font-size': size + 'px'
+                    }));
                 };
 
                 // Get max width
