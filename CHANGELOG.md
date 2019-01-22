@@ -1,3 +1,12 @@
+# v1.0.0 / 2019-01-22
+
+- rewrite
+- drop node 6 support
+- add node 10 test
+- minor tweaks
+- Bump dependencies
+- Bump dependencies & tweaked tests
+
 # v0.4.3 / 2017-05-02
 
 - fixed line calculation

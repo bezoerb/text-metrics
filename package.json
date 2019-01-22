@@ -28,6 +28,8 @@
   },
   "files": [
     "dist",
+    "lib",
+    "es",
     "src"
   ],
   "main": "lib/text-metrics.js",
@@ -95,6 +97,15 @@
       "valid-jsdoc": 0
     }
   },
+  "npmName": "text-metrics",
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
   "jest": {
     "testEnvironment": "./test/helpers/environment.js",
     "transform": {
