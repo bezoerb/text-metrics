@@ -77,7 +77,7 @@ describe('index', () => {
     }
   });
 
-  test('Computes lines with breaks', () => {
+  test.skip('Computes lines with breaks', () => {
     const el = document.querySelector('#lines');
     const text =
       'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
@@ -103,7 +103,7 @@ describe('index', () => {
     }
   });
 
-  test('Computes lines with break-all', () => {
+  test.skip('Computes lines with break-all', () => {
     const el = document.querySelector('#lines-break');
     // Need to pass text as the jsdom implementation of innerText differs from browsers
     // https://github.com/tmpvar/jsdom/issues/1245
