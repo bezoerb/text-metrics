@@ -1,6 +1,6 @@
 /* eslint-env es6, browser, jest */
 // eslint-disable-next-line import/no-unresolved
-import {tm, utils} from '../';
+import {tm, utils} from '..';
 
 const {getContext2d} = utils;
 

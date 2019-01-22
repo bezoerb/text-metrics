@@ -121,7 +121,7 @@ class TextMetrics {
       parseInt(_.prop(styles, 'width', 0), 10) ||
       parseInt(this.style.width, 10);
 
-    max = max - this.padding();
+    max -= this.padding();
 
     const wordBreak = _.prop(styles, 'word-break') || this.style.getPropertyValue('word-break');
     const letterSpacing = _.prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
@@ -187,7 +187,7 @@ class TextMetrics {
       parseInt(_.prop(styles, 'width', 0), 10) ||
       parseInt(this.style.width, 10);
 
-    max = max - this.padding();
+    max -= this.padding();
 
     // Start with half the max size
     let size = Math.floor(max / 2);
