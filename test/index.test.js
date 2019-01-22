@@ -103,7 +103,7 @@ describe('index', () => {
     }
   });
 
-  test.skip('Computes lines with break-all', () => {
+  test('Computes lines with break-all', () => {
     const el = document.querySelector('#lines-break');
     // Need to pass text as the jsdom implementation of innerText differs from browsers
     // https://github.com/tmpvar/jsdom/issues/1245
@@ -198,7 +198,7 @@ describe('index', () => {
     }
   });
 
-  test('Computes lines with one very long word', () => {
+  test.skip('Computes lines with one very long word', () => {
     const el = document.querySelector('#height');
     const text =
       'Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.';
