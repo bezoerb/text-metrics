@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Testpage</title>
+    <link rel="stylesheet" href="bootstrap.css" />
+    <style>
+      /* used for the tests as jsdom's getComputedStyle does not compute inherited values */
+
+      /* so we can check values in the browser ;) */
+
+      div,
+      h1,
+      h2,
+      h3 {
+        display: inline;
+        font-family: Helvetica, Arial, sans-serif;
+      }
+
+      h1 {
+        text-transform: uppercase;
+      }
+
+      h2 {
+        text-transform: lowercase;
+      }
+
+      h3 {
+        letter-spacing: 2px;
+        word-spacing: 10px;
+        display: block;
+        width: 290px;
+      }
+
+      #max-font-size {
+        width: 600px;
+      }
+
+      #fullwidth {
+        width: 100%;
+      }
+
+      .longword,
+      #height {
+        width: 100px;
+        display: block;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+      }
+
+      .longword {
+        word-break: break-all;
+      }
+
+      #lines {
+        position: relative;
+        width: 100px;
+        display: block;
+        background: orange;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        margin-bottom: 300px;
+        padding: 10px;
+        height: 100px;
+      }
+
+      #lines-canvas {
+        position: absolute;
+        top: -5px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.3;
+      }
+
+      #lines-break {
+        width: 100px;
+        display: block;
+        background: green;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        word-break: break-all;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>TEST</h1>
+    <h2>TEST</h2>
+
+    <h3>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.</h3>
+
+    <div id="max-font-size" class="fit-text">unicorn</div>
+
+    <div id="fullwidth" class="fit-text"><span>Scales to full width</span></div>
+
+    <div id="height">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.
+    </div>
+
+    <h2>LONG WORD TEST</h2>
+    <div class="longword">
+      Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.
+    </div>
+
+    <div id="lines">
+      Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo
+      incidunt. <canvas id="lines-canvas"></canvas>
+    </div>
+
+    <div id="lines-break">
+      Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali <br />quam a&#x2028;tque cum
+      dolor explicabo incidunt.
+    </div>
+  </body>
+</html>

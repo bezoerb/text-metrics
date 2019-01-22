@@ -1,29 +1,11 @@
 {
   "name": "text-metrics",
   "description": "In-memory text measurement using canvas",
-  "main": "dist/text-metrics.bundle.js",
-  "authors": [
-    "Ben Zörb <ben@sommerlaune.com>"
-  ],
+  "main": "dist/text-metrics.min.js",
+  "authors": ["Ben Zörb <ben@sommerlaune.com>"],
   "license": "MIT",
-  "keywords": [
-    "text",
-    "canvas",
-    "measure",
-    "width",
-    "height",
-    "font-size"
-  ],
+  "keywords": ["text", "canvas", "measure", "width", "height", "font-size"],
   "homepage": "https://github.com/bezoerb/text-metrics",
-  "moduleType": [
-    "amd",
-    "globals"
-  ],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+  "moduleType": ["amd", "globals"],
+  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests"]
 }

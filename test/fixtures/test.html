@@ -1,302 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Testpage</title>
-    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.css" />
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="../../dist/text-metrics.bundle.js"></script>
+    <script src="../../dist/text-metrics.js"></script>
     <style>
-        /* used for the tests as jsdom's getComputedStyle does not compute inherited values */
+      /* used for the tests as jsdom's getComputedStyle does not compute inherited values */
 
-        /* so we can check values in the browser ;) */
+      /* so we can check values in the browser ;) */
 
-        div,
-        h1,
-        h2,
-        h3 {
-            display: inline;
-            font-family: Helvetica, Arial, sans-serif;
-        }
+      div,
+      h1,
+      h2,
+      h3 {
+        display: inline;
+        font-family: Helvetica, Arial, sans-serif;
+      }
 
-        h1 {
-            text-transform: uppercase;
-        }
+      h1 {
+        text-transform: uppercase;
+      }
 
-        h2 {
-            text-transform: lowercase;
-        }
+      h2 {
+        text-transform: lowercase;
+      }
 
-        h3 {
-            letter-spacing: 2px;
-            word-spacing: 10px;
-            display: block;
-            width: 290px;
-        }
+      h3 {
+        letter-spacing: 2px;
+        word-spacing: 10px;
+        display: block;
+        width: 290px;
+      }
 
-        #max-font-size {
-            width: 600px;
-        }
+      #max-font-size {
+        width: 600px;
+      }
 
-        #fullwidth {
-            width: 100%;
-        }
+      #fullwidth {
+        width: 100%;
+      }
 
-        .longword,
-        #height {
-            width: 100px;
-            display: block;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 14px;
-        }
+      .longword,
+      #height {
+        width: 100px;
+        display: block;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+      }
 
-        .longword {
-            word-break: break-all;
-        }
+      .longword {
+        word-break: break-all;
+      }
 
-        #lines {
-            position: relative;
-            width: 100px;
-            display: block;
-            background: orange;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            margin-bottom: 300px;
-            padding: 10px;
-            height: 100px;
-        }
+      #lines {
+        position: relative;
+        width: 100px;
+        display: block;
+        background: orange;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        margin-bottom: 300px;
+        padding: 10px;
+        height: 100px;
+      }
 
-        #lines-canvas {
-            position: absolute;
-            top: -5px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            opacity: 0.3;
-        }
+      #lines-canvas {
+        position: absolute;
+        top: -5px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.3;
+      }
 
-        #lines-break {
-            width: 100px;
-            display: block;
-            background: green;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            word-break: break-all;
-
-
-        }
+      #lines-break {
+        width: 100px;
+        display: block;
+        background: green;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        word-break: break-all;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>TEST</h1>
     <canvas id="h1"></canvas>
 
     <h2>TEST</h2>
 
-    <h3>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.</h3>
+    <h3>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.
+    </h3>
 
     <div id="max-font-size" class="fit-text">unicorn</div>
 
     <div id="fullwidth" class="fit-text">
-        <span>Scales to full width</span>
+      <span>Scales to full width</span>
     </div>
 
-    <div id="height">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.
+    <div id="height">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.
     </div>
 
     <h2>LONG WORD TEST</h2>
-    <div class="longword">Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.</div>
-
-
-    <div id="lines">
-        Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo incidunt.
-        <canvas id="lines-canvas"></canvas>
+    <div class="longword">
+      Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.
     </div>
 
+    <div id="lines">
+      Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo
+      incidunt.
+      <canvas id="lines-canvas"></canvas>
+    </div>
 
     <div id="lines-break">
-        Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali
-        <br/>quam a&#x2028;tque cum dolor explicabo incidunt.
+      Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali <br />quam a&#x2028;tque cum
+      dolor explicabo incidunt.
     </div>
 
     <canvas id="height-canvas"></canvas>
     <canvas id="fullwidth-canvas"></canvas>
     <script>
-        var elements = document.querySelectorAll('.fit-text');
-        Array.prototype.slice.call(elements).forEach(function (el) {
-            el.style['font-size'] = textMetrics(el).maxFontSize(el.innerText, {
-                width: document.documentElement.offsetWidth - 5
-            });
+      var elements = document.querySelectorAll('.fit-text');
+      Array.prototype.slice.call(elements).forEach(function(el) {
+        el.style['font-size'] = textMetrics.init(el).maxFontSize(el.innerText, {
+          width: document.documentElement.offsetWidth - 5,
         });
-
-
+      });
     </script>
 
     <script>
-        var PIXEL_RATIO = (function () {
-            var ctx = document.createElement("canvas").getContext("2d"),
-                dpr = window.devicePixelRatio || 1,
-                bsr = ctx.webkitBackingStorePixelRatio ||
-                    ctx.mozBackingStorePixelRatio ||
-                    ctx.msBackingStorePixelRatio ||
-                    ctx.oBackingStorePixelRatio ||
-                    ctx.backingStorePixelRatio || 1;
+      var PIXEL_RATIO = (function() {
+        var ctx = document.createElement('canvas').getContext('2d'),
+          dpr = window.devicePixelRatio || 1,
+          bsr =
+            ctx.webkitBackingStorePixelRatio ||
+            ctx.mozBackingStorePixelRatio ||
+            ctx.msBackingStorePixelRatio ||
+            ctx.oBackingStorePixelRatio ||
+            ctx.backingStorePixelRatio ||
+            1;
 
-            return dpr / bsr;
-        })();
+        return dpr / bsr;
+      })();
 
-        function createHiDPICanvas(id, w, h) {
-            var ratio = PIXEL_RATIO;
-            var can = id && document.getElementById(id) || document.createElement("canvas");
-            if (!w) {
-                w = 300;
+      function createHiDPICanvas(id, w, h) {
+        var ratio = PIXEL_RATIO;
+        var can = (id && document.getElementById(id)) || document.createElement('canvas');
+        if (!w) {
+          w = 300;
+        }
+        if (!h) {
+          h = 150;
+        }
+        can.width = w * ratio;
+        can.height = h * ratio;
+        can.style.width = w + 'px';
+        can.style.height = h + 'px';
+        can.getContext('2d').setTransform(ratio, 0, 0, ratio, 0, 0);
+        return can;
+      }
+
+      var canvas = createHiDPICanvas('h1');
+      var ctx = canvas.getContext('2d');
+      //ctx.font = 'italic 100  small-caps 24px Helvetica,Arial,sans-serif';
+      //ctx.fillText('test unicorns', 0, 32);
+      ctx.font = '500 36px Helvetica, Arial, sans-serif';
+      ctx.fillText('TEST', 0, 32);
+
+      var canvas2 = createHiDPICanvas('fullwidth-canvas', 1280, 200);
+      var ctx2 = canvas2.getContext('2d');
+      ctx2.font = '108px Arial,sans-serif';
+      ctx2.fillText('Scales to full width', 0, 134);
+
+      var canvas3 = createHiDPICanvas('height-canvas', 200, 200);
+      var ctx3 = canvas3.getContext('2d');
+      ctx3.font = '14px Helvetica, Arial, sans-serif';
+      ctx3.fillText('dolor sit amet, ', 0, 32);
+
+      var canvasLines = createHiDPICanvas('lines-canvas', 100, 200);
+      var linesEl = document.getElementById('lines');
+      var ctx4 = canvasLines.getContext('2d');
+      ctx4.font = '14px Helvetica, Arial, sans-serif';
+
+      var lines = window.textMetrics.init(linesEl).lines();
+      for (var i = 0; i < lines.length; i++) {
+        ctx4.fillText(lines[i], 0, (i + 1) * 20);
+      }
+
+      var testEl = document.getElementById('lines');
+      var metrics = textMetrics.init(testEl);
+
+      metrics.lines().forEach(function(line) {
+        console.log(metrics.width(line), line);
+      });
+
+      //
+      //    function getJqueryHeight(input) {
+      //        var $input = $(input);
+      //        var $wrapper = $('<div>').css({
+      //            width: $input.width(),
+      //            height: '99999999px',
+      //            display: 'block',
+      //            position: 'absolute'
+      //        });
+      //        $input.css({
+      //            display: 'inline'
+      //        }).wrap($wrapper);
+      //        var result = $input.height();
+      //        $input.css({
+      //            display: ''
+      //        });
+      //        $input.unwrap();
+      //        return result;
+      //    }
+
+      function getRangeHeight(input) {
+        if (document.createRange) {
+          var range = document.createRange();
+          range.selectNodeContents(input);
+          if (range.getBoundingClientRect) {
+            var rect = range.getBoundingClientRect();
+            if (rect) {
+              return rect.bottom - rect.top;
             }
-            if (!h) {
-                h = 150;
-            }
-            can.width = w * ratio;
-            can.height = h * ratio;
-            can.style.width = w + "px";
-            can.style.height = h + "px";
-            can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
-            return can;
+          }
         }
 
-        var canvas = createHiDPICanvas('h1');
-        var ctx = canvas.getContext('2d');
-        //ctx.font = 'italic 100  small-caps 24px Helvetica,Arial,sans-serif';
-        //ctx.fillText('test unicorns', 0, 32);
-        ctx.font = '500 36px Helvetica, Arial, sans-serif';
-        ctx.fillText('TEST', 0, 32);
+        return NaN;
+      }
 
-        var canvas2 = createHiDPICanvas('fullwidth-canvas', 1280, 200);
-        var ctx2 = canvas2.getContext('2d');
-        ctx2.font = '108px Arial,sans-serif';
-        ctx2.fillText('Scales to full width', 0, 134);
-
-        var canvas3 = createHiDPICanvas('height-canvas', 200, 200);
-        var ctx3 = canvas3.getContext('2d');
-        ctx3.font = '14px Helvetica, Arial, sans-serif';
-        ctx3.fillText('dolor sit amet, ', 0, 32);
-
-        var canvasLines = createHiDPICanvas('lines-canvas', 100, 200);
-        var linesEl = document.getElementById('lines');
-        var ctx4 = canvasLines.getContext('2d');
-        ctx4.font = '14px Helvetica, Arial, sans-serif';
-
-        var lines = textMetrics(linesEl).lines();
-        for (var i = 0; i < lines.length; i++) {
-            ctx4.fillText(lines[i], 0, (i + 1) * 20);
-        }
-
-        var testEl = document.getElementById('lines');
-        var metrics = textMetrics(testEl);
-
-        metrics.lines().forEach(function (line) {
-            console.log(metrics.width(line), line);
+      function getJqueryHeight(input) {
+        var $input = $(input);
+        var $wrapper = $('<div>').css({
+          width: $input.width(),
+          height: '99999999px',
+          display: 'block',
+          position: 'absolute',
         });
+        $input
+          .css({
+            display: 'inline',
+          })
+          .wrap($wrapper);
+        var result = $input.height();
+        $input.css({
+          display: '',
+        });
+        $input.unwrap();
+        return result;
+      }
 
-        //
-        //    function getJqueryHeight(input) {
-        //        var $input = $(input);
-        //        var $wrapper = $('<div>').css({
-        //            width: $input.width(),
-        //            height: '99999999px',
-        //            display: 'block',
-        //            position: 'absolute'
-        //        });
-        //        $input.css({
-        //            display: 'inline'
-        //        }).wrap($wrapper);
-        //        var result = $input.height();
-        //        $input.css({
-        //            display: ''
-        //        });
-        //        $input.unwrap();
-        //        return result;
-        //    }
+      function getJqueryWidth(input) {
+        var $input = $(input);
+        var $wrapper = $('<div>').css({
+          width: '99999999px',
+          height: $input.height(),
+          display: 'block',
+          position: 'absolute',
+        });
+        $input
+          .css({
+            display: 'inline',
+          })
+          .wrap($wrapper);
+        var text = $input.html();
+        $input.html($input.text());
+        var result = $input.width();
+        $input.html(text);
+        $input.css({
+          display: '',
+        });
+        $input.unwrap();
+        return result;
+      }
 
-        function getRangeHeight(input) {
-            if (document.createRange) {
-                var range = document.createRange();
-                range.selectNodeContents(input);
-                if (range.getBoundingClientRect) {
-                    var rect = range.getBoundingClientRect();
-                    if (rect) {
-                        return rect.bottom - rect.top;
-                    }
-                }
-            }
+      function getTmHeight(input) {
+        return textMetrics.init(input).height();
+      }
 
-            return NaN;
-        }
+      function getTmWidth(input) {
+        return textMetrics.init(input).width();
+      }
 
-        function getJqueryHeight(input) {
-            var $input = $(input);
-            var $wrapper = $('<div>').css({
-                width: $input.width(),
-                height: '99999999px',
-                display: 'block',
-                position: 'absolute'
-            });
-            $input.css({
-                display: 'inline'
-            }).wrap($wrapper);
-            var result = $input.height();
-            $input.css({
-                display: ''
-            });
-            $input.unwrap();
-            return result;
+      function getTmRangeHeight(input) {
+        return textMetrics.init(input).height({preferRange: true});
+      }
 
-        }
-
-        function getJqueryWidth(input) {
-            var $input = $(input);
-            var $wrapper = $('<div>').css({
-                width: '99999999px',
-                height: $input.height(),
-                display: 'block',
-                position: 'absolute'
-            });
-            $input.css({
-                display: 'inline'
-            }).wrap($wrapper);
-            var text = $input.html();
-            $input.html($input.text());
-            var result = $input.width();
-            $input.html(text);
-            $input.css({
-                display: ''
-            });
-            $input.unwrap();
-            return result;
-        }
-
-        function getTmHeight(input) {
-            return textMetrics(input).height();
-        }
-
-        function getTmWidth(input) {
-            return textMetrics(input).width();
-        }
-
-        function getTmRangeHeight(input) {
-            return textMetrics(input).height({ preferRange: true });
-        }
-
-        console.log('Jquery width', getJqueryWidth(testEl));
-        console.log('Jquery height', getJqueryHeight(testEl));
-        console.log('Range height', getRangeHeight(testEl));
-        console.log('Text-metrics Range height', getRangeHeight(testEl));
-        console.log('Text-metrics width', getTmRangeHeight(testEl));
-        console.log('Text-metrics height', getTmHeight(testEl));
-
-
+      console.log('Jquery width', getJqueryWidth(testEl));
+      console.log('Jquery height', getJqueryHeight(testEl));
+      console.log('Range height', getRangeHeight(testEl));
+      console.log('Text-metrics Range height', getRangeHeight(testEl));
+      console.log('Text-metrics width', getTmRangeHeight(testEl));
+      console.log('Text-metrics height', getTmHeight(testEl));
     </script>
-
-</body>
-
+  </body>
 </html>
