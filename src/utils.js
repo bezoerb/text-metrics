@@ -430,7 +430,8 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     }
 
     // Measure width
-    const width = parseInt(ctx.measureText(line + chr + part).width + addSpacing(line + chr + part), 10);
+    const rawWidth = ctx.measureText(line + chr + part).width + addSpacing(line + chr + part);
+    const width = Math.round(rawWidth, 10);
 
     // Still fits in line
     if (width <= max) {
@@ -502,11 +503,14 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
     }
 
     // Measure width
-    let width = ctx.measureText(line + chr).width + addSpacing(line + chr);
+    let rawWidth = ctx.measureText(line + chr).width + addSpacing(line + chr);
+    let width = Math.ceil(rawWidth);
+
     // Check if we can put char behind the shy
     if (type === 'SHY') {
       const next = text[index + 1] || '';
-      width = ctx.measureText(line + chr + next).width + addSpacing(line + chr + next);
+      rawWidth = ctx.measureText(line + chr + next).width + addSpacing(line + chr + next);
+      width = Math.ceil(rawWidth);
     }
 
     // Needs at least one character

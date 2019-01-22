@@ -4,11 +4,9 @@
   "description": "An efficient text measurement set for the browser.",
   "license": "MIT",
   "repository": "bezoerb/text-metrics",
-  "author": {
-    "name": "Ben Zörb",
-    "email": "ben@sommerlaune.com",
-    "url": "sommerlaune.com"
-  },
+  "authors": [
+    "Ben Zörb <ben@sommerlaune.com> (https://github.com/bezoerb)"
+  ],
   "engines": {
     "node": ">= 6"
   },

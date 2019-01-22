@@ -54,6 +54,7 @@
         word-break: break-all;
       }
 
+      .test-lines,
       #lines {
         position: relative;
         width: 100px;
@@ -66,6 +67,12 @@
         height: 100px;
       }
 
+      .test-lines {
+        background-color: rebeccapurple;
+        color: white;
+        height: auto
+      }
+
       #lines-canvas {
         position: absolute;
         top: -5px;
@@ -75,6 +82,7 @@
         opacity: 0.3;
       }
 
+      .test-lines2,
       #lines-break {
         width: 100px;
         display: block;
@@ -82,6 +90,10 @@
         font-family: Helvetica, Arial, sans-serif;
         font-size: 14px;
         word-break: break-all;
+      }
+
+      .test-lines2 {
+        color: rebeccapurple;
       }
     </style>
   </head>
@@ -111,6 +123,14 @@
       Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.
     </div>
 
+    <div class="test-lines">
+        Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.
+    </div>
+
+    <div class="test-lines2">
+        Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali<br/>quam atque cum dolor explicabo incidunt.
+    </div>
+
     <div id="lines">
       Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo
       incidunt.
@@ -122,12 +142,16 @@
       dolor explicabo incidunt.
     </div>
 
+    <div class="test-lines2">
+        Lorem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Ali<br/>quam atque cum dolor explicabo incidunt.
+    </div>
+
     <canvas id="height-canvas"></canvas>
     <canvas id="fullwidth-canvas"></canvas>
     <script>
       var elements = document.querySelectorAll('.fit-text');
       Array.prototype.slice.call(elements).forEach(function(el) {
-        el.style['font-size'] = textMetrics.init(el).maxFontSize(el.innerText, {
+        el.style['font-size'] = tm.init(el).maxFontSize(el.innerText, {
           width: document.documentElement.offsetWidth - 5,
         });
       });
@@ -187,13 +211,13 @@
       var ctx4 = canvasLines.getContext('2d');
       ctx4.font = '14px Helvetica, Arial, sans-serif';
 
-      var lines = window.textMetrics.init(linesEl).lines();
+      var lines = window.tm.init(linesEl).lines();
       for (var i = 0; i < lines.length; i++) {
         ctx4.fillText(lines[i], 0, (i + 1) * 20);
       }
 
       var testEl = document.getElementById('lines');
-      var metrics = textMetrics.init(testEl);
+      var metrics = tm.init(testEl);
 
       metrics.lines().forEach(function(line) {
         console.log(metrics.width(line), line);
@@ -280,15 +304,15 @@
       }
 
       function getTmHeight(input) {
-        return textMetrics.init(input).height();
+        return tm.init(input).height();
       }
 
       function getTmWidth(input) {
-        return textMetrics.init(input).width();
+        return tm.init(input).width();
       }
 
       function getTmRangeHeight(input) {
-        return textMetrics.init(input).height({preferRange: true});
+        return tm.init(input).height({preferRange: true});
       }
 
       console.log('Jquery width', getJqueryWidth(testEl));

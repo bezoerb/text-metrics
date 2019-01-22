@@ -15,6 +15,10 @@ class TextMetrics {
     this.font = _.prop(overwrites, 'font', null) || _.getFont(this.style, this.overwrites);
   }
 
+  padding() {
+    return this.el ? parseInt(this.style.paddingLeft || 0, 10) + parseInt(this.style.paddingRight || 0, 10) : 0;
+  }
+
   /**
    * Compute Text Metrics based for given text
    *
@@ -111,13 +115,13 @@ class TextMetrics {
     const font = _.getFont(this.style, styles);
 
     // Get max width
-    const max = parseInt(
-      _.prop(options, 'width') ||
-        _.prop(overwrites, 'width') ||
-        _.prop(this.el, 'offsetWidth', 0) ||
-        this.style.getPropertyValue('width'),
-      10
-    );
+    let max =
+      parseInt(_.prop(options, 'width') || _.prop(overwrites, 'width'), 10) ||
+      _.prop(this.el, 'offsetWidth', 0) ||
+      parseInt(_.prop(styles, 'width', 0), 10) ||
+      parseInt(this.style.width, 10);
+
+    max = max - this.padding();
 
     const wordBreak = _.prop(styles, 'word-break') || this.style.getPropertyValue('word-break');
     const letterSpacing = _.prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
@@ -166,22 +170,24 @@ class TextMetrics {
       text = _.prepareText(text);
     }
 
+    const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
+
     // Simple compute function which adds the size and computes the with
     const compute = size => {
       return this.width(text, options, {
-        ...overwrites,
+        ...styles,
         'font-size': `${size}px`,
       });
     };
 
     // Get max width
-    const max = parseInt(
-      _.prop(options, 'width') ||
-        _.prop(overwrites, 'width') ||
-        _.prop(this.el, 'offsetWidth', 0) ||
-        this.style.getPropertyValue('width'),
-      10
-    );
+    let max =
+      parseInt(_.prop(options, 'width') || _.prop(overwrites, 'width'), 10) ||
+      _.prop(this.el, 'offsetWidth', 0) ||
+      parseInt(_.prop(styles, 'width', 0), 10) ||
+      parseInt(this.style.width, 10);
+
+    max = max - this.padding();
 
     // Start with half the max size
     let size = Math.floor(max / 2);
@@ -215,5 +221,6 @@ class TextMetrics {
 }
 
 export const tm = (el, overwrites) => new TextMetrics(el, overwrites);
+export const init = (el, overwrites) => new TextMetrics(el, overwrites);
 
 export const utils = {..._};

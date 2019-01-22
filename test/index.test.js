@@ -1,6 +1,6 @@
 /* eslint-env es6, browser, jest */
 // eslint-disable-next-line import/no-unresolved
-import {tm, utils} from '..';
+import {tm, utils} from '../';
 
 const {getContext2d} = utils;
 
@@ -82,12 +82,14 @@ describe('index', () => {
     const text =
       'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
     const expected = [
-      'Lorem ipsum do-',
-      'lor sit amet, c—',
+      'Lorem',
+      'ipsum dolor',
+      'sit amet, c—',
       'onsectur a—',
-      'dipisicing elit.',
-      'Aliquam atque',
-      'cum dolor',
+      'dipisicing',
+      'elit. Aliquam',
+      'atque cum',
+      'dolor',
       'explicabo',
       '&bigstar;.',
     ];
@@ -187,6 +189,8 @@ describe('index', () => {
       'Von Kabeljau über Lachs und Thunfisch bis hin zu Zander –',
       'unsere Fisch-Vielfalt wird Sie begeistern. Bestimmt!',
     ];
+
+    console.log(lines);
 
     expect(lines.length).toBe(expected.length);
     for (let i = 0; i < lines.length; i++) {

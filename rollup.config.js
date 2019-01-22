@@ -50,7 +50,7 @@ export default [
     output: {
       file: 'dist/text-metrics.js',
       format: 'umd',
-      name: 'textMetrics',
+      name: 'tm',
       indent: false,
     },
     plugins: [
@@ -72,7 +72,7 @@ export default [
     output: {
       file: 'dist/text-metrics.min.js',
       format: 'umd',
-      name: 'textMetrics',
+      name: 'tm',
       indent: false,
     },
     plugins: [
