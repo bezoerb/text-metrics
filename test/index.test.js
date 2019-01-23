@@ -1,6 +1,6 @@
 /* eslint-env es6, browser, jest */
 // eslint-disable-next-line import/no-unresolved
-import {tm, utils} from '..';
+import {init, utils} from '..';
 
 const {getContext2d} = utils;
 
@@ -10,7 +10,7 @@ describe('index', () => {
   test('Compute with without element', () => {
     const expected = getContext2d('400 30px Helvetica, Arial, sans-serif').measureText('test');
 
-    const val = tm({
+    const val = init({
       'font-size': '30px',
       'font-weight': '400',
       'font-family': 'Helvetica, Arial, sans-serif',
@@ -23,7 +23,7 @@ describe('index', () => {
     const expected = getContext2d('500 36px Helvetica, Arial, sans-serif').measureText('TEST');
 
     const el = document.querySelector('h1');
-    const val = tm(el).width('TEST');
+    const val = init(el).width('TEST');
     expect(val).toBe(expected.width);
   });
 
@@ -32,13 +32,13 @@ describe('index', () => {
     const expected = getContext2d('500 30px Helvetica, Arial, sans-serif').measureText('test');
 
     const el = document.querySelector('h2');
-    const val = tm(el).width('TEST');
+    const val = init(el).width('TEST');
     expect(val).toBe(expected.width);
   });
 
   test('Computes width', () => {
     const el = document.querySelector('h1');
-    const metrics = tm(el);
+    const metrics = init(el);
     const v1 = metrics.width('-');
     const v2 = metrics.width('--');
     const v3 = metrics.width('---');
@@ -48,7 +48,7 @@ describe('index', () => {
 
   test('Computes maxFontSize', () => {
     const el = document.querySelector('#max-font-size');
-    const val = tm(el).maxFontSize('unicorn');
+    const val = init(el).maxFontSize('unicorn');
     expect(val).toBe('183px');
   });
 
@@ -68,7 +68,7 @@ describe('index', () => {
       'incidunt.',
     ];
 
-    const value = tm(el).lines(text);
+    const value = init(el).lines(text);
 
     expect(value.length).toBe(expected.length);
 
@@ -80,12 +80,12 @@ describe('index', () => {
   test('Computes lines with breaks', () => {
     const el = document.querySelector('#lines');
     const text =
-      'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&ndash;onsectur a&ndash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
+      'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&shy;onsectur a&shy;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
     const expected = [
       'Lorem',
       'ipsum dolor',
-      'sit amet, c–',
-      'onsectur a–',
+      'sit amet, c-',
+      'onsectur a-',
       'dipisicing',
       'elit. Aliquam',
       'atque cum',
@@ -94,7 +94,7 @@ describe('index', () => {
       '&bigstar;.',
     ];
 
-    const value = tm(el).lines(text);
+    const value = init(el).lines(text);
 
     expect(value.length).toBe(expected.length);
 
@@ -120,7 +120,7 @@ describe('index', () => {
       'bo incidunt.',
     ];
 
-    const value = tm(el).lines(text);
+    const value = init(el).lines(text);
     expect(value.length).toBe(expected.length);
 
     for (let i = 0; i < value.length; i++) {
@@ -132,7 +132,7 @@ describe('index', () => {
     const text =
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.';
 
-    const val = tm({
+    const val = init({
       'font-size': '14px',
       'line-height': '20px',
       'font-family': 'Helvetica, Arial, sans-serif',
@@ -149,7 +149,7 @@ describe('index', () => {
     // Width + word-spacing (10px) + letter-spacing (2px)
     const referenceWidth = reference.width + 20 + referenceline.length * 2;
     const el = document.querySelector('h3');
-    const metrics = tm(el, {'line-height': '26px'});
+    const metrics = init(el, {'line-height': '26px'});
 
     const lines = metrics.lines();
     const width = metrics.width(null, {multiline: true});
@@ -177,7 +177,7 @@ describe('index', () => {
   test('Consider multiple line breaking characters', () => {
     const text =
       'Von Kabeljau über Lachs und Thunfisch bis hin zu Zander – unsere Fisch-Vielfalt wird Sie begeistern. Bestimmt!';
-    const lines = tm({
+    const lines = init({
       'font-size': '14px',
       'line-height': '20px',
       'font-family': 'Helvetica, Arial, sans-serif',
@@ -215,7 +215,7 @@ describe('index', () => {
       'a.',
     ];
 
-    const value = tm(el).lines(text, {}, {'word-break': 'break-all'});
+    const value = init(el).lines(text, {}, {'word-break': 'break-all'});
 
     expect(value.length).toBe(expected.length);
 
