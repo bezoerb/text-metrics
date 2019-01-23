@@ -32,10 +32,10 @@ You should be able to do nearly anything, and then skip to the next section anyw
 text-metrics needs some browser environment to run.
 
 ```javascript
-import {tm} from 'text-metrics';
+const textMetrics = require('text-metrics');
 
 const el = document.querySelector('h1');
-const metrics = tm(el);
+const metrics = textMetrics.init(el);
 
 metrics.width('unicorns');
 // -> 210
@@ -52,14 +52,14 @@ metrics.maxFontSize('Fitting Headline');
 
 ```javascript
 const textMetrics = require('text-metrics');
-tm(document.querySelector('.textblock')).lines();
+textMetrics.init(document.querySelector('.textblock')).lines();
 ```
 
 ### AMD (e.g. RequireJS)
 
 ```javascript
-define(['text-metrics'], function(tm) {
-  tm(document.querySelector('h1')).width('unicorns');
+define(['text-metrics'], function(textMetrics) {
+  textMetrics.init(document.querySelector('h1')).width('unicorns');
 });
 ```
 
@@ -68,7 +68,7 @@ define(['text-metrics'], function(tm) {
 ```html
 <script src="text-metrics.min.js"></script>
 <script>
-  tm(document.querySelector('h1')).width('unicorns');
+  textMetrics.init(document.querySelector('h1')).width('unicorns');
 </script>
 ```
 
@@ -76,20 +76,20 @@ define(['text-metrics'], function(tm) {
 
 Construct textmetrics object:
 
-`tm([el, overwrites])`
+`textMetrics.init([el, overwrites])`
 
 You can call textMetrics with either an HTMLElement or with an object with style overwrites or with both.
 e.g.
 
 ```javascript
 // takes styles from h1
-tm(document.querySelector('h1'));
+textMetrics.init(document.querySelector('h1'));
 
 // takes styles from h1 and overwrites font-size
-tm(document.querySelector('h1'), { fontSize: '20px'});
+textMetrics.init(document.querySelector('h1'), { fontSize: '20px'});
 
 // only use given styles
-tm({
+textMetrics.init({
     fontSize': '14px',
     lineHeight': '20px',
     fontFamily': 'Helvetica, Arial, sans-serif',

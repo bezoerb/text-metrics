@@ -220,7 +220,6 @@ class TextMetrics {
   }
 }
 
-export const tm = (el, overwrites) => new TextMetrics(el, overwrites);
 export const init = (el, overwrites) => new TextMetrics(el, overwrites);
 
 export const utils = {..._};
