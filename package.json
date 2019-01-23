@@ -8,7 +8,7 @@
     "Ben Zörb <ben@sommerlaune.com> (https://github.com/bezoerb)"
   ],
   "engines": {
-    "node": ">= 6"
+    "node": ">= 8.6"
   },
   "scripts": {
     "clean": "rimraf lib dist es coverage",

@@ -15,8 +15,12 @@ addons:
       - g++-4.8
 env:
   - CXX=g++-4.8
-before_install:
-  - npm explore npm -g -- npm install node-gyp@latest
+
+install:
+  - npm ci
+
+script:
+  - npm run test:cov
 
 after_success:
-  - npm run coveralls
+  - if [[ "$TRAVIS_NODE_VERSION" = "10" ]]; then npm run coveralls; fi

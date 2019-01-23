@@ -77,15 +77,15 @@ describe('index', () => {
     }
   });
 
-  test.skip('Computes lines with breaks', () => {
+  test('Computes lines with breaks', () => {
     const el = document.querySelector('#lines');
     const text =
-      'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&mdash;onsectur a&mdash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
+      'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&ndash;onsectur a&ndash;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
     const expected = [
       'Lorem',
       'ipsum dolor',
-      'sit amet, c—',
-      'onsectur a—',
+      'sit amet, c–',
+      'onsectur a–',
       'dipisicing',
       'elit. Aliquam',
       'atque cum',
@@ -189,8 +189,6 @@ describe('index', () => {
       'Von Kabeljau über Lachs und Thunfisch bis hin zu Zander –',
       'unsere Fisch-Vielfalt wird Sie begeistern. Bestimmt!',
     ];
-
-    console.log(lines);
 
     expect(lines.length).toBe(expected.length);
     for (let i = 0; i < lines.length; i++) {
