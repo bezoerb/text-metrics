@@ -92,7 +92,8 @@
       "rollup.config.js"
     ],
     "rules": {
-      "valid-jsdoc": 0
+      "valid-jsdoc": 0,
+      "import/no-unresolved": 0
     }
   },
   "npmName": "text-metrics",

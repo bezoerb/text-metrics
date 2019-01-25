@@ -207,16 +207,19 @@ class TextMetrics {
     // Go on by increase/decrease pixels
     const greater = cur > max && size > 0;
     while (cur > max && size > 0) {
-      size = size - 1;
+      size -= 1;
       cur = compute(size);
     }
 
-    while (cur < max && !greater) {
-      cur = compute(size + 1);
-      if (cur > max) {
-        return `${size}px`;
+    if (!greater) {
+      while (cur < max) {
+        cur = compute(size + 1);
+        if (cur > max) {
+          return `${size}px`;
+        }
+
+        size += 1;
       }
-      size = size + 1;
     }
 
     return size + 'px';
