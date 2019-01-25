@@ -49,7 +49,7 @@ describe('index', () => {
   test('Computes maxFontSize', () => {
     const el = document.querySelector('#max-font-size');
     const val = init(el).maxFontSize('unicorn');
-    expect(val).toBe('183px');
+    expect(val).toBe('182px');
   });
 
   test('Computes lines', () => {

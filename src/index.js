@@ -174,10 +174,12 @@ class TextMetrics {
 
     // Simple compute function which adds the size and computes the with
     const compute = size => {
-      return this.width(text, options, {
-        ...styles,
-        'font-size': `${size}px`,
-      });
+      return Math.ceil(
+        this.width(text, options, {
+          ...styles,
+          'font-size': `${size}px`,
+        })
+      );
     };
 
     // Get max width
@@ -203,19 +205,20 @@ class TextMetrics {
     }
 
     // Go on by increase/decrease pixels
-    if (cur > max && size > 0) {
-      while (cur > max && size > 0) {
-        cur = compute(size--);
+    const greater = cur > max && size > 0;
+    while (cur > max && size > 0) {
+      size = size - 1;
+      cur = compute(size);
+    }
+
+    while (cur < max && !greater) {
+      cur = compute(size + 1);
+      if (cur > max) {
+        return `${size}px`;
       }
-
-      return size + 'px';
+      size = size + 1;
     }
 
-    while (cur < max) {
-      cur = compute(size++);
-    }
-
-    size--;
     return size + 'px';
   }
 }
