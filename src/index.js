@@ -40,6 +40,10 @@ class TextMetrics {
       text = _.prepareText(text);
     }
 
+    if (!text) {
+      return 0;
+    }
+
     const styledText = _.getStyledText(text, this.style);
 
     const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
@@ -86,7 +90,7 @@ class TextMetrics {
     const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
     const lineHeight = parseInt(_.prop(styles, 'line-height') || this.style.getPropertyValue('line-height'), 10);
 
-    return this.lines(text, options, styles).length * lineHeight;
+    return this.lines(text, options, styles).length * lineHeight || 0;
   }
 
   /**
@@ -201,7 +205,7 @@ class TextMetrics {
 
     // Happy cause we got it already
     if (Math.ceil(cur) === max) {
-      return size + 'px';
+      return size ? `${size}px` : undefined;
     }
 
     // Go on by increase/decrease pixels
@@ -215,14 +219,14 @@ class TextMetrics {
       while (cur < max) {
         cur = compute(size + 1);
         if (cur > max) {
-          return `${size}px`;
+          return size ? `${size}px` : undefined;
         }
 
         size += 1;
       }
     }
 
-    return size + 'px';
+    return size ? `${size}px` : undefined;
   }
 }
 

@@ -18,6 +18,15 @@ describe('index', () => {
     expect(val).toBe(expected.width);
   });
 
+  test('Dooes not break without element', () => {
+    const val = init();
+
+    expect(val.lines()).toMatchObject([]);
+    expect(val.maxFontSize()).toBe(undefined);
+    expect(val.width()).toBe(0);
+    expect(val.height()).toBe(0);
+  });
+
   test('Compute width for h1', () => {
     const expected = getContext2d('500 36px Helvetica, Arial, sans-serif').measureText('TEST');
 

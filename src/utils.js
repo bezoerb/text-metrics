@@ -275,7 +275,7 @@ export function getStyledText(text, style) {
  * @param text
  * @returns {string}
  */
-export function prepareText(text) {
+export function prepareText(text = '') {
   // Convert to unicode
   text = text
     .replace(/<wbr>/gi, '\u200B')
@@ -386,6 +386,10 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
   let line = '';
   let part = '';
 
+  if (!text) {
+    return [];
+  }
+
   // Compute array of breakpoints
   for (const chr of text) {
     const type = checkBreak(chr);
@@ -488,6 +492,11 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
   const lines = [];
   let line = '';
   let index = 0;
+
+  if (!text) {
+    return [];
+  }
+
   for (const chr of text) {
     const type = checkBreak(chr);
     // Mandatory break found (br's converted to \u000A and innerText keeps br's as \u000A
