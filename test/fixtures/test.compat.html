@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Testpage</title>
     <link rel="stylesheet" href="bootstrap.css" />
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
     <script src="../../dist/text-metrics.compat.js"></script>
     <style>
       /* used for the tests as jsdom's getComputedStyle does not compute inherited values */
@@ -270,50 +270,7 @@
         return NaN;
       }
 
-      function getJqueryHeight(input) {
-        var $input = $(input);
-        var $wrapper = $('<div>').css({
-          width: $input.width(),
-          height: '99999999px',
-          display: 'block',
-          position: 'absolute',
-        });
-        $input
-          .css({
-            display: 'inline',
-          })
-          .wrap($wrapper);
-        var result = $input.height();
-        $input.css({
-          display: '',
-        });
-        $input.unwrap();
-        return result;
-      }
 
-      function getJqueryWidth(input) {
-        var $input = $(input);
-        var $wrapper = $('<div>').css({
-          width: '99999999px',
-          height: $input.height(),
-          display: 'block',
-          position: 'absolute',
-        });
-        $input
-          .css({
-            display: 'inline',
-          })
-          .wrap($wrapper);
-        var text = $input.html();
-        $input.html($input.text());
-        var result = $input.width();
-        $input.html(text);
-        $input.css({
-          display: '',
-        });
-        $input.unwrap();
-        return result;
-      }
 
       function getTmHeight(input) {
         return textMetrics.init(input).height();
@@ -327,8 +284,6 @@
         return textMetrics.init(input).height({preferRange: true});
       }
 
-      console.log('Jquery width', getJqueryWidth(testEl));
-      console.log('Jquery height', getJqueryHeight(testEl));
       console.log('Range height', getRangeHeight(testEl));
       console.log('Text-metrics Range height', getRangeHeight(testEl));
       console.log('Text-metrics width', getTmRangeHeight(testEl));

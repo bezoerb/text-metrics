@@ -74,11 +74,19 @@ class TextMetrics {
    * @param {object} overwrites
    * @returns {number}
    */
-  height(text, options = {}, overwrites = {}) {
+  height(text, options, overwrites) {
     if (typeof text === 'object' && text) {
       overwrites = options;
       options = text || {};
       text = undefined;
+    }
+
+    if (!options) {
+      options = {};
+    }
+
+    if (!overwrites) {
+      options = {};
     }
 
     if (!text && this.el) {
@@ -102,11 +110,19 @@ class TextMetrics {
    * @param {object} overwrites
    * @returns {*}
    */
-  lines(text, options = {}, overwrites = {}) {
+  lines(text, options, overwrites) {
     if (typeof text === 'object' && text) {
       overwrites = options;
       options = text;
       text = undefined;
+    }
+
+    if (!options) {
+      options = {};
+    }
+
+    if (!overwrites) {
+      options = {};
     }
 
     if (!text && this.el) {
@@ -161,11 +177,19 @@ class TextMetrics {
    * @param {object} overwrites
    * @returns {string} Pixelvalue e.g. 14px
    */
-  maxFontSize(text, options = {}, overwrites = {}) {
+  maxFontSize(text, options, overwrites) {
     if (typeof text === 'object' && text) {
       overwrites = options;
       options = text;
       text = undefined;
+    }
+
+    if (!options) {
+      options = {};
+    }
+
+    if (!overwrites) {
+      options = {};
     }
 
     if (!text && this.el) {
@@ -181,7 +205,7 @@ class TextMetrics {
       return Math.ceil(
         this.width(text, options, {
           ...styles,
-          'font-size': `${size}px`,
+          'font-size': size + 'px',
         })
       );
     };
@@ -205,7 +229,7 @@ class TextMetrics {
 
     // Happy cause we got it already
     if (Math.ceil(cur) === max) {
-      return size ? `${size}px` : undefined;
+      return size ? size + 'px' : undefined;
     }
 
     // Go on by increase/decrease pixels
@@ -219,14 +243,14 @@ class TextMetrics {
       while (cur < max) {
         cur = compute(size + 1);
         if (cur > max) {
-          return size ? `${size}px` : undefined;
+          return size ? size + 'px' : undefined;
         }
 
         size += 1;
       }
     }
 
-    return size ? `${size}px` : undefined;
+    return size ? size + 'px' : undefined;
   }
 }
 

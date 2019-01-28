@@ -99,7 +99,11 @@ const DEFAULTS = {
  * @param options
  * @return {*}
  */
-function pxValue(val, options = {}) {
+function pxValue(val, options) {
+  if (!options) {
+    options = {};
+  }
+
   const baseFontSize = parseInt(prop(options, 'base-font-size', 16), 10);
 
   const value = parseFloat(val);
@@ -115,7 +119,7 @@ function pxValue(val, options = {}) {
       return value;
   }
 
-  throw new Error(`The unit ${unit} is not supported`);
+  throw new Error('The unit ' + unit + ' is not supported');
 }
 
 /**
@@ -237,9 +241,15 @@ export function isObject(obj) {
  *
  * @returns {CSSStyleDeclaration}
  */
-export function getStyle(el, options = {}) {
-  if (isCSSStyleDeclaration(options.style)) {
-    return options.style;
+export function getStyle(el, options) {
+  const opts = {...(options || {})};
+  const {style} = opts;
+  if (!options) {
+    options = {};
+  }
+
+  if (isCSSStyleDeclaration(style)) {
+    return style;
   }
 
   if (canGetComputedStyle(el)) {
@@ -275,17 +285,18 @@ export function getStyledText(text, style) {
  * @param text
  * @returns {string}
  */
-export function prepareText(text = '') {
+export function prepareText(text) {
   // Convert to unicode
-  text = text
+  text = (text || '')
     .replace(/<wbr>/gi, '\u200B')
     .replace(/<br\s*\/?>/gi, '\u000A')
     .replace(/&shy;/gi, '\u00AD')
     .replace(/&mdash;/gi, '\u2014');
 
   if (/&#(\d+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
-    console.error(`text-metrics: Found encoded htmlenties.
-You may want to use https://mths.be/he to decode your text first.`);
+    console.error(
+      'text-metrics: Found encoded htmlenties. You may want to use https://mths.be/he to decode your text first.'
+    );
   }
 
   return text.trim();
@@ -324,12 +335,12 @@ export function prop(src, attr, defaultValue) {
  * @param options
  * @returns {*}
  */
-export function normalizeOptions(options = {}) {
+export function normalizeOptions(options) {
   const opts = {};
 
   // Normalize keys (fontSize => font-size)
-  Object.keys(options).forEach(key => {
-    const dashedKey = key.replace(/([A-Z])/g, $1 => `-${$1.toLowerCase()}`);
+  Object.keys(options || {}).forEach(key => {
+    const dashedKey = key.replace(/([A-Z])/g, $1 => '-' + $1.toLowerCase());
     opts[dashedKey] = options[key];
   });
 
