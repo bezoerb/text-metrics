@@ -117,6 +117,10 @@ class TextMetrics {
       text = undefined;
     }
 
+    if (typeof overwrites === 'undefined') {
+      overwrites = options;
+    }
+
     if (!options) {
       options = {};
     }
@@ -182,6 +186,10 @@ class TextMetrics {
       overwrites = options;
       options = text;
       text = undefined;
+    }
+
+    if (typeof overwrites === 'undefined') {
+      overwrites = options;
     }
 
     if (!options) {

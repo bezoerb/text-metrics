@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Jasmine Spec Runner v3.3.0</title>
+
+    <link rel="shortcut icon" type="image/png" href="jasmine/jasmine_favicon.png" />
+    <link rel="stylesheet" href="fixtures/normalize.css" />
+    <link rel="stylesheet" href="jasmine/jasmine.css" />
+
+    <style>
+      html {
+        font-family: Helvetica, Arial, sans-serif;
+      }
+      .test-container {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        top: 0;
+        left: 0;
+      }
+      .u-mono {
+        font-family: Courier, monospace;
+      }
+
+      .u-uc {
+        text-transform: uppercase;
+      }
+      .u-lc {
+        text-transform: lowercase;
+      }
+
+      .test {
+        letter-spacing: 2px;
+        word-spacing: 10px;
+        display: block;
+        width: 360px;
+      }
+    </style>
+
+    <script src="jasmine/jasmine.js"></script>
+    <script src="jasmine/jasmine-html.js"></script>
+    <script src="jasmine/boot.js"></script>
+
+    <!-- include source files here... -->
+    <script src="../dist/text-metrics.js"></script>
+  </head>
+
+  <body>
+    <div class="test-container">
+      <div data-test="1" class="test">Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, con&shy;sectur a&shy;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.</div>
+      <div data-test="2" class="test u-lc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</div>
+      <div data-test="3" class="test u-uc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</div>
+      <div data-test="4" class="test u-mono">Lorem Ipsum</div>
+      <div data-test="5" class="test">Lorem Ipsum</div>
+    </div>
+    <!-- include spec files here... -->
+    <script src="TextMetricsSpec.js"></script>
+  </body>
+</html>
