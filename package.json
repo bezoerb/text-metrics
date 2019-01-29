@@ -92,7 +92,9 @@
       "dist",
       "es",
       "lib",
-      "rollup.config.js"
+      "rollup.config.js",
+      "test/jasmine",
+      "test/TextMetricsSpec.js"
     ],
     "rules": {
       "valid-jsdoc": 0,
