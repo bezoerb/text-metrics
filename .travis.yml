@@ -13,6 +13,11 @@ addons:
       - libpango1.0-dev
       - libgif-dev
       - g++-4.8
+  sauce_connect:
+    username: "bezoerb"
+  jwt:
+    secure: "VqwoiDrkzfjkFADU9UCsZRoCloVjMaPg29y7V+hclKiEn8BxBET/KZeIyzKo/dk3AS2n5dl3FwRiZr+rIUYO35AtfjmUpwn55pQZmKOpbHXCFxnpSCCSeUrn8LXK7762ehy1qGfnJ4EvnA9zzPfjFqpaGB8SSKsaO5a1scyevAOb9osIFfOb5zvZh4Vi4BqwaGRDjf7Y+1mKUJLA75VkDU3MD7SxkRe9+ZOrg/+NMokY4yE3BtChp9ZdRtpcbyho9q4b6kvsWgDw+ZW9cxZTyaPOpNtuhGB7DaeVyd+M1HsZUyoylS9ovCesZ6U7HN6/3SvogLw5UJR7lhf9Cqt/ao7A/lw2fg/ljG2G6+n7ImlW6Jmo9IOgl3vkO6dytvidmpZ+vgqRvPPsFAfBLm0vCWxAuCD6bi0yBngnUkYuxiIshctZCauMUI4ECDNoaYrPSlYfFy4DfdWJZqwdaHTIia9WHEf9ks3bmfxCecpsMyf1FLEgOlzUV5fwatUjdPmYfMudFxLISBFaB/LWUne2m5zwHCaBSaiiPxqLT+gff9td3wFA+6MnB9W7QxbLypvnAVHSkkW1ZMp0ym3DkRdWlc7THuhK+8YYwjHk2Heyvv1yRojBWUfrTAtS5RJZCsMbJOKYf51uOC6u07SDM6Lvv+hVbTj24M4uNN1Ua6qOe/Y="
+
 env:
   - CXX=g++-4.8
 
