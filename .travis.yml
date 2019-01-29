@@ -1,30 +1,27 @@
 language: node_js
 node_js:
-  - '10'
-  - '8'
-
+- '10'
+- '8'
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - libcairo2-dev
-      - libjpeg8-dev
-      - libpango1.0-dev
-      - libgif-dev
-      - g++-4.8
+    - libcairo2-dev
+    - libjpeg8-dev
+    - libpango1.0-dev
+    - libgif-dev
+    - librsvg2-dev
+    - g++-4.9
   sauce_connect:
     username: "bezoerb"
-  jwt:
-    secure: "VqwoiDrkzfjkFADU9UCsZRoCloVjMaPg29y7V+hclKiEn8BxBET/KZeIyzKo/dk3AS2n5dl3FwRiZr+rIUYO35AtfjmUpwn55pQZmKOpbHXCFxnpSCCSeUrn8LXK7762ehy1qGfnJ4EvnA9zzPfjFqpaGB8SSKsaO5a1scyevAOb9osIFfOb5zvZh4Vi4BqwaGRDjf7Y+1mKUJLA75VkDU3MD7SxkRe9+ZOrg/+NMokY4yE3BtChp9ZdRtpcbyho9q4b6kvsWgDw+ZW9cxZTyaPOpNtuhGB7DaeVyd+M1HsZUyoylS9ovCesZ6U7HN6/3SvogLw5UJR7lhf9Cqt/ao7A/lw2fg/ljG2G6+n7ImlW6Jmo9IOgl3vkO6dytvidmpZ+vgqRvPPsFAfBLm0vCWxAuCD6bi0yBngnUkYuxiIshctZCauMUI4ECDNoaYrPSlYfFy4DfdWJZqwdaHTIia9WHEf9ks3bmfxCecpsMyf1FLEgOlzUV5fwatUjdPmYfMudFxLISBFaB/LWUne2m5zwHCaBSaiiPxqLT+gff9td3wFA+6MnB9W7QxbLypvnAVHSkkW1ZMp0ym3DkRdWlc7THuhK+8YYwjHk2Heyvv1yRojBWUfrTAtS5RJZCsMbJOKYf51uOC6u07SDM6Lvv+hVbTj24M4uNN1Ua6qOe/Y="
-
 env:
-  - CXX=g++-4.8
-
+  matrix:
+  - CXX=g++-4.9
+  global:
+  - secure: "HHw7o+4PU7l4Ai0c5E4tW4kpTP3WimIfbn+KKjIrLEhBAkx5sm9VH8Siq5Mf74vsNrCPxMbFPrIosnZv3JyNGswwvpzkDyB12p2lv7uKeXFprpdISvPR5CJhX97nO/8xgij0RF1xMK43P79IKQsZXXLczJZBfSEPbVRH7xxtRzZnDU/8+mBY0O3CmBVpURb+o7TcTWYERqnHlovCMXoOA9zZObzV/EoT6+hH+29KHTFL6R+hX2t84HU4Yg8tw7aKRSkOEgCVbVUASwkVWjTChbXwPaFu5kXzMfbC9WK+WJsEwYHp29p2yIfUZY6vLl0gpuwSTgegK4KrK1Mtqg3UWXZFzSFf3WIL06dzxGgS2q5/T1dDJca08X+WCWx3HdLNivNDnuMk6TVYcha/wUplQan5ubc1a9PUXgXwk7PwicCWbsxI7eq3GQNpfgNkXuQS+Gw4rCgw34Ysx5OcRLkvWFs4ZWjeZaaqZe4jqfRXVeO/IaXUpuvVnC9KrjepiaDm5L7MrDSKe4g4VQkMrBA/JnOsMI/rk6RXTwzFfu2FqSmBURXmvvMpiljcC7NAhFFf2hn7s/Z4/il2Voq4tH64sJFsGV2QvCsAZL3QM7usni31ENRyLBznF07hnU8hxntq77BHLf9ig6iIWhQGBL/TSdDIBCSNlrzp1hK/uV3qdL0="
 install:
-  - npm ci
-
-script: 'npm run test:cov'
-
+- npm ci
+script: npm run test:cov
 after_success:
-  - if [[ "$TRAVIS_NODE_VERSION" = "10" ]]; then npm run coveralls; fi
+- if [[ "$TRAVIS_NODE_VERSION" = "10" ]]; then npm run coveralls; fi
