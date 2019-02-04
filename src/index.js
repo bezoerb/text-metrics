@@ -96,9 +96,9 @@ class TextMetrics {
     }
 
     const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
-    const lineHeight = parseInt(_.prop(styles, 'line-height') || this.style.getPropertyValue('line-height'), 10);
+    const lineHeight = parseFloat(_.prop(styles, 'line-height') || this.style.getPropertyValue('line-height'));
 
-    return this.lines(text, options, styles).length * lineHeight || 0;
+    return Math.ceil(this.lines(text, options, styles).length * lineHeight || 0);
   }
 
   /**

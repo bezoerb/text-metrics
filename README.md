@@ -132,6 +132,11 @@ Even if `Range.getBoundingClientRect` should be considered as a performance bott
 [what-forces-layout](https://gist.github.com/paulirish/5d52fb081b3570c81e3a) by Paul Irish,
 i couldn't detect any sort of recalculate style and it massively outperforms `textMetrics.height()`.
 
+## Compatibility
+
+The normal build (3,2kb gzipped) should work well on modern browsers. There's also a compatibility build (10,7kb) available if you need to support IE11.
+These builds are tested using ![Browserstack](./test/fixtures/Browserstack-logo.svg?raw=true 'Browserstack')
+
 ## License
 
 Copyright (c) 2016 Ben Zörb

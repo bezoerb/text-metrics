@@ -13,7 +13,7 @@ describe('TextMetrics', function() {
     expect(instance.lines).toBeDefined();
   });
 
-  it('does not break without element', () => {
+  it('does not break without element', function() {
     const instance = textMetrics.init();
 
     expect(instance.lines()).toEqual([]);
@@ -51,14 +51,6 @@ describe('TextMetrics', function() {
     }
   });
 
-  it('computes lines with style overwrites', function() {
-    var el = document.querySelector('[data-test="1"]');
-    var instance = textMetrics.init(el);
-
-    var lines = instance.lines({fontSize: '1px'});
-    expect(lines.length).toBe(1);
-  });
-
   it('computes lines with text overwrite', function() {
     var el = document.querySelector('[data-test="1"]');
     var instance = textMetrics.init(el);
@@ -69,8 +61,8 @@ describe('TextMetrics', function() {
   });
 
   it('computes max font-size', function() {
-    var el1 = document.querySelector('[data-test="4"]');
-    var el2 = document.querySelector('[data-test="5"]');
+    var el1 = document.querySelector('[data-test="2"]');
+    var el2 = document.querySelector('[data-test="3"]');
     var max1 = textMetrics.init(el1).maxFontSize();
     var max2 = textMetrics.init(el2).maxFontSize();
 
@@ -79,24 +71,28 @@ describe('TextMetrics', function() {
   });
 
   it('computes width', function() {
-    var el1 = document.querySelector('[data-test="2"]');
-    var el2 = document.querySelector('[data-test="3"]');
+    var el1 = document.querySelector('[data-test="4"]');
+    var el2 = document.querySelector('[data-test="5"]');
     var w1 = textMetrics.init(el1).width();
     var w2 = textMetrics.init(el2).width();
 
     expect(w1 < w2).toBeTruthy();
-    expect(Math.ceil(w1)).toEqual(6385);
-    expect(Math.ceil(w2)).toEqual(7755);
+    var r1 = Math.abs(Math.ceil(w1) - Math.ceil(el1.offsetWidth));
+    var r2 = Math.abs(Math.ceil(w2) - Math.ceil(el2.offsetWidth));
+
+    expect(r1).toBeLessThanOrEqual(2);
+    expect(r2).toBeLessThanOrEqual(2);
   });
 
   it('computes height', function() {
-    var el1 = document.querySelector('[data-test="2"]');
-    var el2 = document.querySelector('[data-test="3"]');
+    var el1 = document.querySelector('[data-test="6"]');
+    var el2 = document.querySelector('[data-test="7"]');
+
     var w1 = textMetrics.init(el1).height();
     var w2 = textMetrics.init(el2).height();
-
-    expect(w1 < w2).toBeTruthy();
-    expect(Math.ceil(w1)).toEqual(360);
-    expect(Math.ceil(w2)).toEqual(414);
+    var r1 = Math.abs(Math.ceil(w1) - Math.ceil(el1.offsetHeight));
+    var r2 = Math.abs(Math.ceil(w2) - Math.ceil(el2.offsetHeight));
+    expect(r1).toBeLessThanOrEqual(2);
+    expect(r2).toBeLessThanOrEqual(2);
   });
 });

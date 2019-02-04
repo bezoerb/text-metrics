@@ -1,0 +1,5 @@
+{
+  "test_framework": "jasmine",
+  "test_path": "test/SpecRunner.html",
+  "browsers": ["chrome_latest", "firefox_latest", "edge_16", "ie_11", "safari_10"]
+}
