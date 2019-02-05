@@ -21,6 +21,7 @@ env:
     - secure: Sph9tsORk0Br7cZrZouZrQBJ+ly4wil6E2Q80cQiHyYQGjx2R6qeD8mubqdx8lTRu2BLVOfrKV3maHA0rBSm18pXr36lmsMnLY6NIyfymBzc9MDfy+an7s4+IUD/CVXj+/l+0qhPs7eJo+4+SuknedUF2KAzRWDbHmG9bbTKICE+8ZUIP2ZNx5uDPoYc97dsKEyDpG2lt43FwmzVtcZRrfgkQal3JWWfH7B6FSgBG46iuZaPZCDW1ytvPMcYQfC0GwtKZxdX4wyAR13GS3UIEs/NDubJiklrdpVippcOZNS0itRICU7U0K5jl7oEezQ+ZoIoEyCi/8eExvC1XH5aXwmtCxZCMNfV1mL0J0JSskCnuzGEaTT9jZCyESASONR6z4R7eh9Q3Ay+taX2rwJ2F/1bCUWKjV7L547lEnq4ygbceHTrwIH5QxmjPX/iSccURNpPQKncnThKsM4Gq8rmXCsdzvk/X7OBzS7k+xx/ktnqJCeBjsBMpXhJsGdH5KVAULWLxgnh+nFvJdfvfiVxLej5K23p6Wdgl3gcci6bcl4mIuQRKST80m+aaynxihGbLDUHXeAzsiMO8LhuxKpSqYJt8NJMn1A0gY0qIhktCuV6wy86aWXD+wNzJB5y7PtHN4ZG+aJW5h18IAeANRbFWhNZBePVIXYybnEcS1X1hXc=
 install:
   - npm ci
+  - npm i -g browserstack-runner
 script: if [[ "$TRAVIS_NODE_VERSION" = "10" ]]; then npm run test:all; else npm run test; fi
 after_success:
   - if [[ "$TRAVIS_NODE_VERSION" = "10" ]]; then npm run coveralls; fi
