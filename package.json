@@ -20,7 +20,7 @@
     "test:watch": "npm test -- --watch",
     "test:cov": "npm test -- --coverage",
     "test:browser": "npx browserstack-runner",
-    "test:ci": "npm run test:cov && npm run test:browser",
+    "test:all": "npm run test:cov && npm run test:browser",
     "build": "rollup -c",
     "prepare": "npm run clean && npm run format:check && npm run lint && npm test",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
