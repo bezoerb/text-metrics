@@ -1,6 +1,6 @@
 # text-metrics
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url] [![Download][dlcounter-image]][dlcounter-url] [![Coverage Status][coveralls-image]][coveralls-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![BrowserStack Status][browserstack-image]][browserstack-url] [![Dependency Status][depstat-image]][depstat-url] [![Download][dlcounter-image]][dlcounter-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
 > An lightweight & efficient text measurement set for the browser using canvas to prevent layout reflows.
 
@@ -152,6 +152,9 @@ Licensed under the [MIT license](http://bezoerb.mit-license.org/).
 [dlcounter-image]: https://img.shields.io/npm/dm/text-metrics.svg
 [coveralls-url]: https://coveralls.io/github/bezoerb/text-metrics?branch=master
 [coveralls-image]: https://coveralls.io/repos/github/bezoerb/text-metrics/badge.svg?branch=master
+
+[browserstack-url]: https://www.browserstack.com/automate/public-build/UFVIM0xVaHpucm9YVUN4TXJtYStvQUFWSEFWMFFiQVhaNGZPaXJ6dWNsTT0tLXdnNTU0OGtDNWhIRVJ4SFBhZkFMeWc9PQ==--d7c5f52dc2b2c9bcb2cf1dce052e84741e37f037
+[browserstack-image]: https://www.browserstack.com/automate/badge.svg?badge_key=UFVIM0xVaHpucm9YVUN4TXJtYStvQUFWSEFWMFFiQVhaNGZPaXJ6dWNsTT0tLXdnNTU0OGtDNWhIRVJ4SFBhZkFMeWc9PQ==--d7c5f52dc2b2c9bcb2cf1dce052e84741e37f037
 
 ## License
 
