@@ -152,7 +152,6 @@ Licensed under the [MIT license](http://bezoerb.mit-license.org/).
 [dlcounter-image]: https://img.shields.io/npm/dm/text-metrics.svg
 [coveralls-url]: https://coveralls.io/github/bezoerb/text-metrics?branch=master
 [coveralls-image]: https://coveralls.io/repos/github/bezoerb/text-metrics/badge.svg?branch=master
-
 [browserstack-url]: https://www.browserstack.com/automate/public-build/UFVIM0xVaHpucm9YVUN4TXJtYStvQUFWSEFWMFFiQVhaNGZPaXJ6dWNsTT0tLXdnNTU0OGtDNWhIRVJ4SFBhZkFMeWc9PQ==--d7c5f52dc2b2c9bcb2cf1dce052e84741e37f037
 [browserstack-image]: https://www.browserstack.com/automate/badge.svg?badge_key=UFVIM0xVaHpucm9YVUN4TXJtYStvQUFWSEFWMFFiQVhaNGZPaXJ6dWNsTT0tLXdnNTU0OGtDNWhIRVJ4SFBhZkFMeWc9PQ==--d7c5f52dc2b2c9bcb2cf1dce052e84741e37f037
 

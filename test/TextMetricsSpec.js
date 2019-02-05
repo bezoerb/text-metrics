@@ -77,6 +77,8 @@ describe('TextMetrics', function() {
     var w2 = textMetrics.init(el2).width();
 
     expect(w1 < w2).toBeTruthy();
+    expect(Math.ceil(w1)).toBeGreaterThanOrEqual(el1.offsetWidth);
+    expect(Math.ceil(w2)).toBeGreaterThanOrEqual(el2.offsetWidth);
     var r1 = Math.abs(Math.ceil(w1) - Math.ceil(el1.offsetWidth));
     var r2 = Math.abs(Math.ceil(w2) - Math.ceil(el2.offsetWidth));
 
@@ -90,6 +92,8 @@ describe('TextMetrics', function() {
 
     var w1 = textMetrics.init(el1).height();
     var w2 = textMetrics.init(el2).height();
+    expect(Math.ceil(w1)).toBeGreaterThanOrEqual(el1.offsetHeight);
+    expect(Math.ceil(w2)).toBeGreaterThanOrEqual(el2.offsetHeight);
     var r1 = Math.abs(Math.ceil(w1) - Math.ceil(el1.offsetHeight));
     var r2 = Math.abs(Math.ceil(w2) - Math.ceil(el2.offsetHeight));
     expect(r1).toBeLessThanOrEqual(2);
