@@ -1,8 +1,8 @@
-
 # v1.0.1 / 2019-06-13
+
 ==================
 
-  * Bump dependencies
+- Bump dependencies
 
 # v1.0.0 / 2019-01-22
 
