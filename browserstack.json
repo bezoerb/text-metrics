@@ -17,13 +17,6 @@
       "cli_key": 2
     },
     {
-      "browser": "chrome",
-      "browser_version": "latest",
-      "os": "OS X",
-      "os_version": "Mountain Lion",
-      "cli_key": 3
-    },
-    {
       "browser": "firefox",
       "browser_version": "latest",
       "os": "Windows",
@@ -36,13 +29,6 @@
       "os": "Windows",
       "os_version": "7",
       "cli_key": 5
-    },
-    {
-      "browser": "ie",
-      "browser_version": "11.0",
-      "os": "Windows",
-      "os_version": "7",
-      "cli_key": 8
     },
     {
       "browser": "edge",
