@@ -23,6 +23,6 @@ env:
 install:
   - npm ci
   - npm i -g browserstack-runner
-script: if [[ "$TRAVIS_NODE_VERSION" = "12" ]]; then npm run test:all; else npm run test; fi
+script: if [[ "$TRAVIS_NODE_VERSION" = "10" ]]; then npm run test:all; else npm run test; fi
 after_success:
-  - if [[ "$TRAVIS_NODE_VERSION" = "12" ]]; then npm run coveralls; fi
+  - if [[ "$TRAVIS_NODE_VERSION" = "10" ]]; then npm run coveralls; fi
