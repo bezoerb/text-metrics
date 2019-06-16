@@ -6,14 +6,14 @@
       "browser": "firefox",
       "browser_version": "latest",
       "os": "OS X",
-      "os_version": "Lion",
+      "os_version": "High Sierra",
       "cli_key": 1
     },
     {
       "browser": "safari",
       "browser_version": "latest",
       "os": "OS X",
-      "os_version": "Mountain Lion",
+      "os_version": "Mojave",
       "cli_key": 2
     },
     {
@@ -33,6 +33,13 @@
     {
       "browser": "edge",
       "browser_version": "16.0",
+      "os": "Windows",
+      "os_version": "10",
+      "cli_key": 9
+    },
+    {
+      "browser": "edge",
+      "browser_version": "latest",
       "os": "Windows",
       "os_version": "10",
       "cli_key": 9
