@@ -71,19 +71,20 @@ describe('TextMetrics', function() {
   });
 
   it('computes width', function() {
+    var threshold = 4;
     var el1 = document.querySelector('[data-test="4"]');
     var el2 = document.querySelector('[data-test="5"]');
     var w1 = textMetrics.init(el1).width();
     var w2 = textMetrics.init(el2).width();
 
     expect(w1 < w2).toBeTruthy();
-    expect(Math.ceil(w1)).toBeGreaterThanOrEqual(el1.offsetWidth);
-    expect(Math.ceil(w2)).toBeGreaterThanOrEqual(el2.offsetWidth);
+    expect(Math.ceil(w1)).toBeGreaterThanOrEqual(el1.offsetWidth - threshold);
+    expect(Math.ceil(w2)).toBeGreaterThanOrEqual(el2.offsetWidth - threshold);
     var r1 = Math.abs(Math.ceil(w1) - Math.ceil(el1.offsetWidth));
     var r2 = Math.abs(Math.ceil(w2) - Math.ceil(el2.offsetWidth));
 
-    expect(r1).toBeLessThanOrEqual(2);
-    expect(r2).toBeLessThanOrEqual(2);
+    expect(r1).toBeLessThanOrEqual(threshold);
+    expect(r2).toBeLessThanOrEqual(threshold);
   });
 
   it('computes height', function() {
