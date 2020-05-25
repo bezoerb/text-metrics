@@ -5,8 +5,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const {FakeTimers, installCommonGlobals} = require('jest-util');
-const mock = require('jest-mock');
+const {installCommonGlobals} = require('jest-util');
+const {LegacyFakeTimers, ModernFakeTimers} = require('@jest/fake-timers');
+const {ModuleMocker} = require('jest-mock');
+// const mock = require('jest-mock');
 const {JSDOM, VirtualConsole} = require('jsdom');
 
 const css = fs.readFileSync(path.join(__dirname, '../fixtures/bootstrap.css'), 'utf8');
@@ -71,19 +73,21 @@ class JSDOMEnvironment {
       return originalRemoveListener.apply(this, args);
     };
 
-    this.moduleMocker = new mock.ModuleMocker(global);
+    this.moduleMocker = new ModuleMocker(global);
 
     const timerConfig = {
       idToRef: (id) => id,
       refToId: (ref) => ref,
     };
 
-    this.fakeTimers = new FakeTimers({
+    this.fakeTimers = new LegacyFakeTimers({
       config,
       global,
       moduleMocker: this.moduleMocker,
       timerConfig,
     });
+
+    this.fakeTimersModern = new ModernFakeTimers({config, global});
   }
 
   setup() {
@@ -93,6 +97,10 @@ class JSDOMEnvironment {
   teardown() {
     if (this.fakeTimers) {
       this.fakeTimers.dispose();
+    }
+
+    if (this.fakeTimersModern) {
+      this.fakeTimersModern.dispose();
     }
 
     if (this.global) {
