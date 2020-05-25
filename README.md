@@ -58,7 +58,7 @@ textMetrics.init(document.querySelector('.textblock')).lines();
 ### AMD (e.g. RequireJS)
 
 ```javascript
-define(['text-metrics'], function(textMetrics) {
+define(['text-metrics'], function (textMetrics) {
   textMetrics.init(document.querySelector('h1')).width('unicorns');
 });
 ```

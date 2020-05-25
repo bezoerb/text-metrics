@@ -209,7 +209,7 @@ class TextMetrics {
     const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
 
     // Simple compute function which adds the size and computes the with
-    const compute = size => {
+    const compute = (size) => {
       return Math.ceil(
         this.width(text, options, {
           ...styles,

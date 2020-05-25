@@ -27,7 +27,7 @@
   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-(function(jasmine) {
+(function (jasmine) {
   if (!jasmine) {
     throw new Error("[Jasmine JSReporter] 'Jasmine' library not found");
   }
@@ -119,30 +119,30 @@
     return suiteData;
   }
 
-  var JSReporter = function() {};
+  var JSReporter = function () {};
 
   JSReporter.prototype = {
-    reportRunnerStarting: function(runner) {
+    reportRunnerStarting: function (runner) {
       // Nothing to do
     },
 
-    reportSpecStarting: function(spec) {
+    reportSpecStarting: function (spec) {
       // Start timing this spec
       spec.startedAt = new Date();
     },
 
-    reportSpecResults: function(spec) {
+    reportSpecResults: function (spec) {
       // Finish timing this spec and calculate duration/delta (in sec)
       spec.finishedAt = new Date();
       // If the spec was skipped, reportSpecStarting is never called and spec.startedAt is undefined
       spec.durationSec = spec.startedAt ? elapsedSec(spec.startedAt.getTime(), spec.finishedAt.getTime()) : 0;
     },
 
-    reportSuiteResults: function(suite) {
+    reportSuiteResults: function (suite) {
       // Nothing to do
     },
 
-    reportRunnerResults: function(runner) {
+    reportRunnerResults: function (runner) {
       var suites = runner.suites(),
         i,
         j,
@@ -168,13 +168,13 @@
       }
 
       // Decorate the 'jasmine' object with getters
-      jasmine.getJSReport = function() {
+      jasmine.getJSReport = function () {
         if (jasmine.runnerResults) {
           return jasmine.runnerResults;
         }
         return null;
       };
-      jasmine.getJSReportAsString = function() {
+      jasmine.getJSReportAsString = function () {
         return JSON.stringify(jasmine.getJSReport());
       };
     },
@@ -190,14 +190,14 @@
   /*
     Simple timer implementation
   */
-  var Timer = function() {};
+  var Timer = function () {};
 
-  Timer.prototype.start = function() {
+  Timer.prototype.start = function () {
     this.startTime = new Date().getTime();
     return this;
   };
 
-  Timer.prototype.elapsed = function() {
+  Timer.prototype.elapsed = function () {
     if (this.startTime == null) {
       return -1;
     }
@@ -207,20 +207,20 @@
   /*
     Utility methods
   */
-  var _extend = function(obj1, obj2) {
+  var _extend = function (obj1, obj2) {
     for (var prop in obj2) {
       obj1[prop] = obj2[prop];
     }
     return obj1;
   };
-  var _clone = function(obj) {
+  var _clone = function (obj) {
     if (obj !== Object(obj)) {
       return obj;
     }
     return _extend({}, obj);
   };
 
-  jasmine.JSReporter2 = function() {
+  jasmine.JSReporter2 = function () {
     this.specs = {};
     this.suites = {};
     this.rootSuites = [];
@@ -236,7 +236,7 @@
   // Reporter API methods
   // --------------------
 
-  JSR.suiteStarted = function(suite) {
+  JSR.suiteStarted = function (suite) {
     suite = this._cacheSuite(suite);
     // build up suite tree as we go
     suite.specs = [];
@@ -252,7 +252,7 @@
     suite.timer = new Timer().start();
   };
 
-  JSR.suiteDone = function(suite) {
+  JSR.suiteDone = function (suite) {
     suite = this._cacheSuite(suite);
     suite.duration = suite.timer.elapsed();
     suite.durationSec = suite.duration / 1000;
@@ -271,7 +271,7 @@
     delete suite.fullName;
   };
 
-  JSR.specStarted = function(spec) {
+  JSR.specStarted = function (spec) {
     spec = this._cacheSpec(spec);
     spec.timer = new Timer().start();
     // build up suites->spec tree as we go
@@ -279,7 +279,7 @@
     this.suites[spec.suiteId].specs.push(spec);
   };
 
-  JSR.specDone = function(spec) {
+  JSR.specDone = function (spec) {
     spec = this._cacheSpec(spec);
 
     spec.duration = spec.timer.elapsed();
@@ -325,17 +325,17 @@
     delete spec.failedExpectations;
   };
 
-  JSR.jasmineDone = function() {
+  JSR.jasmineDone = function () {
     this._buildReport();
   };
 
-  JSR.getJSReport = function() {
+  JSR.getJSReport = function () {
     if (jasmine.jsReport) {
       return jasmine.jsReport;
     }
   };
 
-  JSR.getJSReportAsString = function() {
+  JSR.getJSReportAsString = function () {
     if (jasmine.jsReport) {
       return JSON.stringify(jasmine.jsReport);
     }
@@ -344,11 +344,11 @@
   // Private methods
   // ---------------
 
-  JSR._haveSpec = function(spec) {
+  JSR._haveSpec = function (spec) {
     return this.specs[spec.id] != null;
   };
 
-  JSR._cacheSpec = function(spec) {
+  JSR._cacheSpec = function (spec) {
     var existing = this.specs[spec.id];
     if (existing == null) {
       existing = this.specs[spec.id] = _clone(spec);
@@ -358,11 +358,11 @@
     return existing;
   };
 
-  JSR._haveSuite = function(suite) {
+  JSR._haveSuite = function (suite) {
     return this.suites[suite.id] != null;
   };
 
-  JSR._cacheSuite = function(suite) {
+  JSR._cacheSuite = function (suite) {
     var existing = this.suites[suite.id];
     if (existing == null) {
       existing = this.suites[suite.id] = _clone(suite);
@@ -372,7 +372,7 @@
     return existing;
   };
 
-  JSR._buildReport = function() {
+  JSR._buildReport = function () {
     var overallDuration = 0;
     var overallPassed = true;
     var overallSuites = [];

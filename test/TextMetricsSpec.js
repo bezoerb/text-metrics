@@ -1,11 +1,11 @@
-describe('TextMetrics', function() {
-  it('is available', function() {
+describe('TextMetrics', function () {
+  it('is available', function () {
     expect(textMetrics).toBeDefined();
     expect(textMetrics.init).toBeDefined();
     expect(textMetrics.utils).toBeDefined();
   });
 
-  it('has instance all methods', function() {
+  it('has instance all methods', function () {
     var instance = textMetrics.init();
     expect(instance.width).toBeDefined();
     expect(instance.height).toBeDefined();
@@ -13,7 +13,7 @@ describe('TextMetrics', function() {
     expect(instance.lines).toBeDefined();
   });
 
-  it('does not break without element', function() {
+  it('does not break without element', function () {
     const instance = textMetrics.init();
 
     expect(instance.lines()).toEqual([]);
@@ -22,7 +22,7 @@ describe('TextMetrics', function() {
     expect(instance.height()).toBe(0);
   });
 
-  it('Computes width without element', function() {
+  it('Computes width without element', function () {
     var expected = textMetrics.utils.getContext2d('400 30px Helvetica, Arial, sans-serif').measureText('test');
     var instance = textMetrics.init({
       'font-size': '30px',
@@ -35,7 +35,7 @@ describe('TextMetrics', function() {
     expect(val).toBe(expected.width);
   });
 
-  it('computes lines correctly', function() {
+  it('computes lines correctly', function () {
     var expected = [
       'Lorem ipsum dolor sit amet, con-',
       'sectur adipisicing elit. Aliquam',
@@ -51,7 +51,7 @@ describe('TextMetrics', function() {
     }
   });
 
-  it('computes lines with text overwrite', function() {
+  it('computes lines with text overwrite', function () {
     var el = document.querySelector('[data-test="1"]');
     var instance = textMetrics.init(el);
 
@@ -60,7 +60,7 @@ describe('TextMetrics', function() {
     expect(lines[0]).toEqual('test');
   });
 
-  it('computes max font-size', function() {
+  it('computes max font-size', function () {
     var el1 = document.querySelector('[data-test="2"]');
     var el2 = document.querySelector('[data-test="3"]');
     var max1 = textMetrics.init(el1).maxFontSize();
@@ -70,7 +70,7 @@ describe('TextMetrics', function() {
     expect(max2).toEqual('56px');
   });
 
-  it('computes width', function() {
+  it('computes width', function () {
     var threshold = 4;
     var el1 = document.querySelector('[data-test="4"]');
     var el2 = document.querySelector('[data-test="5"]');
@@ -87,7 +87,7 @@ describe('TextMetrics', function() {
     expect(r2).toBeLessThanOrEqual(threshold);
   });
 
-  it('computes height', function() {
+  it('computes height', function () {
     var el1 = document.querySelector('[data-test="6"]');
     var el2 = document.querySelector('[data-test="7"]');
 

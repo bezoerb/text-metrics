@@ -141,12 +141,8 @@ export function addWordAndLetterSpacing(ws, ls) {
     letterAddon = pxValue(ls);
   }
 
-  return text => {
-    const words =
-      text
-        .trim()
-        .replace(/\s+/gi, ' ')
-        .split(' ').length - 1;
+  return (text) => {
+    const words = text.trim().replace(/\s+/gi, ' ').split(' ').length - 1;
     const chars = text.length;
 
     return words * wordAddon + chars * letterAddon;
@@ -257,7 +253,7 @@ export function getStyle(el, options) {
   }
 
   return {
-    getPropertyValue: key => prop(options, key),
+    getPropertyValue: (key) => prop(options, key),
   };
 }
 
@@ -339,8 +335,8 @@ export function normalizeOptions(options) {
   const opts = {};
 
   // Normalize keys (fontSize => font-size)
-  Object.keys(options || {}).forEach(key => {
-    const dashedKey = key.replace(/([A-Z])/g, $1 => '-' + $1.toLowerCase());
+  Object.keys(options || {}).forEach((key) => {
+    const dashedKey = key.replace(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
     opts[dashedKey] = options[key];
   });
 

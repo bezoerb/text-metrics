@@ -8,7 +8,7 @@
  [jasmine-gem]: http://github.com/pivotal/jasmine-gem
  */
 
-(function() {
+(function () {
   /**
    * ## Require &amp; Instantiate
    *
@@ -45,7 +45,7 @@
    */
 
   var queryString = new jasmine.QueryString({
-    getWindowLocation: function() {
+    getWindowLocation: function () {
       return window.location;
     },
   });
@@ -75,19 +75,19 @@
    */
   var htmlReporter = new jasmine.HtmlReporter({
     env: env,
-    navigateWithNewParam: function(key, value) {
+    navigateWithNewParam: function (key, value) {
       return queryString.navigateWithNewParam(key, value);
     },
-    addToExistingQueryString: function(key, value) {
+    addToExistingQueryString: function (key, value) {
       return queryString.fullStringWithNewParam(key, value);
     },
-    getContainer: function() {
+    getContainer: function () {
       return document.body;
     },
-    createElement: function() {
+    createElement: function () {
       return document.createElement.apply(document, arguments);
     },
-    createTextNode: function() {
+    createTextNode: function () {
       return document.createTextNode.apply(document, arguments);
     },
     timer: new jasmine.Timer(),
@@ -104,12 +104,12 @@
    * Filter which specs will be run by matching the start of the full name against the `spec` query param.
    */
   var specFilter = new jasmine.HtmlSpecFilter({
-    filterString: function() {
+    filterString: function () {
       return queryString.getParam('spec');
     },
   });
 
-  config.specFilter = function(spec) {
+  config.specFilter = function (spec) {
     return specFilter.matches(spec.getFullName());
   };
 
@@ -130,7 +130,7 @@
    */
   var currentWindowOnload = window.onload;
 
-  window.onload = function() {
+  window.onload = function () {
     if (currentWindowOnload) {
       currentWindowOnload();
     }
