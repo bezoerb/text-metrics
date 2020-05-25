@@ -22,6 +22,8 @@ class JSDOMEnvironment {
       ...config.testEnvironmentOptions,
     });
 
+    this.vmContext = this.dom.getInternalVMContext();
+
     this.global = this.dom.window.document.defaultView;
     const {global} = this;
 
@@ -38,7 +40,7 @@ class JSDOMEnvironment {
     head.append(style);
 
     // Report uncaught errors.
-    this.errorEventListener = event => {
+    this.errorEventListener = (event) => {
       if (userErrorListenerCount === 0 && event.error) {
         process.emit('uncaughtException', event.error);
       }
@@ -51,7 +53,7 @@ class JSDOMEnvironment {
     const originalAddListener = global.addEventListener;
     const originalRemoveListener = global.removeEventListener;
     let userErrorListenerCount = 0;
-    global.addEventListener = function(...args) {
+    global.addEventListener = function (...args) {
       const [name] = args;
       if (name === 'error') {
         userErrorListenerCount++;
@@ -60,7 +62,7 @@ class JSDOMEnvironment {
       return originalAddListener.apply(this, args);
     };
 
-    global.removeEventListener = function(...args) {
+    global.removeEventListener = function (...args) {
       const [name] = args;
       if (name === 'error') {
         userErrorListenerCount--;
@@ -72,8 +74,8 @@ class JSDOMEnvironment {
     this.moduleMocker = new mock.ModuleMocker(global);
 
     const timerConfig = {
-      idToRef: id => id,
-      refToId: ref => ref,
+      idToRef: (id) => id,
+      refToId: (ref) => ref,
     };
 
     this.fakeTimers = new FakeTimers({
@@ -111,8 +113,8 @@ class JSDOMEnvironment {
   }
 
   runScript(script) {
-    if (this.dom) {
-      return this.dom.runVMScript(script);
+    if (this.vmContext) {
+      return script.runInContext(this.vmContext);
     }
 
     return null;
