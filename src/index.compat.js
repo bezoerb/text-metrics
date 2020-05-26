@@ -5,4 +5,4 @@ import 'core-js/modules/es6.array.from';
 import 'core-js/es6/object';
 import 'core-js/es6/map';
 
-export * from './index';
+export * from '.';

@@ -5,13 +5,13 @@ const {CSSStyleDeclaration} = require('cssstyle');
 
 describe('Utils', () => {
   test('isElement', () => {
-    const el = document.querySelector('h1');
+    const element = document.querySelector('h1');
     expect(utils.isElement({})).toBeFalsy();
     expect(utils.isElement(1)).toBeFalsy();
     expect(utils.isElement(false)).toBeFalsy();
     expect(utils.isElement(null)).toBeFalsy();
     expect(utils.isElement(undefined)).toBeFalsy();
-    expect(utils.isElement(el)).toBeTruthy();
+    expect(utils.isElement(element)).toBeTruthy();
   });
 
   test('isObject', () => {
@@ -31,8 +31,8 @@ describe('Utils', () => {
   });
 
   test('getStyle', () => {
-    const el = document.querySelector('h1');
-    const style = utils.getStyle(el);
+    const element = document.querySelector('h1');
+    const style = utils.getStyle(element);
 
     expect(typeof style.getPropertyValue === 'function').toBeTruthy();
     expect(utils.isCSSStyleDeclaration(style)).toBeTruthy();
@@ -47,37 +47,37 @@ describe('Utils', () => {
 
     expect(utils.getFont(style)).toBe('bolder italic 16px Helvetica, Arial');
 
-    const el = document.querySelector('h1');
-    expect(utils.getFont(utils.getStyle(el))).toBe('500 36px Helvetica, Arial, sans-serif');
+    const element = document.querySelector('h1');
+    expect(utils.getFont(utils.getStyle(element))).toBe('500 36px Helvetica, Arial, sans-serif');
   });
 
   test('canGetComputedStyle', () => {
-    const el = document.querySelector('h1');
+    const element = document.querySelector('h1');
 
-    expect(utils.canGetComputedStyle(el)).toBeTruthy();
+    expect(utils.canGetComputedStyle(element)).toBeTruthy();
     expect(utils.canGetComputedStyle({})).toBeFalsy();
   });
 
   test('getStyledText', () => {
-    const el = document.querySelector('h1');
-    const style = utils.getStyle(el);
+    const element = document.querySelector('h1');
+    const style = utils.getStyle(element);
     const text = 'This is a test string';
 
     expect(utils.getStyledText(text, style)).toBe('THIS IS A TEST STRING');
   });
 
   test('prop', () => {
-    const obj = {a: 42, b: '42'};
+    const object = {a: 42, b: '42'};
 
-    expect(utils.prop(obj, 'a', 0)).toBe(42);
-    expect(utils.prop(obj, 'b')).toBe('42');
+    expect(utils.prop(object, 'a', 0)).toBe(42);
+    expect(utils.prop(object, 'b')).toBe('42');
     // Expect(utils.prop(obj, 'c', 1)).toBe(1);
     // t.not(utils.prop(obj, 'c'), 1);
   });
 
   test('normalizeOptions', () => {
-    const obj = {a: 1, 'font-size': '1px', lineHeight: 1};
-    const normalized = utils.normalizeOptions(obj);
+    const object = {a: 1, 'font-size': '1px', lineHeight: 1};
+    const normalized = utils.normalizeOptions(object);
 
     expect(normalized.a).toBe(1);
     expect(normalized['font-size']).toBe('1px');

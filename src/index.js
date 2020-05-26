@@ -2,12 +2,12 @@
 import * as _ from './utils';
 
 class TextMetrics {
-  constructor(el, overwrites = {}) {
-    if (!_.isElement(el) && _.isObject(el)) {
+  constructor(element, overwrites = {}) {
+    if (!_.isElement(element) && _.isObject(element)) {
       this.el = undefined;
-      this.overwrites = _.normalizeOptions(el);
+      this.overwrites = _.normalizeOptions(element);
     } else {
-      this.el = el;
+      this.el = element;
       this.overwrites = _.normalizeOptions(overwrites);
     }
 
@@ -16,7 +16,9 @@ class TextMetrics {
   }
 
   padding() {
-    return this.el ? parseInt(this.style.paddingLeft || 0, 10) + parseInt(this.style.paddingRight || 0, 10) : 0;
+    return this.el
+      ? Number.parseInt(this.style.paddingLeft || 0, 10) + Number.parseInt(this.style.paddingRight || 0, 10)
+      : 0;
   }
 
   /**
@@ -56,10 +58,10 @@ class TextMetrics {
     const ctx = _.getContext2d(font);
 
     if (options.multiline) {
-      return this.lines(styledText, options, overwrites).reduce((res, text) => {
+      return this.lines(styledText, options, overwrites).reduce((result, text) => {
         const w = ctx.measureText(text).width + addSpacing(text);
 
-        return Math.max(res, w);
+        return Math.max(result, w);
       }, 0);
     }
 
@@ -96,7 +98,7 @@ class TextMetrics {
     }
 
     const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
-    const lineHeight = parseFloat(_.prop(styles, 'line-height') || this.style.getPropertyValue('line-height'));
+    const lineHeight = Number.parseFloat(_.prop(styles, 'line-height') || this.style.getPropertyValue('line-height'));
 
     return Math.ceil(this.lines(text, options, styles).length * lineHeight || 0);
   }
@@ -140,10 +142,10 @@ class TextMetrics {
 
     // Get max width
     let max =
-      parseInt(_.prop(options, 'width') || _.prop(overwrites, 'width'), 10) ||
+      Number.parseInt(_.prop(options, 'width') || _.prop(overwrites, 'width'), 10) ||
       _.prop(this.el, 'offsetWidth', 0) ||
-      parseInt(_.prop(styles, 'width', 0), 10) ||
-      parseInt(this.style.width, 10);
+      Number.parseInt(_.prop(styles, 'width', 0), 10) ||
+      Number.parseInt(this.style.width, 10);
 
     max -= this.padding();
 
@@ -220,10 +222,10 @@ class TextMetrics {
 
     // Get max width
     let max =
-      parseInt(_.prop(options, 'width') || _.prop(overwrites, 'width'), 10) ||
+      Number.parseInt(_.prop(options, 'width') || _.prop(overwrites, 'width'), 10) ||
       _.prop(this.el, 'offsetWidth', 0) ||
-      parseInt(_.prop(styles, 'width', 0), 10) ||
-      parseInt(this.style.width, 10);
+      Number.parseInt(_.prop(styles, 'width', 0), 10) ||
+      Number.parseInt(this.style.width, 10);
 
     max -= this.padding();
 
@@ -262,6 +264,6 @@ class TextMetrics {
   }
 }
 
-export const init = (el, overwrites) => new TextMetrics(el, overwrites);
+export const init = (element, overwrites) => new TextMetrics(element, overwrites);
 
 export const utils = {..._};

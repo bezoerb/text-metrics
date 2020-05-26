@@ -7,15 +7,15 @@
  */
 
 // B2 Break Opportunity Before and After - http://www.unicode.org/reports/tr14/#B2
-const B2 = ['\u2014'];
+const B2 = new Set(['\u2014']);
 
-const SHY = [
+const SHY = new Set([
   // Soft hyphen
   '\u00AD',
-];
+]);
 
 // BA: Break After (remove on break) - http://www.unicode.org/reports/tr14/#BA
-const BAI = [
+const BAI = new Set([
   // Spaces
   '\u0020',
   '\u1680',
@@ -38,9 +38,9 @@ const BAI = [
   // Mandatory breaks not interpreted by html
   '\u2028',
   '\u2029',
-];
+]);
 
-const BA = [
+const BA = new Set([
   // Hyphen
   '\u058A',
   '\u2010',
@@ -78,13 +78,13 @@ const BA = [
   '\u103D0',
   '\u1091F',
   '\u12470',
-];
+]);
 
 // BB: Break Before - http://www.unicode.org/reports/tr14/#BB
-const BB = ['\u00B4', '\u1FFD'];
+const BB = new Set(['\u00B4', '\u1FFD']);
 
 // BK: Mandatory Break (A) (Non-tailorable) - http://www.unicode.org/reports/tr14/#BK
-const BK = ['\u000A'];
+const BK = new Set(['\u000A']);
 
 /* eslint-env es6, browser */
 const DEFAULTS = {
@@ -99,15 +99,15 @@ const DEFAULTS = {
  * @param options
  * @return {*}
  */
-function pxValue(val, options) {
+function pxValue(value_, options) {
   if (!options) {
     options = {};
   }
 
-  const baseFontSize = parseInt(prop(options, 'base-font-size', 16), 10);
+  const baseFontSize = Number.parseInt(prop(options, 'base-font-size', 16), 10);
 
-  const value = parseFloat(val);
-  const unit = val.replace(value, '');
+  const value = Number.parseFloat(value_);
+  const unit = value_.replace(value, '');
   // eslint-disable-next-line default-case
   switch (unit) {
     case 'rem':
@@ -129,15 +129,15 @@ function pxValue(val, options) {
  * @return {function(*)}
  */
 export function addWordAndLetterSpacing(ws, ls) {
-  const blacklist = ['inherit', 'initial', 'unset', 'normal'];
+  const blacklist = new Set(['inherit', 'initial', 'unset', 'normal']);
 
   let wordAddon = 0;
-  if (ws && blacklist.indexOf(ws) === -1) {
+  if (ws && !blacklist.has(ws)) {
     wordAddon = pxValue(ws);
   }
 
   let letterAddon = 0;
-  if (ls && blacklist.indexOf(ls) === -1) {
+  if (ls && !blacklist.has(ls)) {
     letterAddon = pxValue(ls);
   }
 
@@ -164,20 +164,20 @@ export function getFont(style, options) {
 
   const fontWeight = prop(options, 'font-weight', style.getPropertyValue('font-weight')) || DEFAULTS['font-weight'];
   if (
-    ['normal', 'bold', 'bolder', 'lighter', '100', '200', '300', '400', '500', '600', '700', '800', '900'].indexOf(
+    ['normal', 'bold', 'bolder', 'lighter', '100', '200', '300', '400', '500', '600', '700', '800', '900'].includes(
       fontWeight.toString()
-    ) !== -1
+    )
   ) {
     font.push(fontWeight);
   }
 
   const fontStyle = prop(options, 'font-style', style.getPropertyValue('font-style'));
-  if (['normal', 'italic', 'oblique'].indexOf(fontStyle) !== -1) {
+  if (['normal', 'italic', 'oblique'].includes(fontStyle)) {
     font.push(fontStyle);
   }
 
   const fontVariant = prop(options, 'font-variant', style.getPropertyValue('font-variant'));
-  if (['normal', 'small-caps'].indexOf(fontVariant) !== -1) {
+  if (['normal', 'small-caps'].includes(fontVariant)) {
     font.push(fontVariant);
   }
 
@@ -197,8 +197,8 @@ export function getFont(style, options) {
  * @param val
  * @returns {bool}
  */
-export function isCSSStyleDeclaration(val) {
-  return val && typeof val.getPropertyValue === 'function';
+export function isCSSStyleDeclaration(value) {
+  return value && typeof value.getPropertyValue === 'function';
 }
 
 /**
@@ -207,8 +207,13 @@ export function isCSSStyleDeclaration(val) {
  * @param el
  * @returns {bool}
  */
-export function canGetComputedStyle(el) {
-  return isElement(el) && el.style && typeof window !== 'undefined' && typeof window.getComputedStyle === 'function';
+export function canGetComputedStyle(element) {
+  return (
+    isElement(element) &&
+    element.style &&
+    typeof window !== 'undefined' &&
+    typeof window.getComputedStyle === 'function'
+  );
 }
 
 /**
@@ -217,10 +222,16 @@ export function canGetComputedStyle(el) {
  * @param el
  * @retutns {bool}
  */
-export function isElement(el) {
+export function isElement(element) {
   return typeof HTMLElement === 'object'
-    ? el instanceof HTMLElement
-    : Boolean(el && typeof el === 'object' && el !== null && el.nodeType === 1 && typeof el.nodeName === 'string');
+    ? element instanceof HTMLElement
+    : Boolean(
+        element &&
+          typeof element === 'object' &&
+          element !== null &&
+          element.nodeType === 1 &&
+          typeof element.nodeName === 'string'
+      );
 }
 
 /**
@@ -228,8 +239,8 @@ export function isElement(el) {
  * @param obj
  * @returns {boolean}
  */
-export function isObject(obj) {
-  return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
+export function isObject(object) {
+  return typeof object === 'object' && object !== null && !Array.isArray(object);
 }
 
 /**
@@ -237,9 +248,9 @@ export function isObject(obj) {
  *
  * @returns {CSSStyleDeclaration}
  */
-export function getStyle(el, options) {
-  const opts = {...(options || {})};
-  const {style} = opts;
+export function getStyle(element, options) {
+  const options_ = {...(options || {})};
+  const {style} = options_;
   if (!options) {
     options = {};
   }
@@ -248,8 +259,8 @@ export function getStyle(el, options) {
     return style;
   }
 
-  if (canGetComputedStyle(el)) {
-    return window.getComputedStyle(el, prop(options, 'pseudoElt', null));
+  if (canGetComputedStyle(element)) {
+    return window.getComputedStyle(element, prop(options, 'pseudoElt', null));
   }
 
   return {
@@ -289,7 +300,7 @@ export function prepareText(text) {
     .replace(/&shy;/gi, '\u00AD')
     .replace(/&mdash;/gi, '\u2014');
 
-  if (/&#(\d+)(;?)|&#[xX]([a-fA-F0-9]+)(;?)|&([0-9a-zA-Z]+);/g.test(text) && console) {
+  if (/&#(\d+)(;?)|&#[xX]([a-fA-F\d]+)(;?)|&([\da-zA-Z]+);/g.test(text) && console) {
     console.error(
       'text-metrics: Found encoded htmlenties. You may want to use https://mths.be/he to decode your text first.'
     );
@@ -303,12 +314,12 @@ export function prepareText(text) {
  * Try innerText first
  * @param el
  */
-export function getText(el) {
-  if (!el) {
+export function getText(element) {
+  if (!element) {
     return '';
   }
 
-  const text = el.innerText || el.textContent || '';
+  const text = element.textContent || element.textContent || '';
 
   return text.trim();
 }
@@ -332,15 +343,15 @@ export function prop(src, attr, defaultValue) {
  * @returns {*}
  */
 export function normalizeOptions(options) {
-  const opts = {};
+  const options_ = {};
 
   // Normalize keys (fontSize => font-size)
   Object.keys(options || {}).forEach((key) => {
     const dashedKey = key.replace(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
-    opts[dashedKey] = options[key];
+    options_[dashedKey] = options[key];
   });
 
-  return opts;
+  return options_;
 }
 
 /**
@@ -364,7 +375,7 @@ export function getContext2d(font) {
     ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
     return ctx;
   } catch (error) {
-    throw new Error('Canvas support required');
+    throw new Error('Canvas support required' + error.message);
   }
 }
 
@@ -376,12 +387,12 @@ export function getContext2d(font) {
  */
 function checkBreak(chr) {
   return (
-    (B2.includes(chr) && 'B2') ||
-    (BAI.includes(chr) && 'BAI') ||
-    (SHY.includes(chr) && 'SHY') ||
-    (BA.includes(chr) && 'BA') ||
-    (BB.includes(chr) && 'BB') ||
-    (BK.includes(chr) && 'BK')
+    (B2.has(chr) && 'B2') ||
+    (BAI.has(chr) && 'BAI') ||
+    (SHY.has(chr) && 'SHY') ||
+    (BA.has(chr) && 'BA') ||
+    (BB.has(chr) && 'BB') ||
+    (BK.has(chr) && 'BK')
   );
 }
 
@@ -426,7 +437,7 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     }
 
     const part = parts[i];
-    if (BAI.includes(parts[i - 1]) && BAI.includes(parts[i])) {
+    if (BAI.has(parts[i - 1]) && BAI.has(parts[i])) {
       continue;
     }
 
@@ -469,10 +480,10 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
         line = chr + part;
         break;
       case 'B2':
-        if (parseInt(ctx.measureText(line + chr).width + addSpacing(line + chr), 10) <= max) {
+        if (Number.parseInt(ctx.measureText(line + chr).width + addSpacing(line + chr), 10) <= max) {
           lines.push(line + chr);
           line = part;
-        } else if (parseInt(ctx.measureText(chr + part).width + addSpacing(chr + part), 10) <= max) {
+        } else if (Number.parseInt(ctx.measureText(chr + part).width + addSpacing(chr + part), 10) <= max) {
           lines.push(line);
           line = chr + part;
         } else {
@@ -514,7 +525,7 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
     }
 
     const lineLength = line.length;
-    if (BAI.includes(chr) && (lineLength === 0 || BAI.includes(line[lineLength - 1]))) {
+    if (BAI.has(chr) && (lineLength === 0 || BAI.has(line[lineLength - 1]))) {
       continue;
     }
 

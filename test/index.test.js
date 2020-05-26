@@ -9,44 +9,44 @@ describe('index', () => {
   test('Compute with without element', () => {
     const expected = getContext2d('400 30px Helvetica, Arial, sans-serif').measureText('test');
 
-    const val = init({
+    const value = init({
       'font-size': '30px',
       'font-weight': '400',
       'font-family': 'Helvetica, Arial, sans-serif',
     }).width('test');
 
-    expect(val).toBe(expected.width);
+    expect(value).toBe(expected.width);
   });
 
   test('Dooes not break without element', () => {
-    const val = init();
+    const value = init();
 
-    expect(val.lines()).toMatchObject([]);
-    expect(val.maxFontSize()).toBe(undefined);
-    expect(val.width()).toBe(0);
-    expect(val.height()).toBe(0);
+    expect(value.lines()).toMatchObject([]);
+    expect(value.maxFontSize()).toBe(undefined);
+    expect(value.width()).toBe(0);
+    expect(value.height()).toBe(0);
   });
 
   test('Compute width for h1', () => {
     const expected = getContext2d('500 36px Helvetica, Arial, sans-serif').measureText('TEST');
 
-    const el = document.querySelector('h1');
-    const val = init(el).width('TEST');
-    expect(val).toBe(expected.width);
+    const element = document.querySelector('h1');
+    const value = init(element).width('TEST');
+    expect(value).toBe(expected.width);
   });
 
   test('Compute width for h2', () => {
     // Lowercase as this get's applied via css
     const expected = getContext2d('500 30px Helvetica, Arial, sans-serif').measureText('test');
 
-    const el = document.querySelector('h2');
-    const val = init(el).width('TEST');
-    expect(val).toBe(expected.width);
+    const element = document.querySelector('h2');
+    const value = init(element).width('TEST');
+    expect(value).toBe(expected.width);
   });
 
   test('Computes width', () => {
-    const el = document.querySelector('h1');
-    const metrics = init(el);
+    const element = document.querySelector('h1');
+    const metrics = init(element);
     const v1 = metrics.width('-');
     const v2 = metrics.width('--');
     const v3 = metrics.width('---');
@@ -55,13 +55,13 @@ describe('index', () => {
   });
 
   test('Computes maxFontSize', () => {
-    const el = document.querySelector('#max-font-size');
-    const val = init(el).maxFontSize('unicorn');
-    expect(val).toBe('182px');
+    const element = document.querySelector('#max-font-size');
+    const value = init(element).maxFontSize('unicorn');
+    expect(value).toBe('182px');
   });
 
   test('Computes lines', () => {
-    const el = document.querySelector('#height');
+    const element = document.querySelector('#height');
 
     const text =
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.';
@@ -76,17 +76,17 @@ describe('index', () => {
       'incidunt.',
     ];
 
-    const value = init(el).lines(text);
+    const value = init(element).lines(text);
 
     expect(value.length).toBe(expected.length);
 
-    for (let i = 0; i < value.length; i++) {
-      expect(value[i]).toBe(expected[i]);
+    for (const [i, element] of value.entries()) {
+      expect(element).toBe(expected[i]);
     }
   });
 
   test('Computes lines with breaks', () => {
-    const el = document.querySelector('#lines');
+    const element = document.querySelector('#lines');
     const text =
       'Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, c&shy;onsectur a&shy;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.';
     const expected = [
@@ -102,17 +102,17 @@ describe('index', () => {
       '&bigstar;.',
     ];
 
-    const value = init(el).lines(text);
+    const value = init(element).lines(text);
 
     expect(value.length).toBe(expected.length);
 
-    for (let i = 0; i < value.length; i++) {
-      expect(value[i]).toBe(expected[i]);
+    for (const [i, element] of value.entries()) {
+      expect(element).toBe(expected[i]);
     }
   });
 
   test('Computes lines with break-all', () => {
-    const el = document.querySelector('#lines-break');
+    const element = document.querySelector('#lines-break');
     // Need to pass text as the jsdom implementation of innerText differs from browsers
     // https://github.com/tmpvar/jsdom/issues/1245
     const text =
@@ -128,11 +128,11 @@ describe('index', () => {
       'bo incidunt.',
     ];
 
-    const value = init(el).lines(text);
+    const value = init(element).lines(text);
     expect(value.length).toBe(expected.length);
 
-    for (let i = 0; i < value.length; i++) {
-      expect(value[i]).toBe(expected[i]);
+    for (const [i, element] of value.entries()) {
+      expect(element).toBe(expected[i]);
     }
   });
 
@@ -140,7 +140,7 @@ describe('index', () => {
     const text =
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque cum dolor explicabo incidunt.';
 
-    const val = init({
+    const value = init({
       'font-size': '14px',
       'line-height': '20px',
       'font-family': 'Helvetica, Arial, sans-serif',
@@ -148,7 +148,7 @@ describe('index', () => {
       width: 100,
     }).height(text);
 
-    expect(val).toBe(160);
+    expect(value).toBe(160);
   });
 
   test('Consider letter- and word-spacing', () => {
@@ -156,8 +156,8 @@ describe('index', () => {
     const reference = getContext2d('500 24px Helvetica, Arial, sans-serif').measureText(referenceline);
     // Width + word-spacing (10px) + letter-spacing (2px)
     const referenceWidth = reference.width + 20 + referenceline.length * 2;
-    const el = document.querySelector('h3');
-    const metrics = init(el, {'line-height': '26px'});
+    const element = document.querySelector('h3');
+    const metrics = init(element, {'line-height': '26px'});
 
     const lines = metrics.lines();
     const width = metrics.width(null, {multiline: true});
@@ -174,8 +174,8 @@ describe('index', () => {
 
     expect(lines.length).toBe(expected.length);
 
-    for (let i = 0; i < lines.length; i++) {
-      expect(lines[i]).toBe(expected[i]);
+    for (const [i, element] of lines.entries()) {
+      expect(element).toBe(expected[i]);
     }
 
     expect(width).toBe(referenceWidth);
@@ -199,13 +199,13 @@ describe('index', () => {
     ];
 
     expect(lines.length).toBe(expected.length);
-    for (let i = 0; i < lines.length; i++) {
-      expect(lines[i]).toBe(expected[i]);
+    for (const [i, element] of lines.entries()) {
+      expect(element).toBe(expected[i]);
     }
   });
 
   test.skip('Computes lines with one very long word', () => {
-    const el = document.querySelector('#height');
+    const element = document.querySelector('#height');
     const text =
       'Craspharetrapharetragravida.Vivamusconsequatlacusvelposuerecongue.Duisaloremvitaeexauctorscelerisquenoneuturpis.Utimperdietmagnasitametjustobibendumvehicula.';
     const expected = [
@@ -223,12 +223,12 @@ describe('index', () => {
       'a.',
     ];
 
-    const value = init(el).lines(text, {}, {'word-break': 'break-all'});
+    const value = init(element).lines(text, {}, {'word-break': 'break-all'});
 
     expect(value.length).toBe(expected.length);
 
-    for (let i = 0; i < value.length; i++) {
-      expect(value[i]).toBe(expected[i]);
+    for (const [i, element] of value.entries()) {
+      expect(element).toBe(expected[i]);
     }
   });
 });
