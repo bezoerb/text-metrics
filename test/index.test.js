@@ -18,7 +18,7 @@ describe('index', () => {
     expect(value).toBe(expected.width);
   });
 
-  test('Dooes not break without element', () => {
+  test('Does not break without element', () => {
     const value = init();
 
     expect(value.lines()).toMatchObject([]);
@@ -58,6 +58,22 @@ describe('index', () => {
     const element = document.querySelector('#max-font-size');
     const value = init(element).maxFontSize('unicorn');
     expect(value).toBe('182px');
+  });
+
+  test('computes lines correctly', () => {
+    const expected = [
+      'Lorem ipsum dolor sit amet, con-',
+      'sectur adipisicing elit. Aliquam',
+      'atque cum dolor explicabo ★.',
+    ];
+    const el = document.querySelector('[data-test="1"]');
+    const instance = init(el);
+
+    const lines = instance.lines();
+    expect(lines.length).toBe(expected.length);
+    for (let i = 0; i < lines.length; i++) {
+      expect(lines[i]).toBe(expected[i]);
+    }
   });
 
   test('Computes lines', () => {
@@ -129,6 +145,7 @@ describe('index', () => {
     ];
 
     const value = init(element).lines(text);
+
     expect(value.length).toBe(expected.length);
 
     for (const [i, element] of value.entries()) {

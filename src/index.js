@@ -21,6 +21,33 @@ class TextMetrics {
       : 0;
   }
 
+  parseArgs(text, options = {}, overwrites = {}) {
+    if (typeof text === 'object' && text) {
+      overwrites = options;
+      options = text || {};
+      text = undefined;
+    }
+
+    const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
+    const ws = _.prop(styles, 'white-space') || this.style.getPropertyValue('white-space');
+
+    if (!options) {
+      options = {};
+    }
+
+    if (!overwrites) {
+      options = {};
+    }
+
+    if (!text && this.el) {
+      text = _.normalizeWhitespace(_.getText(this.el), ws);
+    } else {
+      text = _.prepareText(_.normalizeWhitespace(text));
+    }
+
+    return {text, options, overwrites, styles};
+  }
+
   /**
    * Compute Text Metrics based for given text
    *
@@ -29,33 +56,21 @@ class TextMetrics {
    * @param {object} overwrites
    * @returns {function}
    */
-  width(text, options = {}, overwrites = {}) {
-    if (typeof text === 'object' && text) {
-      overwrites = options;
-      options = text || {};
-      text = undefined;
-    }
-
-    if (!text && this.el) {
-      text = this.el.textContent.trim();
-    } else {
-      text = _.prepareText(text);
-    }
+  width(...args) {
+    const {text, options, overwrites, styles} = this.parseArgs(...args);
 
     if (!text) {
       return 0;
     }
 
-    const styledText = _.getStyledText(text, this.style);
-
-    const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
     const font = _.getFont(this.style, styles);
 
     const letterSpacing = _.prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
     const wordSpacing = _.prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
     const addSpacing = _.addWordAndLetterSpacing(wordSpacing, letterSpacing);
-
     const ctx = _.getContext2d(font);
+
+    const styledText = _.getStyledText(text, this.style);
 
     if (options.multiline) {
       return this.lines(styledText, options, overwrites).reduce((result, text) => {
@@ -76,28 +91,9 @@ class TextMetrics {
    * @param {object} overwrites
    * @returns {number}
    */
-  height(text, options, overwrites) {
-    if (typeof text === 'object' && text) {
-      overwrites = options;
-      options = text || {};
-      text = undefined;
-    }
+  height(...args) {
+    const {text, options, overwrites, styles} = this.parseArgs(...args);
 
-    if (!options) {
-      options = {};
-    }
-
-    if (!overwrites) {
-      options = {};
-    }
-
-    if (!text && this.el) {
-      text = _.getText(this.el);
-    } else {
-      text = _.prepareText(text);
-    }
-
-    const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
     const lineHeight = Number.parseFloat(_.prop(styles, 'line-height') || this.style.getPropertyValue('line-height'));
 
     return Math.ceil(this.lines(text, options, styles).length * lineHeight || 0);
@@ -112,32 +108,9 @@ class TextMetrics {
    * @param {object} overwrites
    * @returns {*}
    */
-  lines(text, options, overwrites) {
-    if (typeof text === 'object' && text) {
-      overwrites = options;
-      options = text;
-      text = undefined;
-    }
+  lines(...args) {
+    const {text, options, overwrites, styles} = this.parseArgs(...args);
 
-    if (typeof overwrites === 'undefined') {
-      overwrites = options;
-    }
-
-    if (!options) {
-      options = {};
-    }
-
-    if (!overwrites) {
-      options = {};
-    }
-
-    if (!text && this.el) {
-      text = _.getText(this.el);
-    } else {
-      text = _.prepareText(text);
-    }
-
-    const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
     const font = _.getFont(this.style, styles);
 
     // Get max width
@@ -152,14 +125,15 @@ class TextMetrics {
     const wordBreak = _.prop(styles, 'word-break') || this.style.getPropertyValue('word-break');
     const letterSpacing = _.prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
     const wordSpacing = _.prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
+    const ws = _.prop(styles, 'white-space') || this.style.getPropertyValue('white-space');
     const ctx = _.getContext2d(font);
-    text = _.getStyledText(text, this.style);
+    const styledText = _.getStyledText(text, this.style);
 
     // Different scenario when break-word is allowed
     if (wordBreak === 'break-all') {
       return _.computeLinesBreakAll({
         ctx,
-        text,
+        text: styledText,
         max,
         wordSpacing,
         letterSpacing,
@@ -168,7 +142,7 @@ class TextMetrics {
 
     return _.computeLinesDefault({
       ctx,
-      text,
+      text: styledText,
       max,
       wordSpacing,
       letterSpacing,
@@ -183,32 +157,8 @@ class TextMetrics {
    * @param {object} overwrites
    * @returns {string} Pixelvalue e.g. 14px
    */
-  maxFontSize(text, options, overwrites) {
-    if (typeof text === 'object' && text) {
-      overwrites = options;
-      options = text;
-      text = undefined;
-    }
-
-    if (typeof overwrites === 'undefined') {
-      overwrites = options;
-    }
-
-    if (!options) {
-      options = {};
-    }
-
-    if (!overwrites) {
-      options = {};
-    }
-
-    if (!text && this.el) {
-      text = _.getText(this.el);
-    } else {
-      text = _.prepareText(text);
-    }
-
-    const styles = {...this.overwrites, ..._.normalizeOptions(overwrites)};
+  maxFontSize(...args) {
+    const {text, options, overwrites, styles} = this.parseArgs(...args);
 
     // Simple compute function which adds the size and computes the with
     const compute = (size) => {

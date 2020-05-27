@@ -269,6 +269,33 @@ export function getStyle(element, options) {
 }
 
 /**
+ * Normalize whitespace
+ * https://developer.mozilla.org/de/docs/Web/CSS/white-space
+ *
+ * @param {string} text
+ * @param {string} ws whitespace value
+ * @returns {string}
+ */
+export function normalizeWhitespace(text, ws) {
+  switch (ws) {
+    case 'pre':
+      return text;
+    case 'pre-wrap':
+      return text;
+    case 'pre-line':
+      return (text || '').replace(/\s+/gm, ' ').trim();
+    case 'normal':
+    case 'nowrap':
+
+    default:
+      return (text || '')
+        .replace(/[\r\n]/gm, ' ')
+        .replace(/\s+/gm, ' ')
+        .trim();
+  }
+}
+
+/**
  * Get styled text
  *
  * @param {string} text
@@ -306,7 +333,7 @@ export function prepareText(text) {
     );
   }
 
-  return text.trim();
+  return text;
 }
 
 /**
@@ -321,7 +348,7 @@ export function getText(element) {
 
   const text = element.textContent || element.textContent || '';
 
-  return text.trim();
+  return text;
 }
 
 /**
@@ -444,7 +471,6 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     const breakpoint = breakpoints[i - 1];
     // Special treatment as we only render the soft hyphen if we need to split
     const chr = breakpoint.type === 'SHY' ? '' : breakpoint.chr;
-
     if (breakpoint.type === 'BK') {
       lines.push(line);
       line = part;
