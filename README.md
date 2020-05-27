@@ -134,7 +134,7 @@ i couldn't detect any sort of recalculate style and it massively outperforms `te
 
 ## Compatibility
 
-The normal build (3,2kb gzipped) should work well on modern browsers. There's also a compatibility build (10,7kb) available if you need to support IE11.<br/>
+The normal build (3,2kb gzipped) should work well on modern browsers.<br/>
 These builds are tested using <br/><a href="http://browserstack.com/" target="_blank"><img src="./test/fixtures/Browserstack-logo.svg" width="200" alt="Browserstack"></a>
 
 ## License
