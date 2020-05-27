@@ -28,8 +28,6 @@
   },
   "files": [
     "dist",
-    "lib",
-    "es",
     "src"
   ],
   "main": "dist/text-metrics.js",
