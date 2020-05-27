@@ -284,9 +284,6 @@ export function normalizeWhitespace(text, ws) {
       return text;
     case 'pre-line':
       return (text || '').replace(/\s+/gm, ' ').trim();
-    case 'normal':
-    case 'nowrap':
-
     default:
       return (text || '')
         .replace(/[\r\n]/gm, ' ')

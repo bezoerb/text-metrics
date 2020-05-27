@@ -92,7 +92,7 @@ class TextMetrics {
    * @returns {number}
    */
   height(...args) {
-    const {text, options, overwrites, styles} = this.parseArgs(...args);
+    const {text, options, styles} = this.parseArgs(...args);
 
     const lineHeight = Number.parseFloat(_.prop(styles, 'line-height') || this.style.getPropertyValue('line-height'));
 
@@ -125,7 +125,6 @@ class TextMetrics {
     const wordBreak = _.prop(styles, 'word-break') || this.style.getPropertyValue('word-break');
     const letterSpacing = _.prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
     const wordSpacing = _.prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
-    const ws = _.prop(styles, 'white-space') || this.style.getPropertyValue('white-space');
     const ctx = _.getContext2d(font);
     const styledText = _.getStyledText(text, this.style);
 

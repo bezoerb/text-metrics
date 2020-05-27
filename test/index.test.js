@@ -66,11 +66,12 @@ describe('index', () => {
       'sectur adipisicing elit. Aliquam',
       'atque cum dolor explicabo ★.',
     ];
-    const el = document.querySelector('[data-test="1"]');
-    const instance = init(el);
+    const element = document.querySelector('[data-test="1"]');
+    const instance = init(element);
 
     const lines = instance.lines();
     expect(lines.length).toBe(expected.length);
+    // eslint-disable-next-line unicorn/no-for-loop
     for (let i = 0; i < lines.length; i++) {
       expect(lines[i]).toBe(expected[i]);
     }
