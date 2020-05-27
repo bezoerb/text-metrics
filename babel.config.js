@@ -7,7 +7,7 @@ module.exports = {
       {
         targets: {
           browsers: ['> 5%'],
-          node: '8.6',
+          node: '10',
         },
         exclude: ['transform-async-to-generator', 'transform-regenerator'],
         modules: false,
