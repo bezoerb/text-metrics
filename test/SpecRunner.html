@@ -54,15 +54,20 @@
     <script src="jasmine/jasmine-html.js"></script>
     <script src="jasmine/boot.js"></script>
     <script src="jasmine/jasmine-jsreporter.js"></script>
-    <script>jasmine.getEnv().addReporter(new jasmine.JSReporter2())</script>
+    <script>
+      jasmine.getEnv().addReporter(new jasmine.JSReporter2());
+    </script>
 
     <!-- include source files here... -->
-    <script src="../dist/text-metrics.compat.js"></script>
+    <script src="../dist/text-metrics.umd.js"></script>
   </head>
 
   <body>
     <div class="test-container">
-      <div data-test="1" class="test">Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, con&shy;sectur a&shy;dipisicing elit. Aliquam atque cum dolor explicabo &bigstar;.</div>
+      <div data-test="1" class="test">
+        Lo&shy;rem ipsum d&shy;o&shy;lor sit amet, con&shy;sectur a&shy;dipisicing elit. Aliquam atque cum dolor
+        explicabo &bigstar;.
+      </div>
       <div data-test="2" class="test u-mono">Lorem Ipsum</div>
       <div data-test="3" class="test">Lorem Ipsum</div>
       <div data-test="4" class="test u-lc nowrap">Lorem ipsum dolor sit amet.</div>
