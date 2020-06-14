@@ -90,11 +90,11 @@ textMetrics.init(document.querySelector('h1'), { fontSize: '20px'});
 
 // only use given styles
 textMetrics.init({
-    fontSize': '14px',
-    lineHeight': '20px',
-    fontFamily': 'Helvetica, Arial, sans-serif',
-    fontWeight': '400',
-    width: 100
+    'fontSize': '14px',
+    'lineHeight': '20px',
+    'fontFamily': 'Helvetica, Arial, sans-serif',
+    'fontWeight': 400,
+    'width': 100
 });
 ```
 
