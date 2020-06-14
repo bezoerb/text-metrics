@@ -144,8 +144,8 @@ Licensed under the [MIT license](http://bezoerb.mit-license.org/).
 
 [npm-url]: https://npmjs.org/package/text-metrics
 [npm-image]: https://badge.fury.io/js/text-metrics.svg
-[travis-url]: https://travis-ci.org/bezoerb/text-metrics
-[travis-image]: https://secure.travis-ci.org/bezoerb/text-metrics.svg?branch=master
+[travis-url]: https://travis-ci.com/github/bezoerb/text-metrics
+[travis-image]: https://api.travis-ci.com/bezoerb/text-metrics.svg?branch=master
 [depstat-url]: https://david-dm.org/bezoerb/text-metrics
 [depstat-image]: https://david-dm.org/bezoerb/text-metrics.svg
 [dlcounter-url]: https://www.npmjs.com/package/text-metrics
