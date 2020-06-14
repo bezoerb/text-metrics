@@ -99,7 +99,8 @@
     "rules": {
       "valid-jsdoc": 0,
       "import/no-unresolved": 0,
-      "import/no-unassigned-import": 0
+      "import/no-unassigned-import": 0,
+      "unicorn/no-reduce": 0
     }
   },
   "npmName": "text-metrics",
