@@ -13,7 +13,6 @@
   "scripts": {
     "clean": "rimraf lib dist es coverage",
     "format": "prettier --write \"{src,test}/**/*.{js,ts}\" \"**/*.md\"",
-    "format:check": "prettier --list-different \"{src,test}/**/*.{js,ts}\" \"**/*.md\"",
     "lint": "xo",
     "test": "jest",
     "pretest": "npm run build",
@@ -23,7 +22,7 @@
     "test:all": "npm run test:cov && npm run test:browser",
     "build": "microbundle",
     "dev": "microbundle watch",
-    "prepare": "npm run clean && npm run format:check && npm run lint && npm test",
+    "prepare": "npm run clean && npm run format && npm run lint && npm test",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "files": [
