@@ -114,7 +114,7 @@ function pxValue(value_, options) {
     case 'em':
       return value * baseFontSize;
     case 'pt':
-      return value / (96 / 72);
+      return value * (96 / 72);
     case 'px':
       return value;
   }
