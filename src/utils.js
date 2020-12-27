@@ -521,7 +521,7 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     }
   }
 
-  if ([...line].length !== 0) {
+  if ([...line].length > 0) {
     lines.push(line);
   }
 
@@ -564,7 +564,7 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
     }
 
     // Needs at least one character
-    if (width > max && [...line].length !== 0) {
+    if (width > max && [...line].length > 0) {
       switch (type) {
         case 'SHY':
           lines.push(line + '-');
@@ -590,7 +590,7 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
     index++;
   }
 
-  if ([...line].length !== 0) {
+  if ([...line].length > 0) {
     lines.push(line);
   }
 

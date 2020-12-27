@@ -39,11 +39,8 @@ class TextMetrics {
       options = {};
     }
 
-    if (!text && this.el) {
-      text = _.normalizeWhitespace(_.getText(this.el), ws);
-    } else {
-      text = _.prepareText(_.normalizeWhitespace(text));
-    }
+    text =
+      !text && this.el ? _.normalizeWhitespace(_.getText(this.el), ws) : _.prepareText(_.normalizeWhitespace(text));
 
     return {text, options, overwrites, styles};
   }
