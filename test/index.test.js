@@ -1,4 +1,5 @@
 /* eslint-env es6, browser, jest */
+// eslint-disable-next-line import/extensions
 import {init, utils} from '..';
 
 const {getContext2d} = utils;
