@@ -1,0 +1,85 @@
+name: Tests
+
+on: [push, pull_request]
+
+env:
+  CI: true
+
+jobs:
+  run:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [10.x, 12.x, 14.x, 16.x]
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Install system dependencies (Linux)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt update
+          sudo apt install -y libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev librsvg2-dev
+
+      - name: Install system dependencies (Windows)
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          Invoke-WebRequest "https://ftp-osl.osuosl.org/pub/gnome/binaries/win64/gtk+/2.22/gtk+-bundle_2.22.1-20101229_win64.zip" -OutFile "gtk.zip"
+          Expand-Archive gtk.zip -DestinationPath "C:\GTK"
+          Invoke-WebRequest "https://downloads.sourceforge.net/project/libjpeg-turbo/2.0.4/libjpeg-turbo-2.0.4-vc64.exe" -OutFile "libjpeg.exe" -UserAgent NativeHost
+          .\libjpeg.exe /S
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Set up npm cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-v${{ matrix.node }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-v${{ matrix.node }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
+            ${{ runner.OS }}-node-v${{ matrix.node }}-
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test:cov
+
+      - name: Run Coveralls
+        uses: coverallsapp/github-action@master
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Install npm dependencies
+        run: npm ci
+      - name: 'BrowserStack Env Setup' # Invokes the setup-env action
+        uses: browserstack/github-actions/setup-env@master
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
+        with:
+          username: ${{ secrets.BROWSERSTACK_USERNAME }}
+          access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+
+      - name: 'BrowserStack Local Tunnel Setup' # Invokes the setup-local action
+        uses: browserstack/github-actions/setup-local@master
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
+        with:
+          local-testing: start
+          local-identifier: random
+
+      - name: 'Running test on BrowserStack'
+        run: npx browserstack-runner
+
+      - name: 'BrowserStackLocal Stop' # Terminating the BrowserStackLocal tunnel connection
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: stop
