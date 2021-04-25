@@ -8,7 +8,6 @@ const path = require('path');
 const {installCommonGlobals} = require('jest-util');
 const {LegacyFakeTimers, ModernFakeTimers} = require('@jest/fake-timers');
 const {ModuleMocker} = require('jest-mock');
-// Const mock = require('jest-mock');
 const {JSDOM, VirtualConsole} = require('jsdom');
 
 const css = fs.readFileSync(path.join(__dirname, '../fixtures/bootstrap.css'), 'utf8');

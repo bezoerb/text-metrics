@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import 'core-js/modules/es7.object.get-own-property-descriptors';
 import 'core-js/modules/es6.symbol';
 import 'core-js/modules/es6.array.from';

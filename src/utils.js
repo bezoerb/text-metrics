@@ -129,15 +129,15 @@ function pxValue(value_, options) {
  * @return {function(*)}
  */
 export function addWordAndLetterSpacing(ws, ls) {
-  const blacklist = new Set(['inherit', 'initial', 'unset', 'normal']);
+  const denyList = new Set(['inherit', 'initial', 'unset', 'normal']);
 
   let wordAddon = 0;
-  if (ws && !blacklist.has(ws)) {
+  if (ws && !denyList.has(ws)) {
     wordAddon = pxValue(ws);
   }
 
   let letterAddon = 0;
-  if (ls && !blacklist.has(ls)) {
+  if (ls && !denyList.has(ls)) {
     letterAddon = pxValue(ls);
   }
 
@@ -370,10 +370,10 @@ export function normalizeOptions(options) {
   const options_ = {};
 
   // Normalize keys (fontSize => font-size)
-  Object.keys(options || {}).forEach((key) => {
+  for (const key of Object.keys(options || {})) {
     const dashedKey = key.replace(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
     options_[dashedKey] = options[key];
-  });
+  }
 
   return options_;
 }
@@ -510,8 +510,7 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
           lines.push(line);
           line = chr + part;
         } else {
-          lines.push(line);
-          lines.push(chr);
+          lines.push(line, chr);
           line = part;
         }
 

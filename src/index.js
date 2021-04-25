@@ -1,5 +1,5 @@
 /* eslint-env es6, browser */
-import * as _ from './utils';
+import * as _ from './utils.js';
 
 class TextMetrics {
   constructor(element, overwrites = {}) {
@@ -70,6 +70,7 @@ class TextMetrics {
     const styledText = _.getStyledText(text, this.style);
 
     if (options.multiline) {
+      // eslint-disable-next-line unicorn/no-array-reduce
       return this.lines(styledText, options, overwrites).reduce((result, text) => {
         const w = ctx.measureText(text).width + addSpacing(text);
 
