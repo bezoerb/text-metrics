@@ -52,16 +52,14 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm run test:cov
+        run: npm run lint && npm run test:cov
 
       - name: Run Coveralls
         uses: coverallsapp/github-action@master
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
-
-      - name: Install npm dependencies
-        run: npm ci
+´
       - name: 'BrowserStack Env Setup' # Invokes the setup-env action
         uses: browserstack/github-actions/setup-env@master
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
@@ -77,9 +75,11 @@ jobs:
           local-identifier: random
 
       - name: 'Running test on BrowserStack'
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
         run: npx browserstack-runner
 
       - name: 'BrowserStackLocal Stop' # Terminating the BrowserStackLocal tunnel connection
         uses: browserstack/github-actions/setup-local@master
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
         with:
           local-testing: stop

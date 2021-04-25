@@ -22,7 +22,7 @@
     "test:all": "npm run test:cov && npm run test:browser",
     "build": "microbundle",
     "dev": "microbundle watch",
-    "prepare": "npm run clean && npm run format && npm run lint && npm test",
+    "prepare": "npm run clean && npm run format",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "files": [
