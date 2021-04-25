@@ -59,15 +59,15 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
-´
-      - name: 'BrowserStack Env Setup' # Invokes the setup-env action
+
+      - name: 'BrowserStack Env Setup'
         uses: browserstack/github-actions/setup-env@master
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
         with:
           username: ${{ secrets.BROWSERSTACK_USERNAME }}
           access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
 
-      - name: 'BrowserStack Local Tunnel Setup' # Invokes the setup-local action
+      - name: 'BrowserStack Local Tunnel Setup'
         uses: browserstack/github-actions/setup-local@master
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
         with:
@@ -78,7 +78,7 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
         run: npx browserstack-runner
 
-      - name: 'BrowserStackLocal Stop' # Terminating the BrowserStackLocal tunnel connection
+      - name: 'BrowserStackLocal Stop'
         uses: browserstack/github-actions/setup-local@master
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
         with:
