@@ -152,8 +152,8 @@ Licensed under the [MIT license](http://bezoerb.mit-license.org/).
 [dlcounter-image]: https://img.shields.io/npm/dm/text-metrics.svg
 [coveralls-url]: https://coveralls.io/github/bezoerb/text-metrics?branch=master
 [coveralls-image]: https://coveralls.io/repos/github/bezoerb/text-metrics/badge.svg?branch=master
-[browserstack-url]: https://www.browserstack.com/automate/public-build/VVhkaFBacldKNkRTbk1JQTh5MlR1UjRRdXE3eUl2UDFwL2lYakZoMnViQT0tLW40cnZaQ0ZGMnN0TzFnOWRxa1g1Zmc9PQ==--b7b19ea26bbc84df43b37ff0cab5456c8fe32ab0
-[browserstack-image]: https://www.browserstack.com/automate/badge.svg?badge_key=VVhkaFBacldKNkRTbk1JQTh5MlR1UjRRdXE3eUl2UDFwL2lYakZoMnViQT0tLW40cnZaQ0ZGMnN0TzFnOWRxa1g1Zmc9PQ==--b7b19ea26bbc84df43b37ff0cab5456c8fe32ab0
+[browserstack-url]: https://www.browserstack.com/automate/public-build/ZlYwek1neVBNRVdpU3k5TkpYTm8xR3ZDd295SmQ4UmZwUTA1SC9GbUUwOD0tLWtsZ2JMVUhMR1dBaEtWNVh3K0xNekE9PQ==--c3699925a55c0eec85b1edcd1911551056b290b3
+[browserstack-image]: https://www.browserstack.com/automate/badge.svg?badge_key=ZlYwek1neVBNRVdpU3k5TkpYTm8xR3ZDd295SmQ4UmZwUTA1SC9GbUUwOD0tLWtsZ2JMVUhMR1dBaEtWNVh3K0xNekE9PQ==--c3699925a55c0eec85b1edcd1911551056b290b3
 
 ## License
 
