@@ -454,13 +454,12 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
   }
 
   // Loop over text parts and compute the lines
-  for (let i = 0; i < parts.length; i++) {
+  for (const [i, part] of parts.entries()) {
     if (i === 0) {
-      line = parts[i];
+      line = part;
       continue;
     }
 
-    const part = parts[i];
     const breakpoint = breakpoints[i - 1];
     // Special treatment as we only render the soft hyphen if we need to split
     const chr = breakpoint.type === 'SHY' ? '' : breakpoint.chr;
