@@ -1,6 +1,6 @@
 {
   "name": "text-metrics",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "An efficient text measurement set for the browser.",
   "license": "MIT",
   "repository": "bezoerb/text-metrics",
