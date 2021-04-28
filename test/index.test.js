@@ -250,4 +250,26 @@ describe('index', () => {
       expect(element).toBe(expected[i]);
     }
   });
+
+  test('correctly handles whitespace ', () => {
+    const text = 'a   b';
+    const expected1 = getContext2d('400 30px sans-serif').measureText(text.replace(/\s+/, ' '));
+    const expected2 = getContext2d('400 30px sans-serif').measureText(text);
+
+    const styles = {
+      'font-size': '30px',
+      'font-weight': '400',
+      'font-family': 'sans-serif',
+    };
+
+    const valueDefault = init(styles).width(text);
+    const valuePre = init({...styles, 'white-space': 'pre'}).width(text);
+    const valuePreWrap = init({...styles, 'white-space': 'pre-wrap'}).width(text);
+    const valuePreLine = init({...styles, 'white-space': 'pre-line'}).width(text);
+    console.log({default: expected1.width, pre: expected2.width});
+    expect(valueDefault).toBe(expected1.width);
+    expect(valuePreLine).toBe(expected1.width);
+    expect(valuePre).toBe(expected2.width);
+    expect(valuePreWrap).toBe(expected2.width);
+  });
 });

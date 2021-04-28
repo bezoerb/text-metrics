@@ -40,7 +40,7 @@ class TextMetrics {
     }
 
     text =
-      !text && this.el ? _.normalizeWhitespace(_.getText(this.el), ws) : _.prepareText(_.normalizeWhitespace(text));
+      !text && this.el ? _.normalizeWhitespace(_.getText(this.el), ws) : _.prepareText(_.normalizeWhitespace(text, ws));
 
     return {text, options, overwrites, styles};
   }
@@ -61,12 +61,10 @@ class TextMetrics {
     }
 
     const font = _.getFont(this.style, styles);
-
     const letterSpacing = _.prop(styles, 'letter-spacing') || this.style.getPropertyValue('letter-spacing');
     const wordSpacing = _.prop(styles, 'word-spacing') || this.style.getPropertyValue('word-spacing');
     const addSpacing = _.addWordAndLetterSpacing(wordSpacing, letterSpacing);
     const ctx = _.getContext2d(font);
-
     const styledText = _.getStyledText(text, this.style);
 
     if (options.multiline) {

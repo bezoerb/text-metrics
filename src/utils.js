@@ -461,10 +461,6 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
     }
 
     const part = parts[i];
-    if (BAI.has(parts[i - 1]) && BAI.has(parts[i])) {
-      continue;
-    }
-
     const breakpoint = breakpoints[i - 1];
     // Special treatment as we only render the soft hyphen if we need to split
     const chr = breakpoint.type === 'SHY' ? '' : breakpoint.chr;
