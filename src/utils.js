@@ -471,7 +471,7 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
 
     // Measure width
     const rawWidth = ctx.measureText(line + chr + part).width + addSpacing(line + chr + part);
-    const width = Math.round(rawWidth, 10);
+    const width = Math.round(rawWidth);
 
     // Still fits in line
     if (width <= max) {
