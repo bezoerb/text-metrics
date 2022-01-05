@@ -1,6 +1,6 @@
 # text-metrics
 
-[![NPM version][npm-image]][npm-url] [![Build Status][ci-image]][ci-url] [![BrowserStack Status][browserstack-image]][browserstack-url] [![Dependency Status][depstat-image]][depstat-url] [![Download][dlcounter-image]][dlcounter-url] [![Coverage Status][coveralls-image]][coveralls-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][ci-image]][ci-url] [![BrowserStack Status][browserstack-image]][browserstack-url] [![Download][dlcounter-image]][dlcounter-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
 > An lightweight & efficient text measurement set for the browser using canvas to prevent layout reflows.
 
@@ -146,14 +146,12 @@ Licensed under the [MIT license](http://bezoerb.mit-license.org/).
 [npm-image]: https://badge.fury.io/js/text-metrics.svg
 [ci-url]: https://github.com/bezoerb/text-metrics/actions?workflow=Tests
 [ci-image]: https://github.com/bezoerb/text-metrics/workflows/Tests/badge.svg
-[depstat-url]: https://david-dm.org/bezoerb/text-metrics
-[depstat-image]: https://david-dm.org/bezoerb/text-metrics.svg
 [dlcounter-url]: https://www.npmjs.com/package/text-metrics
 [dlcounter-image]: https://img.shields.io/npm/dm/text-metrics.svg
 [coveralls-url]: https://coveralls.io/github/bezoerb/text-metrics?branch=master
 [coveralls-image]: https://coveralls.io/repos/github/bezoerb/text-metrics/badge.svg?branch=master
-[browserstack-url]: https://www.browserstack.com/automate/public-build/ZlYwek1neVBNRVdpU3k5TkpYTm8xR3ZDd295SmQ4UmZwUTA1SC9GbUUwOD0tLWtsZ2JMVUhMR1dBaEtWNVh3K0xNekE9PQ==--c3699925a55c0eec85b1edcd1911551056b290b3
-[browserstack-image]: https://www.browserstack.com/automate/badge.svg?badge_key=ZlYwek1neVBNRVdpU3k5TkpYTm8xR3ZDd295SmQ4UmZwUTA1SC9GbUUwOD0tLWtsZ2JMVUhMR1dBaEtWNVh3K0xNekE9PQ==--c3699925a55c0eec85b1edcd1911551056b290b3
+[browserstack-url]: https://www.browserstack.com/automate/public-build/T2FtQnl5V3ByWURYcjRzaGFaNExXdEtydy90U0xVUjBScDVIUUc5WWJkND0tLTV0d2tvcHdreWN5SEROVjRGdWt6a2c9PQ==--72372c03c8e305b82f138da976ddd90d71adb981
+[browserstack-image]: https://www.browserstack.com/automate/badge.svg?badge_key=T2FtQnl5V3ByWURYcjRzaGFaNExXdEtydy90U0xVUjBScDVIUUc5WWJkND0tLTV0d2tvcHdreWN5SEROVjRGdWt6a2c9PQ==--72372c03c8e305b82f138da976ddd90d71adb981
 
 ## License
 
