@@ -1,7 +1,7 @@
-const JSDOMEnvironment = require('jest-environment-jsdom');
-const {JSDOM, VirtualConsole} = require('jsdom');
 const fs = require('fs');
 const path = require('path');
+const JSDOMEnvironment = require('jest-environment-jsdom');
+
 const css = fs.readFileSync(path.join(__dirname, '../fixtures/bootstrap.css'), 'utf8');
 const html = fs.readFileSync(path.join(__dirname, '../fixtures/index.html'), 'utf8');
 

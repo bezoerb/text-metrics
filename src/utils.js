@@ -249,7 +249,7 @@ export function isObject(object) {
  * @returns {CSSStyleDeclaration}
  */
 export function getStyle(element, options) {
-  const options_ = {...(options || {})};
+  const options_ = {...options};
   const {style} = options_;
   if (!options) {
     options = {};

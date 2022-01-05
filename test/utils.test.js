@@ -1,5 +1,4 @@
 /* eslint-env es6, browser, jest */
-// eslint-disable-next-line import/extensions
 import {utils} from '..';
 
 const {CSSStyleDeclaration} = require('cssstyle');
