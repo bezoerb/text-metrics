@@ -56,30 +56,30 @@ jobs:
 
       - name: Run Coveralls
         uses: coverallsapp/github-action@master
-        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '14')
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
 
       - name: 'BrowserStack Env Setup'
         uses: browserstack/github-actions/setup-env@master
-        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '14')
         with:
           username: ${{ secrets.BROWSERSTACK_USERNAME }}
           access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
 
       - name: 'BrowserStack Local Tunnel Setup'
         uses: browserstack/github-actions/setup-local@master
-        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '14')
         with:
           local-testing: start
           local-identifier: random
 
       - name: 'Running test on BrowserStack'
-        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '14')
         run: npx browserstack-runner
 
       - name: 'BrowserStackLocal Stop'
         uses: browserstack/github-actions/setup-local@master
-        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '12')
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.node, '14')
         with:
           local-testing: stop
