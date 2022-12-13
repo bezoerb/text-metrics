@@ -265,7 +265,6 @@ describe('index', () => {
     const valuePre = init({...styles, 'white-space': 'pre'}).width(text);
     const valuePreWrap = init({...styles, 'white-space': 'pre-wrap'}).width(text);
     const valuePreLine = init({...styles, 'white-space': 'pre-line'}).width(text);
-    console.log({default: expected1.width, pre: expected2.width});
     expect(valueDefault).toBe(expected1.width);
     expect(valuePreLine).toBe(expected1.width);
     expect(valuePre).toBe(expected2.width);
