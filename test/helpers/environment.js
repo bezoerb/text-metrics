@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const {TestEnvironment} = require('jest-environment-jsdom');
 
 const css = fs.readFileSync(path.join(__dirname, '../fixtures/bootstrap.css'), 'utf8');

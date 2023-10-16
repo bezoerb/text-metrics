@@ -111,12 +111,17 @@ function pxValue(value_, options) {
   // eslint-disable-next-line default-case
   switch (unit) {
     case 'rem':
-    case 'em':
+    case 'em': {
       return value * baseFontSize;
-    case 'pt':
+    }
+
+    case 'pt': {
       return value * (96 / 72);
-    case 'px':
+    }
+
+    case 'px': {
       return value;
+    }
   }
 
   throw new Error('The unit ' + unit + ' is not supported');
@@ -142,7 +147,7 @@ export function addWordAndLetterSpacing(ws, ls) {
   }
 
   return (text) => {
-    const words = text.trim().replace(/\s+/gi, ' ').split(' ').length - 1;
+    const words = text.trim().replaceAll(/\s+/gi, ' ').split(' ').length - 1;
     const chars = text.length;
 
     return words * wordAddon + chars * letterAddon;
@@ -278,17 +283,24 @@ export function getStyle(element, options) {
  */
 export function normalizeWhitespace(text, ws) {
   switch (ws) {
-    case 'pre':
+    case 'pre': {
       return text;
-    case 'pre-wrap':
+    }
+
+    case 'pre-wrap': {
       return text;
-    case 'pre-line':
-      return (text || '').replace(/\s+/gm, ' ').trim();
-    default:
+    }
+
+    case 'pre-line': {
+      return (text || '').replaceAll(/\s+/gm, ' ').trim();
+    }
+
+    default: {
       return (text || '')
-        .replace(/[\r\n]/gm, ' ')
-        .replace(/\s+/gm, ' ')
+        .replaceAll(/[\r\n]/gm, ' ')
+        .replaceAll(/\s+/gm, ' ')
         .trim();
+    }
   }
 }
 
@@ -301,12 +313,17 @@ export function normalizeWhitespace(text, ws) {
  */
 export function getStyledText(text, style) {
   switch (style.getPropertyValue('text-transform')) {
-    case 'uppercase':
+    case 'uppercase': {
       return text.toUpperCase();
-    case 'lowercase':
+    }
+
+    case 'lowercase': {
       return text.toLowerCase();
-    default:
+    }
+
+    default: {
       return text;
+    }
   }
 }
 
@@ -319,10 +336,10 @@ export function getStyledText(text, style) {
 export function prepareText(text) {
   // Convert to unicode
   text = (text || '')
-    .replace(/<wbr>/gi, '\u200B')
-    .replace(/<br\s*\/?>/gi, '\u000A')
-    .replace(/&shy;/gi, '\u00AD')
-    .replace(/&mdash;/gi, '\u2014');
+    .replaceAll(/<wbr>/gi, '\u200B')
+    .replaceAll(/<br\s*\/?>/gi, '\u000A')
+    .replaceAll(/&shy;/gi, '\u00AD')
+    .replaceAll(/&mdash;/gi, '\u2014');
 
   if (/&#(\d+)(;?)|&#[xX]([a-fA-F\d]+)(;?)|&([\da-zA-Z]+);/g.test(text) && console) {
     console.error(
@@ -357,7 +374,7 @@ export function getText(element) {
  * @returns {*}
  */
 export function prop(src, attr, defaultValue) {
-  return (src && typeof src[attr] !== 'undefined' && src[attr]) || defaultValue;
+  return (src && src[attr] !== undefined && src[attr]) || defaultValue;
 }
 
 /**
@@ -371,7 +388,7 @@ export function normalizeOptions(options) {
 
   // Normalize keys (fontSize => font-size)
   for (const key of Object.keys(options || {})) {
-    const dashedKey = key.replace(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
+    const dashedKey = key.replaceAll(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
     options_[dashedKey] = options[key];
   }
 
@@ -481,23 +498,31 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
 
     // Line is to long, we split at the breakpoint
     switch (breakpoint.type) {
-      case 'SHY':
+      case 'SHY': {
         lines.push(line + '-');
         line = part;
         break;
-      case 'BA':
+      }
+
+      case 'BA': {
         lines.push(line + chr);
         line = part;
         break;
-      case 'BAI':
+      }
+
+      case 'BAI': {
         lines.push(line);
         line = part;
         break;
-      case 'BB':
+      }
+
+      case 'BB': {
         lines.push(line);
         line = chr + part;
         break;
-      case 'B2':
+      }
+
+      case 'B2': {
         if (Number.parseInt(ctx.measureText(line + chr).width + addSpacing(line + chr), 10) <= max) {
           lines.push(line + chr);
           line = part;
@@ -510,8 +535,11 @@ export function computeLinesDefault({ctx, text, max, wordSpacing, letterSpacing}
         }
 
         break;
-      default:
+      }
+
+      default: {
         throw new Error('Undefoined break');
+      }
     }
   }
 
@@ -560,22 +588,29 @@ export function computeLinesBreakAll({ctx, text, max, wordSpacing, letterSpacing
     // Needs at least one character
     if (width > max && [...line].length > 0) {
       switch (type) {
-        case 'SHY':
+        case 'SHY': {
           lines.push(line + '-');
           line = '';
           break;
-        case 'BA':
+        }
+
+        case 'BA': {
           lines.push(line + chr);
           line = '';
           break;
-        case 'BAI':
+        }
+
+        case 'BAI': {
           lines.push(line);
           line = '';
           break;
-        default:
+        }
+
+        default: {
           lines.push(line);
           line = chr;
           break;
+        }
       }
     } else if (chr !== '\u00AD') {
       line += chr;

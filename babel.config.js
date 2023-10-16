@@ -1,4 +1,4 @@
-const process = require('process');
+const process = require('node:process');
 
 const {NODE_ENV} = process.env;
 
