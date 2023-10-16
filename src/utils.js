@@ -147,7 +147,7 @@ export function addWordAndLetterSpacing(ws, ls) {
   }
 
   return (text) => {
-    const words = text.trim().replaceAll(/\s+/gi, ' ').split(' ').length - 1;
+    const words = text.trim().replace(/\s+/gi, ' ').split(' ').length - 1;
     const chars = text.length;
 
     return words * wordAddon + chars * letterAddon;
@@ -292,13 +292,13 @@ export function normalizeWhitespace(text, ws) {
     }
 
     case 'pre-line': {
-      return (text || '').replaceAll(/\s+/gm, ' ').trim();
+      return (text || '').replace(/\s+/gm, ' ').trim();
     }
 
     default: {
       return (text || '')
-        .replaceAll(/[\r\n]/gm, ' ')
-        .replaceAll(/\s+/gm, ' ')
+        .replace(/[\r\n]/gm, ' ')
+        .replace(/\s+/gm, ' ')
         .trim();
     }
   }
@@ -336,10 +336,10 @@ export function getStyledText(text, style) {
 export function prepareText(text) {
   // Convert to unicode
   text = (text || '')
-    .replaceAll(/<wbr>/gi, '\u200B')
-    .replaceAll(/<br\s*\/?>/gi, '\u000A')
-    .replaceAll(/&shy;/gi, '\u00AD')
-    .replaceAll(/&mdash;/gi, '\u2014');
+    .replace(/<wbr>/gi, '\u200B')
+    .replace(/<br\s*\/?>/gi, '\u000A')
+    .replace(/&shy;/gi, '\u00AD')
+    .replace(/&mdash;/gi, '\u2014');
 
   if (/&#(\d+)(;?)|&#[xX]([a-fA-F\d]+)(;?)|&([\da-zA-Z]+);/g.test(text) && console) {
     console.error(
@@ -388,7 +388,7 @@ export function normalizeOptions(options) {
 
   // Normalize keys (fontSize => font-size)
   for (const key of Object.keys(options || {})) {
-    const dashedKey = key.replaceAll(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
+    const dashedKey = key.replace(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
     options_[dashedKey] = options[key];
   }
 

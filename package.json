@@ -112,7 +112,8 @@
       "import/no-unresolved": 0,
       "import/no-unassigned-import": 0,
       "unicorn/no-reduce": 0,
-      "unicorn/prefer-module": 0
+      "unicorn/prefer-module": 0,
+      "unicorn/prefer-string-replace-all": 0
     }
   },
   "npmName": "text-metrics",
