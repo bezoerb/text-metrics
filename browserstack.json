@@ -32,13 +32,6 @@
     },
     {
       "browser": "edge",
-      "browser_version": "16.0",
-      "os": "Windows",
-      "os_version": "10",
-      "cli_key": 9
-    },
-    {
-      "browser": "edge",
       "browser_version": "latest",
       "os": "Windows",
       "os_version": "10",
