@@ -1,6 +1,6 @@
 /* eslint-env es6, browser, jest */
 import {CSSStyleDeclaration} from 'cssstyle';
-import {utils} from '..';
+import * as utils from '../src/utils.js';
 
 describe('Utils', () => {
   test('isElement', () => {

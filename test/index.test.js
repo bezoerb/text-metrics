@@ -1,5 +1,5 @@
 /* eslint-env es6, browser, jest */
-import {init, utils} from '..';
+import {init, utils} from '../src/index.js';
 
 const {getContext2d} = utils;
 

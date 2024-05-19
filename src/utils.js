@@ -100,9 +100,7 @@ const DEFAULTS = {
  * @return {*}
  */
 function pxValue(value_, options) {
-  if (!options) {
-    options = {};
-  }
+  options ||= {};
 
   const baseFontSize = Number.parseInt(prop(options, 'base-font-size', 16), 10);
 
@@ -256,9 +254,7 @@ export function isObject(object) {
 export function getStyle(element, options) {
   const options_ = {...options};
   const {style} = options_;
-  if (!options) {
-    options = {};
-  }
+  options ||= {};
 
   if (isCSSStyleDeclaration(style)) {
     return style;
@@ -373,8 +369,8 @@ export function getText(element) {
  * @param defaultValue
  * @returns {*}
  */
-export function prop(src, attr, defaultValue) {
-  return (src && src[attr] !== undefined && src[attr]) || defaultValue;
+export function prop(source, attribute, defaultValue) {
+  return (source && source[attribute] !== undefined && source[attribute]) || defaultValue;
 }
 
 /**
@@ -403,18 +399,18 @@ export function normalizeOptions(options) {
  */
 export function getContext2d(font) {
   try {
-    const ctx = document.createElement('canvas').getContext('2d');
+    const context = document.createElement('canvas').getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     const bsr =
-      ctx.webkitBackingStorePixelRatio ||
-      ctx.mozBackingStorePixelRatio ||
-      ctx.msBackingStorePixelRatio ||
-      ctx.oBackingStorePixelRatio ||
-      ctx.backingStorePixelRatio ||
+      context.webkitBackingStorePixelRatio ||
+      context.mozBackingStorePixelRatio ||
+      context.msBackingStorePixelRatio ||
+      context.oBackingStorePixelRatio ||
+      context.backingStorePixelRatio ||
       1;
-    ctx.font = font;
-    ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
-    return ctx;
+    context.font = font;
+    context.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
+    return context;
   } catch (error) {
     throw new Error('Canvas support required' + error.message);
   }
