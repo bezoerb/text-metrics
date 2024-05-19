@@ -153,7 +153,6 @@ Licensed under the [MIT license](http://bezoerb.mit-license.org/).
 [browserstack-url]: https://automate.browserstack.com/public-build/WHRoUjI2QnRnb0dlUDVtaUpDbFFNdHJWVEVUT2VLdUZ0QVF6bWROT2Ntdz0tLWRzUmk1dkhwQnhZQThvTWNDVzJyL2c9PQ==--933d8c999a8c7868c7133144fdcd6ff2df8248d8
 [browserstack-image]: https://automate.browserstack.com/badge.svg?badge_key=WHRoUjI2QnRnb0dlUDVtaUpDbFFNdHJWVEVUT2VLdUZ0QVF6bWROT2Ntdz0tLWRzUmk1dkhwQnhZQThvTWNDVzJyL2c9PQ==--933d8c999a8c7868c7133144fdcd6ff2df8248d8
 
-
 ## License
 
 [MIT](https://bezoerb.mit-license.org/) © [Ben Zörb](http://sommerlaune.com)

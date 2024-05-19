@@ -1,11 +1,15 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const {TestEnvironment} = require('jest-environment-jsdom');
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { TestEnvironment } from 'jest-environment-jsdom';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
 
-const css = fs.readFileSync(path.join(__dirname, '../fixtures/bootstrap.css'), 'utf8');
-const html = fs.readFileSync(path.join(__dirname, '../fixtures/index.html'), 'utf8');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-module.exports = class CustomEnvironment extends TestEnvironment {
+const css = readFileSync(join(__dirname, '../fixtures/bootstrap.css'), 'utf8');
+const html = readFileSync(join(__dirname, '../fixtures/index.html'), 'utf8');
+
+export default class CustomEnvironment extends TestEnvironment {
   constructor(config, options) {
     const {projectConfig = {}} = config;
     const {testEnvironmentOptions = {}} = projectConfig;
