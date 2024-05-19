@@ -1,8 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { TestEnvironment } from 'jest-environment-jsdom';
+import {readFileSync} from 'node:fs';
+import path, {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import path from 'node:path';
+import {TestEnvironment} from 'jest-environment-jsdom';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -30,4 +29,4 @@ export default class CustomEnvironment extends TestEnvironment {
 
     return super.teardown();
   }
-};
+}
